@@ -1,0 +1,1244 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+* {
+    font-family: 'Nunito', sans-serif;
+}
+
+body {
+    font-weight: 300
+}
+
+.system-icon {
+    /*height: 43px;*/
+    max-width: 150px;
+}
+
+.main-block {
+    padding: 40px 0;
+}
+
+
+/* brand name */
+
+.navbar-brand span {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.foodmenu-thumbnail-for-cart {
+    height: 130px;
+    object-fit: cover;
+}
+
+.input-group-prepend {
+    margin-right: -1px;
+    display: flex;
+}
+
+.input-group-text {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.mt-22 {
+    margin-top: 22px;
+}
+
+.menu-price-section p {
+    font-size: 13px;
+}
+
+#home-search-btn {
+    cursor: pointer;
+}
+
+.form-control[readonly] {
+    cursor: default;
+    background-color: #fff;
+}
+
+.datepicker-days table.table-condensed thead tr th.datepicker-switch {
+    font-weight: 550;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.datepicker-days table.table-condensed thead tr th.next,
+.datepicker-days table.table-condensed thead tr th.prev {
+    color: #14a96d;
+}
+
+.datepicker-days table.table-condensed thead {
+    border-bottom: 1px solid rgb(20 169 109 / 34%);
+    ;
+}
+
+.datepicker-days table.table-condensed thead tr th {
+    color: #444;
+}
+
+
+/* .datepicker-days table.table-condensed thead tr th.prev.disabled {
+    visibility: unset;
+    cursor: default;
+} */
+
+.datepicker-days table.table-condensed tbody tr td.day {
+    color: #14a96d;
+    padding: 2px 9px;
+}
+
+.datepicker-days table.table-condensed tbody tr td.disabled {
+    color: #14a96d3d;
+}
+
+.datepicker table tr td.active,
+.datepicker table tr td.active:hover,
+.datepicker table tr td.active.disabled,
+.datepicker table tr td.active.disabled:hover {
+    background-image: unset;
+    background-color: rgb(40 167 69 / 12%);
+}
+
+.datepicker table tr td.active:hover,
+.datepicker table tr td.active:hover:hover,
+.datepicker table tr td.active.disabled:hover,
+.datepicker table tr td.active.disabled:hover:hover,
+.datepicker table tr td.active:active,
+.datepicker table tr td.active:hover:active,
+.datepicker table tr td.active.disabled:active,
+.datepicker table tr td.active.disabled:hover:active,
+.datepicker table tr td.active.active,
+.datepicker table tr td.active:hover.active,
+.datepicker table tr td.active.disabled.active,
+.datepicker table tr td.active.disabled:hover.active,
+.datepicker table tr td.active.disabled,
+.datepicker table tr td.active:hover.disabled,
+.datepicker table tr td.active.disabled.disabled,
+.datepicker table tr td.active.disabled:hover.disabled,
+.datepicker table tr td.active[disabled],
+.datepicker table tr td.active:hover[disabled],
+.datepicker table tr td.active.disabled[disabled],
+.datepicker table tr td.active.disabled:hover[disabled] {
+    background-color: rgb(40 167 69 / 12%);
+}
+
+.datepicker-days table tr td.new {
+    display: none;
+}
+
+.datepicker-days table tr td.old {
+    visibility: hidden;
+}
+
+@media (min-width: 768px) {
+    #city_zip {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    #event_date {
+        border-radius: 0;
+    }
+    #peoples {
+        border-radius: 0;
+    }
+    #home-search-btn {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}
+
+.search-box-border {
+    border: 2px solid #febb02;
+    height: 52px;
+    border-radius: 0;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+    font-size: 13px;
+    padding-right: 10px;
+}
+
+.cart-items {
+    position: absolute;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    margin: -24px 23px 0 0;
+    font-size: 10px;
+    background: #f44336;
+    color: #fff;
+    padding: 10px 7px;
+    border-radius: 50%;
+}
+
+.hidden {
+    display: none;
+}
+
+.cart-page-foodtruck-delivery-details {
+    float: right;
+    font-size: 13px;
+}
+
+.cart-page-menu-thumbnail {
+    border: 1px solid #eae3e3;
+    height: 50px;
+    width: 50px;
+    padding: 2px;
+    object-fit: cover;
+}
+
+.cart-page-menu-title {
+    font-size: 15px;
+    color: #424242;
+    display: block;
+    margin-top: 8px;
+    font-weight: 300;
+}
+
+.cart-page-menu-servings {
+    font-size: 12px;
+    color: #757575;
+    display: block;
+    margin-top: 0px;
+    font-weight: 400;
+}
+
+.cart-page-menu-unit-price {
+    font-size: 12px;
+    color: #757575;
+    display: block;
+    margin-top: 20px;
+    font-weight: 400;
+}
+
+.cart-page-menu-quantity {
+    font-size: 12px;
+    color: #757575;
+    display: block;
+    margin-top: 20px;
+    font-weight: 400;
+}
+
+.cart-page-menu-sub-total {
+    font-size: 12px;
+    color: #757575;
+    display: block;
+    margin-top: 20px;
+    font-weight: 400;
+}
+
+.cart-page-actions {
+    font-size: 15px;
+    display: block;
+    margin-top: 20px;
+}
+
+.cart-page-actions a {
+    text-decoration: none;
+}
+
+.delivery-address-list {
+    color: #525252;
+    font-weight: 400;
+    font-size: 17px;
+    margin: 10px 0px 10px 2px;
+}
+
+.customer-address-list tr td {
+    padding-top: 10px;
+}
+
+.bill-table {
+    float: right;
+}
+
+.bill-table .bill-type {
+    font-weight: 300;
+    padding-right: 10px;
+    font-size: 12px;
+}
+
+.bill-table .bill-value {
+    font-weight: 400;
+    text-align: right;
+}
+
+.success-tick {
+    height: 100px;
+}
+
+.featured-title-box .filled-favourite {
+    color: #f44336;
+}
+
+.footer-page-links {
+    margin-top: 0px !important;
+}
+
+.footer-page-links li a {
+    font-size: 13px !important;
+    padding: 0px 4px !important;
+}
+
+.customer-review_wrap .customer-img img {
+    height: 78px;
+}
+
+.text-body {
+    color: #737882;
+}
+
+.foodtruck-schedule {
+    padding: 10px 5px;
+}
+
+.foodtruck-schedule table tr {
+    padding: 5px;
+    border: 1px solid #F5F5F5;
+}
+
+.foodtruck-schedule table tr .foodtruck-time-schedule {
+    border-left: 1px solid #F5F5F5;
+}
+
+.foodtruck-schedule table tr .foodtruck-day-schedule {
+    border-right: 1px solid #F5F5F5;
+}
+
+
+/* PAGINATION CSS */
+
+.page-item.active .page-link {
+    z-index: 2;
+    color: #fff;
+    background-color: #ff3a6d;
+    border-color: #ff3a6d;
+}
+
+.page-link {
+    color: #ff3a6d;
+}
+
+.page-link:focus,
+.page-link:hover {
+    color: #fff;
+    text-decoration: none;
+    background-color: #ff81a1;
+    border-color: #ff81a1;
+}
+
+.page-item.active .page-link:hover {
+    color: #fff;
+}
+
+
+/* CALLOUT CSS STARTS*/
+
+.callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.callout p:last-child {
+    margin-bottom: 0;
+}
+
+.callout code {
+    border-radius: 3px;
+}
+
+.callout+.bs-callout {
+    margin-top: -5px;
+}
+
+.callout-default {
+    border-left-color: #777;
+}
+
+.callout-default h4 {
+    color: #777;
+}
+
+.callout-primary {
+    border-left-color: #428bca;
+}
+
+.callout-primary h4 {
+    color: #428bca;
+}
+
+.callout-success {
+    border-left-color: #5cb85c;
+}
+
+.callout-success h4 {
+    color: #5cb85c;
+}
+
+.callout-danger {
+    border-left-color: #d9534f;
+}
+
+.callout-danger h4 {
+    color: #d9534f;
+}
+
+.callout-warning {
+    border-left-color: #f0ad4e;
+}
+
+.callout-warning h4 {
+    color: #f0ad4e;
+}
+
+.callout-info {
+    border-left-color: #5bc0de;
+}
+
+.callout-info h4 {
+    color: #5bc0de;
+}
+
+.callout-bdc {
+    border-left-color: #29527a;
+}
+
+.callout-bdc h4 {
+    color: #29527a;
+}
+
+
+/* CALLOUT CSS ENDS*/
+
+
+/* CUSTOM SELECT FOR LANGUAGE STARTS */
+
+
+/* Reset Select */
+
+.language-selector {
+    border: 0 !important;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    background: #2c3e50;
+    background-image: none;
+}
+
+
+/* Remove IE arrow */
+
+select::-ms-expand {
+    display: none;
+}
+
+
+/* Custom Select */
+
+.select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #2c3e50;
+    overflow: hidden;
+    border-radius: .25em;
+}
+
+select {
+    flex: 1;
+    padding: 0 .5em;
+    color: #fff;
+    cursor: default;
+}
+
+
+/* Arrow */
+
+.select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #34495e;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
+}
+
+
+/* Transition */
+
+.select:hover::after {
+    color: #ff3a6d;
+}
+
+
+/* CUSTOM SELECT FOR LANGUAGE ENDS */
+
+h6 .foodtruck-name {
+    color: #3e434b;
+}
+
+.featured-cuisine-area {
+    padding-left: 15px;
+    padding-right: 0px;
+}
+
+.btn-rounded {
+    border-radius: 20px;
+}
+
+.home-btn-wrap {
+    color: #ffffff;
+}
+
+.btn-form {
+    background: #28a745;
+}
+
+
+/*--------------------------------------------------------------
+# Contact
+--------------------------------------------------------------*/
+
+
+/*.contact-section {
+		height: 500px;
+		padding-top: 220px;
+    background: url(../images/contact.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+*/
+
+.contact .info-wrap {
+    background-color: #ffffff;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.contact .info {
+    background: #fff;
+}
+
+.contact .info i {
+    font-size: 20px;
+    color: #00bd70;
+    float: left;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #00bd70;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.contact .info h4 {
+    padding: 0 0 0 60px;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #111;
+}
+
+.contact .info p {
+    padding: 0 0 0 60px;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #444444;
+}
+
+.contact .info:hover i {
+    background: #00bd70;
+    color: #fff;
+}
+
+.contact .php-email-form {
+    width: 100%;
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.12);
+    padding: 30px;
+    background: #fff;
+}
+
+.contact .php-email-form .form-group {
+    padding-bottom: 8px;
+}
+
+.contact .php-email-form .validate {
+    display: none;
+    color: red;
+    margin: 0 0 15px 0;
+    font-weight: 400;
+    font-size: 13px;
+}
+
+.contact .php-email-form .error-message {
+    display: none;
+    color: #fff;
+    background: #ed3c0d;
+    text-align: left;
+    padding: 15px;
+    font-weight: 600;
+}
+
+.contact .php-email-form .error-message br+br {
+    margin-top: 25px;
+}
+
+.contact .php-email-form .sent-message {
+    display: none;
+    color: #fff;
+    background: #4CAF50;
+    text-align: center;
+    padding: 15px;
+    font-weight: 600;
+}
+
+.contact .php-email-form .loading {
+    display: none;
+    background: #fff;
+    text-align: center;
+    padding: 15px;
+}
+
+.contact .php-email-form .loading:before {
+    content: "";
+    display: inline-block;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    margin: 0 10px -6px 0;
+    border: 3px solid #00bd70;
+    border-top-color: #eee;
+    -webkit-animation: animate-loading 1s linear infinite;
+    animation: animate-loading 1s linear infinite;
+}
+
+.contact .php-email-form input,
+.contact .php-email-form textarea {
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.contact .php-email-form input:focus,
+.contact .php-email-form textarea:focus {
+    border-color: #00bd70;
+}
+
+.contact .php-email-form input {
+    height: 44px;
+}
+
+.contact .php-email-form select {
+    height: 44px;
+}
+
+.contact .php-email-form textarea {
+    padding: 10px 12px;
+}
+
+.contact .php-email-form button[type="submit"] {
+    background: #00bd70;
+    border: 0;
+    padding: 10px 24px;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 4px;
+}
+
+.contact .php-email-form button[type="submit"]:hover {
+    background: #2ae149;
+}
+
+@-webkit-keyframes animate-loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes animate-loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+
+#footer {
+    color: #1b1f23;
+    font-size: 14px;
+    background: rgb(230 236 243);
+}
+
+#footer .footer-top {
+    padding: 60px 0 30px 0;
+    /* background: #1e1e1e; */
+}
+
+#footer .footer-top .footer-contact {
+    margin-bottom: 30px;
+}
+
+#footer .footer-top .footer-contact h3 {
+    font-size: 22px;
+    margin: 0 0 10px 0;
+    padding: 2px 0 2px 0;
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    /* color: #fff; */
+}
+
+#footer .footer-top .footer-contact p {
+    font-size: 14px;
+    line-height: 24px;
+    margin-bottom: 0;
+    font-family: "Roboto", sans-serif;
+    /* color: rgba(255, 255, 255, 0.7); */
+}
+
+#footer .footer-top h4 {
+    font-size: 16px;
+    font-weight: bold;
+    /* color: #fff; */
+    position: relative;
+    padding-bottom: 12px;
+}
+
+#footer .footer-top .footer-links {
+    margin-bottom: 30px;
+}
+
+#footer .footer-top .footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#footer .footer-top .footer-links ul i {
+    padding-right: 5px;
+    /* color: #fff; */
+    font-size: 11px;
+    line-height: 1;
+}
+
+#footer .footer-top .footer-links ul i {
+    padding-right: 5px;
+    /* color: #fff; */
+    font-size: 11px;
+    line-height: 1;
+}
+
+#footer .footer-top .footer-links h4 {
+    color: #40484f;
+    font-family: Averta-Semibold, Avenir, Helvetica Neue, Helvetica, sans-serif;
+}
+
+#footer .footer-top .footer-links ul li:first-child {
+    padding-top: 0;
+}
+
+#footer .footer-top .footer-links ul li {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+#footer .footer-top .footer-links ul a {
+    color: #66727c;
+    font-weight: bold;
+    transition: 0.3s;
+    display: inline-block;
+    line-height: 1;
+}
+
+#footer .footer-top .footer-links ul a:hover {
+    /* color: #fff; */
+}
+
+#footer .footer-newsletter {
+    font-size: 15px;
+    /* color: rgba(255, 255, 255, 0.7); */
+}
+
+#footer .footer-newsletter h4 {
+    font-size: 16px;
+    font-weight: bold;
+    /* color: #fff; */
+    position: relative;
+    padding-bottom: 12px;
+}
+
+#footer .footer-newsletter form {
+    margin-top: 30px;
+    background: #fff;
+    padding: 6px 10px;
+    position: relative;
+    border-radius: 4px 0 0 4px;
+    text-align: left;
+}
+
+#footer .footer-newsletter form input[type="email"] {
+    border: 0;
+    padding: 4px 8px;
+    width: calc(100% - 100px);
+}
+
+#footer .footer-newsletter form input[type="submit"] {
+    position: absolute;
+    top: 0;
+    right: -4px;
+    bottom: 0;
+    border: 0;
+    background: none;
+    font-size: 16px;
+    padding: 0 20px;
+    background: #00bd70;
+    color: #fff;
+    transition: 0.3s;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+#footer .footer-newsletter form input[type="submit"]:hover {
+    background: #2ae149;
+}
+
+#footer .credits {
+    padding-top: 5px;
+    font-size: 13px;
+    color: #fff;
+}
+
+#footer .social-links a {
+    font-size: 18px;
+    display: inline-block;
+    color: #fff;
+    line-height: 1;
+    padding: 8px 0;
+    margin-right: 4px;
+    /* border-radius: 4px; */
+    border-radius: 50%;
+    text-align: center;
+    width: 36px;
+    height: 36px;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+#footer .social-links .bft-facebook {
+    background-color: #3b5998;
+}
+
+#footer .social-links .bft-instagram {
+    background-color: #8a3ab9;
+}
+
+#footer .social-links .bft-twitter {
+    background-color: #1da1f2;
+}
+
+#footer .social-links .bft-pinterest {
+    background-color: #c8232c;
+}
+
+
+/* #footer .social-links a:hover {
+    background: #00bd70;
+    color: #fff;
+    text-decoration: none;
+} */
+
+#footer .dropdown-menu a {
+    padding: 10px;
+    color: #222222 !important;
+}
+
+#footer .dropdown-menu a:hover {
+    padding: 10px;
+    color: #00bd70 !important;
+}
+
+#footer .dropdown-menu i {
+    padding: 10px;
+    color: #222222 !important;
+}
+
+#footer .dropdown-menu i:hover {
+    padding: 10px;
+    color: #00bd70 !important;
+}
+
+.bft-facebook {}
+
+@media (max-width: 768px) {
+    #footer .copyright,
+    #footer .credits {
+        float: none;
+        text-align: center;
+        padding: 2px 0;
+    }
+}
+
+
+/*End Footer*/
+
+
+/*end contact*/
+
+.home-slide-btn {
+    padding: 15px 30px;
+    font-size: 25px;
+    font-weight: 900;
+    border: 3px solid;
+}
+
+.home-title {
+    color: #000000;
+    font-size: 52px;
+    font-weight: 900;
+}
+
+.slider-content_wrap h5 {
+    color: #000000;
+    font-weight: 900;
+    margin: 15px;
+}
+
+.beauty-title-black {
+    /*font-size: 2.5rem;*/
+    font-weight: 900;
+    /*letter-spacing: 1.5px;*/
+    /*line-height: 1.2;*/
+    border-top: 0px solid #9bd2ee;
+    border-bottom: 0px solid #b5b3b4;
+    text-align: center;
+    -moz-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+    -webkit-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+}
+
+.home-top-container {
+    margin-top: 50%;
+}
+
+.occasion-items {
+    display: flex;
+    margin-top: 7px;
+}
+
+.occasion-icon {
+    display: inline-block;
+    color: #00bd70;
+    font-size: 25px;
+}
+
+.occasion-title {
+    vertical-align: baseline;
+    display: inline-block;
+    color: #1b1f23;
+}
+
+.occasion-title p {
+    margin-top: 8px;
+    margin-bottom: 5px;
+}
+
+.success-color {
+    color: #00bd70;
+}
+
+.content-list-num {
+    display: inline;
+    width: 5%;
+    text-align: center;
+}
+
+.page-content-title {
+    color: #333;
+    margin-top: 30px;
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.font-bold {
+    font-weight: 900;
+    color: #333;
+}
+
+.featured-place-wrap {
+    box-shadow: 0 0 1px rgb(0 0 0 / 13%), 0 1px 3px rgb(0 0 0 / 20%);
+    /* border-radius: .25rem; */
+    padding: 13px 10px 10px 10px;
+}
+
+.page-title {
+    color: #000000;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    line-height: 1.2;
+    border-top: 0px solid #9bd2ee;
+    border-bottom: 0px solid #b5b3b4;
+    text-align: center;
+    -moz-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+    -webkit-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+}
+
+.region-links {
+    background: #40484f;
+    color: #f4f5f6 !important;
+}
+
+.region-links a {
+    text-decoration: none;
+}
+
+.datepicker-dropdown {
+    background: #fff;
+}
+
+.find-out-more {
+    padding-top: 8px;
+    position: relative;
+}
+
+.find-out-more-btn {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #00bd70 !important;
+    border: 1px solid #00bd70;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.styled-buttons {
+    padding: 15px 0;
+}
+
+.styled-buttons a {
+    display: inline-block;
+    padding: 5px 30px;
+    background-color: #60928F;
+    letter-spacing: 2px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 5px;
+    border-radius: 1.75rem;
+}
+
+.styled-name h3 {
+    text-align: center;
+    color: #60928F;
+    font-weight: 900;
+}
+
+.about-text {
+    padding-top: 20px;
+}
+
+.about-text p {
+    font-size: 20px;
+}
+
+.gallery-grid {
+    padding: 1em 0 0.1em !important;
+}
+
+.gallery-image-wrap {
+    max-width: 315px;
+}
+
+.food-menu h3,
+.food-menu h4 {
+    color: #60928F;
+}
+
+.menu-option {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #D8D8D8;
+}
+
+.menu-option {
+    display: block;
+    text-align: left;
+}
+
+.menu-option .price {
+    display: block;
+    float: right;
+    font-weight: 200;
+    margin-right: 10px;
+}
+
+.menu-option h4 {
+    margin-top: 0;
+    padding-right: 10px;
+    margin-bottom: 8px;
+    padding-top: 0;
+    font-size: 20px !important;
+}
+
+.food-menu .menu-option .menu-price-section,
+.food-menu .menu-option a {
+    display: inline-block;
+}
+
+.menu-price-section {
+    float: right;
+}
+
+.info {
+    padding-top: 2rem;
+}
+
+.info dl dd {
+    padding-left: 3rem;
+}
+
+.long-radius-btn {
+    text-align: center;
+    margin: auto;
+    display: block;
+    background-color: #609cba;
+    width: 230px;
+    padding: 6px 0;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 20px;
+    margin-top: 15px;
+}
+
+.invite-block {
+    padding: 0;
+    margin-bottom: 75px;
+}
+
+.invite-btn {
+    display: block;
+    margin: auto;
+    padding: auto;
+    text-align: center;
+    width: 300px;
+    background-color: #4277ff;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 0;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+.invite-block--title {
+    padding: 0 0 25px 0;
+}
+
+.invite-option--title {
+    font-size: 25px;
+    padding-bottom: 5px;
+}
+
+.invite-option--description {
+    font-size: 20px;
+}
+
+.block-content {
+    min-height: 150px;
+}
+
+.foodtruck-btn-primary {
+    background: #14a96d;
+    border-color: none;
+    color: #fff;
+    background: -webkit-gradient(linear, left top, left bottom, from(#178c5f), to(#207e4f));
+    background: linear-gradient(180deg, #178c5f, #207e4f);
+    font-weight: bold;
+}
+
+.foodtruck-btn-primary:hover {
+    background-image: linear-gradient(rgb(32, 126, 79), rgb(0, 121, 72));
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-repeat-x: initial;
+    background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
+}
+
+.foodtruck-btn-primary:active {
+    border-color: #0f7b50;
+    box-shadow: none;
+    color: #fff;
+}
+
+.foodtruck-btn {
+    margin-bottom: 0;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    padding: 8px 15px;
+    font-size: 14px;
+    line-height: 1.6;
+    border-radius: 4px;
+    user-select: none;
+}
+
+.foodtruck-header-title {
+    margin-bottom: 16px!important;
+}
