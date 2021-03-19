@@ -16,7 +16,7 @@
 								<a class="nav-link" href=""><i class="fas fa-search"></i>&nbsp;<?php echo site_phrase('search_food_trucks'); ?></a>
 							</li-->
 							<li class="nav-item">
-								<a class="nav-link" href="<?php echo site_url('auth/registration/owner'); ?>"><i class="far fa-heart"></i>&nbsp;<?php echo site_phrase('become_a_bft_member'); ?></a>
+								<a class="nav-link" href="<?php echo site_url('site/become_a_member'); ?>"><i class="far fa-heart"></i>&nbsp;<?php echo site_phrase('become_a_bft_member'); ?></a>
 							</li>
 						</ul>
 						<div class="float-right">
