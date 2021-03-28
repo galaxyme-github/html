@@ -390,3 +390,8 @@
 	</div>
 </section>
 <!--//END ADD LISTING -->
+<!-- SCROLLING BUTTON -->
+<div class="scroll-btn scroll-bottom" id="scrollBtn">
+	<a href="javascript:void(0)"><span></span></a>
+</div>
+<!-- //END SCROLLING BUTTON -->

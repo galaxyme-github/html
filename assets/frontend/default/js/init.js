@@ -4,3 +4,4 @@
 function initToolTip() {
     $('[data-toggle="tooltip"]').tooltip();
 }
+

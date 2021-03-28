@@ -96,6 +96,47 @@
         };
     });
 
+    $(window).scroll(function() {
+
+      $("#scrollBtn").fadeOut('slow');
+
+      clearTimeout($.data(this, 'scrollTimer'));
+      $.data(this, 'scrollTimer', setTimeout(function() {
+            $("#scrollBtn").fadeIn('slow');
+      }, 250));
+    });
+
+    var $window = $(window),
+        $document = $(document),
+        button = $("#scrollBtn");
+    
+    $window.on('scroll', function () {
+      if (($window.scrollTop() + $window.height()) == $document.height()) {
+        button.removeClass('scroll-bottom').addClass('scroll-up');
+      }
+
+      if ($window.scrollTop() == 0) {
+        button.removeClass('scroll-up').addClass('scroll-bottom');
+      }
+    });
+    
+    button.on("click",function(){
+      if (button.hasClass('scroll-up')) {
+        var percentageToScroll = 100;
+        var percentage = percentageToScroll/100;
+        var height = $(document).scrollTop();
+        var scrollAmount = height * (1 - percentage);
+
+        $('html,body').animate({ scrollTop: scrollAmount }, 'slow');
+      } else {
+        var percentageToScroll = 100;
+        var height = $(document).innerHeight();
+        var scrollAmount = height * percentageToScroll/ 100;
+        var overheight = jQuery(document).height() - jQuery(window).height();
+        jQuery("html, body").animate({scrollTop: scrollAmount}, 900);    
+      }
+    });
+
     // INITIALIZE TOOLTIPS
     initToolTip();
 </script>

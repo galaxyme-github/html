@@ -1246,3 +1246,117 @@ h6 .foodtruck-name {
 .foodtruck-header-title {
     margin-bottom: 16px!important;
 }
+
+.scroll-btn {
+    position: fixed;
+    bottom: 0;
+    right: 4rem;
+    display: block;
+    z-index: 9999;
+}
+
+.scroll-btn a {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    z-index: 2;
+    display: inline-block;
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    color: #0EAD65;
+    font : normal 400 20px/1 'Josefin Sans', sans-serif;
+    letter-spacing: .1em;
+    text-decoration: none;
+    transition: opacity .3s;
+}
+
+.scroll-btn a:hover {
+    opacity: .5;
+}
+
+#scrollBtn a {
+    padding-top: 60px;
+}
+
+#scrollBtn a span {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 46px;
+    height: 46px;
+    margin-left: -23px;
+    border: 1px solid #0EAD65;
+    border-radius: 100%;
+    box-sizing: border-box;
+}
+
+#scrollBtn a span::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    content: '';
+    width: 16px;
+    height: 16px;
+    border-left: 1px solid #0EAD65;
+    border-bottom: 1px solid #0EAD65;
+    box-sizing: border-box;
+}
+
+.scroll-bottom a span::after {
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    margin: -12px 0 0 -8px;
+}
+
+.scroll-up a span::after {
+    -webkit-transform: rotate(133deg);
+    transform: rotate(133deg);
+    margin: -5px 0 0 -8px;
+}
+
+#scrollBtn a span::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    content: '';
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 0 0 0 rgba(14,173,101,.4);
+    border-radius: 100%;
+    opacity: 0;
+    -webkit-animation: sdb 3s infinite;
+    animation: sdb 3s infinite;
+    box-sizing: border-box;
+}
+
+@-webkit-keyframes sdb {
+    0% {
+      opacity: 0;
+    }
+    30% {
+      opacity: 1;
+    }
+    60% {
+      box-shadow: 0 0 0 60px rgba(255,255,255,.1);
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes sdb {
+    0% {
+      opacity: 0;
+    }
+    30% {
+      opacity: 1;
+    }
+    60% {
+      box-shadow: 0 0 0 60px rgba(255,255,255,.1);
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
