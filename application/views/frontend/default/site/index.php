@@ -2,7 +2,7 @@
 <?php include APPPATH . 'views/frontend/default/navigation/dark.php'; ?>
 <!-- SLIDER -->
 <section class="slider d-flex align-items-center">
-	<div class="container">
+	<div class="container" style="margin-top: 213px;">
 		<div class="row d-flex justify-content-center">
 			<div class="col-md-12">
 				<div class="slider-title_box">
@@ -40,7 +40,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row" style="margin-top: 195px">
+		<div class="row" style="margin-top: 180px;">
 			<div class="col-md-12">
 				<div class="slider-content_wrap">
 					<h1 class="home-title beauty-title-black"><?php echo sanitize(get_website_settings('title')); ?></h1>
