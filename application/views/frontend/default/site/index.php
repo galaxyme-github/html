@@ -52,7 +52,7 @@
 </section>
 <!--// SLIDER -->
 <!--//END HEADER -->
-<section class="main-block">
+<section class="main-block" style="margin-top: -120px;">
 	<div class="container">
 		<div class="row mt-5">
 			<div class="col-md-12">
