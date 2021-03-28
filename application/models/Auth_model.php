@@ -45,7 +45,7 @@ class Auth_model extends CI_Model
     public function registration()
     {
         $role = required(sanitize($this->input->post('role')));
-        if ($role == "customer" || $role == "owner" || $role == "driver") {
+        if ($role == "customer") {
             $user_data['name'] = required(sanitize($this->input->post('name')));
             $user_data['email'] = required(sanitize($this->input->post('email')));
             $user_data['phone'] = required(sanitize($this->input->post('phone')));
@@ -57,21 +57,21 @@ class Auth_model extends CI_Model
             $user_data['created_at'] = strtotime(date('D, d-M-Y'));
 
             if (email_duplication($user_data['email'])) {
-                if ($role == "driver") {
-                    $user_data['status'] = 0;
-                    $this->db->insert('users', $user_data);
-                    $user_id = $this->db->insert_id();
-                    $driver_data['user_id'] = $user_id;
-                    $this->db->insert('drivers', $driver_data);
-                    success(get_phrase('your_registration_has_been_done') . '. ' . get_phrase('please_wait_till_admin_approves_your_registration'), site_url('login'));
-                } else {
+            //     if ($role == "driver") {
+            //         $user_data['status'] = 0;
+            //         $this->db->insert('users', $user_data);
+            //         $user_id = $this->db->insert_id();
+            //         $driver_data['user_id'] = $user_id;
+            //         $this->db->insert('drivers', $driver_data);
+            //         success(get_phrase('your_registration_has_been_done') . '. ' . get_phrase('please_wait_till_admin_approves_your_registration'), site_url('login'));
+            //     } else {
                     $user_data['status'] = 1;
                     $this->db->insert('users', $user_data);
                     $user_id = $this->db->insert_id();
                     $customer_data['user_id'] = $user_id;
                     $this->db->insert('customers', $customer_data);
                     $this->auto_login('customer', $user_id);
-                }
+                // }
             } else {
                 error(get_phrase("email_duplication"), site_url('auth/roles'));
             }
@@ -97,9 +97,9 @@ class Auth_model extends CI_Model
                 $this->session->set_userdata('customer_login', 1);
             } else if ($user_data['role_id'] == 3) {
                 $this->session->set_userdata('owner_login', 1);
-            } else if ($user_data['role_id'] == 4) {
-                $this->session->set_userdata('driver_login', 1);
-            }
+            } //else if ($user_data['role_id'] == 4) {
+            //     $this->session->set_userdata('driver_login', 1);
+            // }
 
             success(get_phrase('congratulations_your_registration_has_been_done_successfully'), site_url('dashboard'));
         } else {
@@ -132,27 +132,5 @@ class Auth_model extends CI_Model
         } else {
             error(get_phrase('invalid_email'), site_url('auth/forget_password'));
         }
-    }
-
-    /**
-     * THIS FUNCTION IS RESPONSIVE FOR APPLYING TO BECOME A FOODTRUCK MEMEBER
-     */
-    public function apply()
-    {
-        $application['company_name'] = sanitize($this->input->post('company_name'));
-        $application['first_name'] = sanitize($this->input->post('first_name'));
-        $application['last_name'] = sanitize($this->input->post('last_name'));
-        $application['email'] = sanitize($this->input->post('email_address'));
-        $application['phone'] = sanitize($this->input->post('phone_number'));
-        $application['website_url'] = sanitize($this->input->post('website_url'));
-        $application['hear_from'] = json_encode($this->input->post('checkbox'));
-
-        $this->db->where('email', $application['email']);
-        if ($this->db->get('applications')->num_rows() > 0) {
-            return false;
-        }
-
-        $this->db->insert('applications', $application);
-        return true;
     }
 }

@@ -1,7 +1,7 @@
 <div class="info" id="info">
     <dl>
-        <dt><?php echo site_phrase('our_address'); ?></dt>
-        <dd><a href="javascript:void(0)"><?=$foodtruck_details['address'];?></a></dd>
+        <!-- <dt><?php echo site_phrase('our_address'); ?></dt>
+        <dd><a href="javascript:void(0)"><?=$foodtruck_details['address'];?></a></dd> -->
         <dt><?php echo site_phrase('kind_of_food'); ?></dt>
         <dd>
             <?php foreach (json_decode($foodtruck_details['cuisine']) as $key => $cuisine) : ?>

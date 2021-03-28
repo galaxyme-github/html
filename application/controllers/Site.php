@@ -198,7 +198,7 @@ class Site extends Base
      */
     public function become_a_member()
     {
-        $page_data['page_name'] = 'apply_to_become_a_member/index';
+        $page_data['page_name'] = 'apply_member/index';
         $page_data['page_title'] = site_phrase("become_a_foodtruck_member", true);
 
         $this->load->view(frontend('index'), $page_data);

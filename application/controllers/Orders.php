@@ -17,7 +17,7 @@ class Orders extends Authorization
     public function __construct()
     {
         parent::__construct();
-        authorization(['admin', 'owner', 'customer', 'driver'], true);
+        authorization(['admin', 'owner', 'customer'], true);
     }
 
     /**

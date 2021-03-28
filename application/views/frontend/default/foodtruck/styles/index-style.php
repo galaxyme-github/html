@@ -6,6 +6,9 @@
 <!-- LEAFLET CSS -->
 <link rel="stylesheet" href="<?php echo base_url('assets/global/leaflet/leaflet.css'); ?>">
 
+<!-- Custom Calendar -->
+<link rel="stylesheet" href="<?php echo base_url('assets/frontend/default/css/custom-calendar.css'); ?>">
+
 <style media="screen">
   .food-item-card {
     box-shadow: 0px 3px 40px 0 rgba(206, 205, 205, 0.3);
@@ -15,7 +18,6 @@
     margin-top: -6px;
     font-size: 18px;
   }
-
 
   .popup {
     width: 100%;

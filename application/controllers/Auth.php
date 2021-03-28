@@ -169,16 +169,4 @@ class Auth extends Base
 		$this->session->sess_destroy();
 		redirect(site_url('auth'), 'refresh');
 	}
-
-	// THIS FUNCTION FOR APPLYING TO BECOME A FOOD TRUCK MEMBER
-	public function apply()
-	{
-		$response = $this->auth_model->apply();
-		if($response){
-			$this->session->set_flashdata('submitted_application', true);
-			success(site_phrase('application_submitted_successfully'), site_url('site/become_a_member'));
-		} else {
-			error(site_phrase('you_already_applied'), site_url('site/become_a_member'));
-		}
-	}
 }

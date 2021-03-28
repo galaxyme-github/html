@@ -33,7 +33,7 @@
             <p>The Food Trucks members of BFT are a very important part of our business. We offer our members a vital source of increased revenue by booking them for all kinds of events in their State or area. Looking for a route long term growth? <a href="javacript:void(0)">❤️ Join us! ❤️</a></p>
         </div>
         <div class="foodtruck-apply-form" id="foodtruck-apply-form">
-            <form action="<?php echo site_url('auth/apply'); ?>" method="post">
+            <form action="<?php echo site_url('applications/apply'); ?>" method="post">
                 <div class="row">
                     <div class="col-md-12">
                         <h4 class="text-center"> Apply to be a BFT member</h4>

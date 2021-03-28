@@ -8,6 +8,9 @@
 
 <!-- INIT JS -->
 <script src="<?php echo base_url('assets/frontend/default/js/init.js') ?>"></script>
+
+<!-- Custom Calendar -->
+<script src="<?php echo base_url('assets/frontend/default/js/custom-calendar.js') ?>"></script>
 <script>
   "use strict";
 
@@ -68,13 +71,15 @@
       }
     });
   }
+</script>
 
+<script>>
   // MAP INITIALIZING
-  var map = L.map('map').setView([<?php echo !empty($foodtruck_details['latitude']) ? floatval(sanitize($foodtruck_details['latitude'])) : 0; ?>, <?php echo !empty($foodtruck_details['longitude']) ? floatval(sanitize($foodtruck_details['longitude'])) : 0; ?>], 16);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+  // var map = L.map('map').setView([<?php echo !empty($foodtruck_details['latitude']) ? floatval(sanitize($foodtruck_details['latitude'])) : 0; ?>, <?php echo !empty($foodtruck_details['longitude']) ? floatval(sanitize($foodtruck_details['longitude'])) : 0; ?>], 16);
+  // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-  L.marker([<?php echo !empty($foodtruck_details['latitude']) ? floatval(sanitize($foodtruck_details['latitude'])) : 0; ?>, <?php echo !empty($foodtruck_details['longitude']) ? floatval(sanitize($foodtruck_details['longitude'])) : 0; ?>]).addTo(map)
-    .bindPopup('<?php echo sanitize($foodtruck_details['address']); ?>');
+  // L.marker([<?php echo !empty($foodtruck_details['latitude']) ? floatval(sanitize($foodtruck_details['latitude'])) : 0; ?>, <?php echo !empty($foodtruck_details['longitude']) ? floatval(sanitize($foodtruck_details['longitude'])) : 0; ?>]).addTo(map)
+  //   .bindPopup('<?php echo sanitize($foodtruck_details['address']); ?>');
 </script>
 
 <script>

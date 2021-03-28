@@ -31,6 +31,40 @@
                         </p>
                     </a>
                 </li>
+
+                <?php $application_type = isset($application_type) ? $application_type : ""; ?>
+                <li class="nav-item has-treeview <?php if ($page_name == "application/index" && $application_type == "all"  || $application_type == "pending" || $page_name == "application/details") echo 'menu-open'; ?>">
+                    <a href="#" class="nav-link <?php if ($page_name == "application/index" && $application_type == "all"  || $application_type == "pending" || $page_name == "application/details") echo 'active'; ?>">
+                        <i class="nav-icon fas fa-user-plus"></i>
+                        <p>
+                            <?php echo get_phrase('applications'); ?>
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('applications/pending'); ?>" class="nav-link <?php if ($application_type == "pending") echo 'active'; ?>">
+                                <i class="fas fa-check-double nav-icon"></i>
+                                <p>
+                                    <?php echo get_phrase('waiting_review', true); ?>
+                                    <span class="badge badge-warning right">
+                                        <?php
+                                        $number_of_pending_applications = $this->application_model->get_number_of_pending_applications();
+                                        echo sanitize($number_of_pending_applications);
+                                        ?>
+                                    </span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('applications'); ?>" class="nav-link <?php if ($application_type == "all") echo 'active'; ?>">
+                                <i class="fas fa-paperclip nav-icon"></i>
+                                <p><?php echo get_phrase('all_applications', true); ?></p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <?php $order_type = isset($order_type) ? $order_type : ""; ?>
                 <li class="nav-item has-treeview <?php if ($page_name == "orders/index" && $order_type == "all"  || $order_type == "today" || $page_name == "orders/details") echo 'menu-open'; ?>">
                     <a href="#" class="nav-link <?php if ($page_name == "orders/index" && $order_type == "all"  || $order_type == "today" || $page_name == "orders/details") echo 'active'; ?>">

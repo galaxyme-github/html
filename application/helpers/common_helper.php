@@ -185,8 +185,51 @@ if (!function_exists('slugify')) {
     }
 }
 
+function get_nicetime($date)
+{
+    if (empty($date)) {
+        return "Unknown";
+    }
+    // Current time as MySQL DATETIME value
+    $csqltime = date('Y-m-d H:i:s');
+    // Current time as Unix timestamp
+    $ptime = strtotime($date);
+    $ctime = strtotime($csqltime);
 
+    //Now calc the difference between the two
+    $timeDiff = floor(abs($ctime - $ptime) / 60);
 
+    //Now we need find out whether or not the time difference needs to be in
+    //minutes, hours, or days
+    if ($timeDiff < 2) {
+        $timeDiff = "Just now";
+    } elseif ($timeDiff > 2 && $timeDiff < 60) {
+        $timeDiff = floor(abs($timeDiff)) . " minutes ago";
+    } elseif ($timeDiff > 60 && $timeDiff < 120) {
+        $timeDiff = floor(abs($timeDiff / 60)) . " hour ago";
+    } elseif ($timeDiff < 1440) {
+        $timeDiff = floor(abs($timeDiff / 60)) . " hours ago";
+    } elseif ($timeDiff > 1440 && $timeDiff < 2880) {
+        $timeDiff = floor(abs($timeDiff / 1440)) . " day ago";
+    } elseif ($timeDiff > 2880) {
+        $timeDiff = date('d.M.Y', $ptime);
+    }
+    return $timeDiff;
+}
+
+// get date format config
+function _d($date, $date_formats = "")
+{
+    if ($date == '' || is_null($date) || $date == '0000-00-00') {
+        return '';
+    }
+    $formats = 'Y-m-d';
+    if ($date_formats !== "" && isset($date_formats)) {
+        $formats = $date_formats;
+    }
+
+    return date($formats, strtotime($date));
+}
 // ------------------------------------------------------------------------
 /* End of file common_helper.php */
 /* Location: ./system/helpers/common.php */

@@ -104,7 +104,7 @@
   var date = new Date();
   date.setDate(date.getDate());
   $(".datepicker").datepicker({
-      format: 'yyyy-mm-dd',
+      format: 'mm/dd/yyyy',
       autoclose: true,
       startDate: date,
       templates: {
@@ -130,6 +130,9 @@
     // Set the data fields to return when the user selects a place.
     autocomplete.setFields(
       ['address_components', 'geometry', 'name']);
+    autocomplete.setTypes(
+      ['(regions)']
+    );
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     autocomplete.addListener('place_changed', function() {

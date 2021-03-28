@@ -48,6 +48,7 @@ class Base extends CI_Controller
         $this->load->model('Email_model', 'email_model');
         $this->load->model('Checkout_model', 'checkout_model');
         $this->load->model('Total_model', 'total_model');
+        $this->load->model('Application_model', 'application_model');
 
 
         // CACHE CONTROL
