@@ -3,7 +3,7 @@
 <!-- SLIDER -->
 <section class="slider d-flex align-items-center">
 	<div class="container">
-		<div class="row d-flex justify-content-center home-top-container">
+		<div class="row d-flex justify-content-center">
 			<div class="col-md-12">
 				<div class="slider-title_box">
 					<div class="row">
@@ -52,6 +52,48 @@
 </section>
 <!--// SLIDER -->
 <!--//END HEADER -->
+<section class="main-block">
+	<div class="container">
+		<div class="row mt-5">
+			<div class="col-md-12">
+				<div class="styled-heading">
+					<h3>The reasons why you have to book your catering Food Truck by us</h3>
+				</div>
+			</div>
+		</div>
+		<div class="descriptions justify-content-center">
+			<div class="row text-center">
+				<div class="col-sm-4 col-xs-12 description">
+					<div class="icon search-icon"></div>
+					<div class="description-text">
+						<span class="title">SMART SEARCHING</span>
+						<div class="content text-muted">
+							Pick fast the right local Food Truck for your catering.
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 col-xs-12 description">
+					<div class="icon pay-icon"></div>
+					<div class="description-text">
+						<span class="title">BOOKING & SECURE PAYMENTS</span>
+						<div class="content text-muted">
+							Book and pay securely through the website.
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 col-xs-12 description">
+					<div class="icon relax-icon"></div>
+					<div class="description-text">
+						<span class="title">BOOKING GUARANTEES</span>
+						<div class="content text-muted">
+							Get the Booking Food Trucks guarantee, 7/7 support and reservation protection.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
 <!--============================= Food Trucks for every occasion =============================-->
 <section class="main-block">
 	<div class="container">
@@ -300,48 +342,6 @@
 
 			<div class="col-md-12 text-center mt-5">
 				<h5>Food is the beginning of a successful event!</h5>
-			</div>
-		</div>
-	</div>
-</section>
-<section class="main-block">
-	<div class="container">
-		<div class="row mt-5">
-			<div class="col-md-12">
-				<div class="styled-heading">
-					<h3>The reasons why you have to book your catering Food Truck by us</h3>
-				</div>
-			</div>
-		</div>
-		<div class="descriptions justify-content-center">
-			<div class="row text-center">
-				<div class="col-sm-4 col-xs-12 description">
-					<div class="icon search-icon"></div>
-					<div class="description-text">
-						<span class="title">SMART SEARCHING</span>
-						<div class="content text-muted">
-							Pick fast the right local Food Truck for your catering.
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-4 col-xs-12 description">
-					<div class="icon pay-icon"></div>
-					<div class="description-text">
-						<span class="title">BOOKING & SECURE PAYMENTS</span>
-						<div class="content text-muted">
-							Book and pay securely through the website.
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-4 col-xs-12 description">
-					<div class="icon relax-icon"></div>
-					<div class="description-text">
-						<span class="title">BOOKING GUARANTEES</span>
-						<div class="content text-muted">
-							Get the Booking Food Trucks guarantee, 7/7 support and reservation protection.
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>

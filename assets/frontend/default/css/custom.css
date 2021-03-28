@@ -951,9 +951,13 @@ h6 .foodtruck-name {
 }
 
 .slider-content_wrap h5 {
-    color: #000000;
+    color: #fff;
     font-weight: 900;
     margin: 15px;
+}
+
+.slider-content_wrap h1 {
+    color: #fff;
 }
 
 .beauty-title-black {
