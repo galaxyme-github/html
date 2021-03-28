@@ -6,14 +6,6 @@
 		<div class="row d-flex justify-content-center">
 			<div class="col-md-12">
 				<div class="slider-title_box">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="slider-content_wrap">
-								<h1 class="home-title beauty-title-black"><?php echo sanitize(get_website_settings('title')); ?></h1>
-								<h5 class="beauty-title-black"><?php echo sanitize(get_website_settings('sub_title')); ?></h5>
-							</div>
-						</div>
-					</div>
 					<div class="row d-flex justify-content-center">
 						<div class="col-md-12">
 							<form id="search_frm" action="<?php echo site_url('site/foodtrucks/filter'); ?>" class="form-wrap mt-2 pr-2 pl-2" method="GET">
@@ -45,6 +37,14 @@
 							</form>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" style="margin-top: 195px">
+			<div class="col-md-12">
+				<div class="slider-content_wrap">
+					<h1 class="home-title beauty-title-black"><?php echo sanitize(get_website_settings('title')); ?></h1>
+					<h5 class="beauty-title-black"><?php echo sanitize(get_website_settings('sub_title')); ?></h5>
 				</div>
 			</div>
 		</div>
