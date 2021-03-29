@@ -66,11 +66,6 @@ body {
     cursor: pointer;
 }
 
-.form-control[readonly] {
-    cursor: default;
-    background-color: #fff;
-}
-
 .datepicker-days table.table-condensed thead tr th.datepicker-switch {
     font-weight: 550;
     font-family: Helvetica, Arial, sans-serif;
@@ -99,6 +94,7 @@ body {
 .datepicker-days table.table-condensed tbody tr td.day {
     color: #14a96d;
     padding: 2px 9px;
+    font-weight: bold;
 }
 
 .datepicker-days table.table-condensed tbody tr td.disabled {
@@ -144,27 +140,34 @@ body {
     visibility: hidden;
 }
 
-@media (min-width: 768px) {
-    #city_zip {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-    #event_date {
-        border-radius: 0;
-    }
-    #peoples {
-        border-radius: 0;
-    }
-    #home-search-btn {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
+.ft-search-box {
+    border: 6px solid #febb02;
+    height: 60px !important;
+    border-radius: 0;
 }
 
-.search-box-border {
-    border: 2px solid #febb02;
-    height: 52px;
-    border-radius: 0;
+.ft-search-box::placeholder {
+    color: #545E62;
+}
+
+.ft-search-frm .form-control:focus {
+    border-color: #febb02;
+}
+
+@media (min-width: 768px) {
+    .ft-search-frm .border-left-none {
+        border-left: none;
+    }
+    
+    .ft-search-frm .left-border-radius {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+    
+    .ft-search-frm .border-right-radius {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
 }
 
 .strikethrough {
@@ -1360,3 +1363,45 @@ h6 .foodtruck-name {
       opacity: 0;
     }
   }
+
+/* .pac-container .pac-item .pac-icon-marker {
+    display: none;
+} */
+
+.pac-container:after {
+    /* Disclaimer: not needed to show 'powered by Google' if also a Google Map is shown */
+
+    background-image: none !important;
+    height: 0px;
+}
+
+.pac-container .pac-item {
+    border: none;
+    padding: .5rem 0 .5rem 1.5rem;
+}
+
+.pac-container .pac-item:hover {
+    background-color: rgba(0, 189, 113, 0.164);
+    cursor: pointer;
+}
+
+.pac-container .pac-item .pac-item-query {
+    font-weight: 400;
+    font-size: 15px;
+    margin-right: 1rem;
+    margin-left: 0.5rem;
+}
+
+.pac-container .pac-item .pac-item-query .pac-matched {
+    font-weight: bolder;
+}
+
+.ft-hyper-text {
+    text-decoration: none !important;
+    color: #1A8256;
+    font-weight: bold;
+}
+
+.ft-hyper-text:hover {
+    color:rgb(32, 126, 79);
+}

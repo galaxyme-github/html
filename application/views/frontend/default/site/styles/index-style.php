@@ -231,13 +231,13 @@
     text-align: center;
   }
   .descriptions .description .search-icon {
-    background-image: url(<?php echo site_url("assets/frontend/default/images/1.webp"); ?>);
+    background-image: url(<?php echo site_url("assets/frontend/default/images/search-icon.webp"); ?>);
   }
   .descriptions .description .pay-icon {
-    background-image: url(<?php echo site_url("assets/frontend/default/images/3.webp"); ?>);
+    background-image: url(<?php echo site_url("assets/frontend/default/images/pay-icon.webp"); ?>);
   }
   .descriptions .description .relax-icon {
-    background-image: url(<?php echo site_url("assets/frontend/default/images/2.webp"); ?>);
+    background-image: url(<?php echo site_url("assets/frontend/default/images/relax-icon.webp"); ?>);
   }
   .descriptions .description .icon {
     width: 80px;
@@ -247,4 +247,261 @@
     background-position: 50%;
     margin: auto;
   }
+  .form-control[readonly] {
+    cursor: default;
+    background-color: #fff;
+  }
+
+  .ft-search-frm #address {
+    background-image: url(<?php echo site_url("assets/frontend/default/images/location-pin.png"); ?>);
+  }
+
+  .ft-search-frm #event_date {
+    background-image: url(<?php echo site_url("assets/frontend/default/images/sb-calendar.png"); ?>);
+  }
+
+  .ft-search-frm .select-selected {
+    background-image: url(<?php echo site_url("assets/frontend/default/images/sb-user.png"); ?>);
+    padding-left: 39px;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: 4px center;
+    text-align: left;
+  }
+
+  #address, #event_date {
+    padding-left: 50px;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: 16px center;
+  }
+  .datepicker-days table tr th.dow {
+    color: #6b6b6b !important;
+  }
+  .datepicker {
+    -webkit-box-shadow: 0 2px 16px rgb(0 0 0 / 15%);
+    box-shadow: 0 2px 16px rgb(0 0 0 / 15%);
+  }
+  .ft-sb-select option:hover {
+    display: none;
+    background-color: red !important;
+  }
+/*the container must be positioned relative:*/
+.ft-sb-select {
+    position: relative;
+    width: 100%;
+}
+
+.ft-sb-select select {
+    display: none; /*hide original SELECT element:*/
+}
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+    color: #545E62;
+    padding: 8px 16px;
+    cursor: pointer;
+    user-select: none;
+    text-align: left;
+    padding-left: 3rem;
+}
+
+/*style items (options):*/
+.select-items {
+    position: absolute;
+    background-color: #fff;
+    top: 113%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+    display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+    background-color: rgba(0, 189, 113, 0.164);
+}
+
+.ft__fieldset {
+    -webkit-box-shadow: 0 2px 8px rgb(73 80 87 / 70%);
+    box-shadow: 0 2px 8px rgb(73 80 87 / 70%);
+}
+
+.ft-sb-btn {
+  background-color: #01BD70;
+  color: #fff;
+}
+
+.ft-sb-btn:hover {
+  background-color: #28A745;
+  color: #fff;
+}
+
+.hr-progress__step__number {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 32px;
+    width: 32px;
+    text-align: center;
+    border: 1px solid;
+    border-color: #cfd7de;
+    border-radius: 50%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    background-color: #fff;
+    position: relative;
+    z-index: 10;
+}
+
+.passive .hr-progress__step__line:after,
+.passive .hr-progress__step__line:before {
+    border-bottom: 1px solid #cfd7de;
+}
+
+.hr-progress__step__line {
+  position: relative;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  width: 100%;
+}
+
+.hr-progress__step__line:before {
+    left: 0;
+}
+
+.hr-progress__step__line:after {
+    right: 0;
+}
+
+.hr-progress__step.second .hr-progress__step__line:after,
+.hr-progress__step.second .hr-progress__step__line:before,
+.hr-progress__step.third .hr-progress__step__line:before,
+.hr-progress__step.first .hr-progress__step__line::after  {
+    content: "";
+    position: absolute;
+    height: 1px;
+    border-bottom: 1px solid #cfd7de;
+    width: 50%;
+    z-index: 0;
+    top: 50%;
+    -webkit-transform: translateY(-1px);
+    transform: translateY(-1px);
+}
+
+.hr-progress {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+}
+
+.hr-progress__step {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #1b1f23;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .how-it-works-rebranded {
+    margin-top: -120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ft-search-box {
+    margin-top: .2rem;
+  }
+  .slider-content_wrap h1 {
+    font-size: 45px;
+  }
+  .ft-progress {
+    display: none;
+  }
+  .occasion-items {
+    padding-left: 3rem;
+  }
+}
+
+.descriptions .description-text {
+  padding-top: 2rem;
+}
+
+.descriptions .description-text .title {
+  font-weight: bold;
+}
+
+.occasion-items .occasion-icon img {
+  width: 30px;
+}
+
+.occasion-items .occasion-title {
+  font-weight: bold;
+}
+.btn-success {
+  cursor: pointer;
+}
+
+.card .card-title {
+  font-size: 20px;
+}
+
+.card .card-body p {
+  width: calc(100% - 20px);
+  padding-left: 1rem;
+}
+
+.swiper-slide {
+  margin: 0 0.1rem;
+}
 </style>

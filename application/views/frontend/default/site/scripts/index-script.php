@@ -6,7 +6,7 @@
 <script src="<?php echo base_url('assets/frontend/default/js/swiper.min.js') ?>"></script>
 <!-- Datepicker JS -->
 <script src="<?php echo base_url('assets/frontend/default/js/bootstrap-datepicker.js') ?>"></script>
-<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
 <!-- Leaflet JS -->
 <script src="<?php echo base_url('assets/global/leaflet/leaflet.js'); ?>"></script>
 
@@ -32,6 +32,9 @@
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
     },
+    // autoplay: {
+    //   delay: 5000,
+    // },
   });
 
   if ($('.image-link').length) {
@@ -127,13 +130,13 @@
         var height = $(document).scrollTop();
         var scrollAmount = height * (1 - percentage);
 
-        $('html,body').animate({ scrollTop: scrollAmount }, 'slow');
+        $('html,body').animate({ scrollTop: scrollAmount }, 1500);
       } else {
         var percentageToScroll = 100;
         var height = $(document).innerHeight();
         var scrollAmount = height * percentageToScroll/ 100;
         var overheight = jQuery(document).height() - jQuery(window).height();
-        jQuery("html, body").animate({scrollTop: scrollAmount}, 900);    
+        jQuery("html, body").animate({scrollTop: scrollAmount}, 1500);    
       }
     });
 
@@ -183,6 +186,7 @@
         let longitude = place.geometry.location.lng();
         console.log("=====>latitude:", latitude)
         console.log("=====>longitude:", longitude)
+        console.log($(".pac-container").html())
         document.getElementById('search_latitude').value = latitude;
         document.getElementById('search_longitude').value = longitude;
       }
@@ -219,4 +223,85 @@
     let query = $(this).serialize();
     localStorage.setItem('query', JSON.stringify(query));
   });
+</script>
+
+<script>
+  var x, i, j, l, ll, selElmnt, a, b, c;
+/*look for any elements with the class "ft-sb-select":*/
+x = document.getElementsByClassName("ft-sb-select");
+l = x.length;
+for (i = 0; i < l; i++) {
+  selElmnt = x[i].getElementsByTagName("select")[0];
+  ll = selElmnt.length;
+  /*for each element, create a new DIV that will act as the selected item:*/
+  a = document.createElement("DIV");
+  a.setAttribute("class", "select-selected");
+  a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+  x[i].appendChild(a);
+  /*for each element, create a new DIV that will contain the option list:*/
+  b = document.createElement("DIV");
+  b.setAttribute("class", "select-items select-hide");
+  for (j = 1; j < ll; j++) {
+    /*for each option in the original select element,
+    create a new DIV that will act as an option item:*/
+    c = document.createElement("DIV");
+    c.innerHTML = selElmnt.options[j].innerHTML;
+    c.addEventListener("click", function(e) {
+        /*when an item is clicked, update the original select box,
+        and the selected item:*/
+        var y, i, k, s, h, sl, yl;
+        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+        sl = s.length;
+        h = this.parentNode.previousSibling;
+        for (i = 0; i < sl; i++) {
+          if (s.options[i].innerHTML == this.innerHTML) {
+            s.selectedIndex = i;
+            h.innerHTML = this.innerHTML;
+            y = this.parentNode.getElementsByClassName("same-as-selected");
+            yl = y.length;
+            for (k = 0; k < yl; k++) {
+              y[k].removeAttribute("class");
+            }
+            this.setAttribute("class", "same-as-selected");
+            break;
+          }
+        }
+        h.click();
+    });
+    b.appendChild(c);
+  }
+  x[i].appendChild(b);
+  a.addEventListener("click", function(e) {
+      /*when the select box is clicked, close any other select boxes,
+      and open/close the current select box:*/
+      e.stopPropagation();
+      closeAllSelect(this);
+      this.nextSibling.classList.toggle("select-hide");
+      this.classList.toggle("select-arrow-active");
+    });
+}
+function closeAllSelect(elmnt) {
+  /*a function that will close all select boxes in the document,
+  except the current select box:*/
+  var x, y, i, xl, yl, arrNo = [];
+  x = document.getElementsByClassName("select-items");
+  y = document.getElementsByClassName("select-selected");
+  xl = x.length;
+  yl = y.length;
+  for (i = 0; i < yl; i++) {
+    if (elmnt == y[i]) {
+      arrNo.push(i)
+    } else {
+      y[i].classList.remove("select-arrow-active");
+    }
+  }
+  for (i = 0; i < xl; i++) {
+    if (arrNo.indexOf(i)) {
+      x[i].classList.add("select-hide");
+    }
+  }
+}
+/*if the user clicks anywhere outside the select box,
+then close all select boxes:*/
+document.addEventListener("click", closeAllSelect);
 </script>
