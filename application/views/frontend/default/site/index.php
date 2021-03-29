@@ -350,8 +350,8 @@
 					<div class="swiper-wrapper">
 						<?php for ($counter = 1; $counter < 7; $counter++): ?>
 							<div class="swiper-slide">
-								<a href="<?php echo site_url("assets/frontend/default/images/section3/gallery".$counter.".jpg"); ?>" class="grid image-link">
-									<img src="<?php echo site_url("assets/frontend/default/images/section3/gallery".$counter.".jpg"); ?>" class="img-fluid" alt="#">
+								<a href="<?php echo site_url("assets/frontend/default/images/section3/gallery".$counter.".webp"); ?>" class="grid image-link">
+									<img src="<?php echo site_url("assets/frontend/default/images/section3/gallery".$counter.".webp"); ?>" class="img-fluid" alt="#">
 								</a>
 							</div>
 						<?php endfor; ?>
