@@ -214,7 +214,7 @@ p {
 
 .light-bg {
   background-color: #e7eaeb;
-  border-bottom: 1px solid #cccfd5;
+  /* border-bottom: 1px solid #cccfd5; */
   color: #565a5c;
 }
 
