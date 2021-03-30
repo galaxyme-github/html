@@ -135,7 +135,7 @@
 
                 <!-- MODAL -->
                 <?php include 'info.php'; ?>
-                <a href="#invite_section" class="long-radius-btn">Make a reservation <?=$foodtruck_details['name'];?> for this Food Truck</a>
+                <a href="#invite_section" class="long-radius-btn">Make a reservation for <?=$foodtruck_details['name'];?></a>
             </div>
         </div>
     </div>
