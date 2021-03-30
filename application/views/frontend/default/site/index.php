@@ -59,7 +59,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="styled-heading">
-					<h3>The reasons why you have to book your catering Food Truck by us</h3>
+					<h3>3 Reasons why you have to book your catering Food Truck with us</h3>
 				</div>
 			</div>
 		</div>
