@@ -136,7 +136,7 @@
                 <!-- MODAL -->
                 <?php include 'info.php'; ?>
                 
-                <a href="#invite_section" class="text-uppercase long-radius-btn"><?php echo site_phrase('reverse_this_truck'); ?></a>
+                <a href="#invite_section" class="text-uppercase long-radius-btn"><?php echo site_phrase('reservation_for_this_truck'); ?></a>
             </div>
         </div>
     </div>
@@ -153,7 +153,7 @@
                     <h5 class="text-center invite-option--title"><?php echo site_phrase('on-site_catering'); ?></h5>
                     <p class="invite-option--description">The attendees eat all together at the same time, like most classic catering. You can choose your favorite dish or dishes in advance.</p>
                 </div>
-                <a href="<?php echo base_url('site/invite_foodtruck/' . sanitize(rawurlencode($foodtruck_details['slug'])) . '/' . sanitize($foodtruck_details['id']) . '/catering'); ?>" class="text-uppercase invite-btn"><?php echo site_phrase('invite_now'); ?></a>
+                <a href="<?php echo base_url('site/invite_foodtruck/' . sanitize(rawurlencode($foodtruck_details['slug'])) . '/' . sanitize($foodtruck_details['id']) . '/catering'); ?>" class="text-uppercase invite-btn"><?php echo site_phrase('reserve_now'); ?></a>
             </div>
             <!--========= FOOD TRUCK HIRING ==========-->
             <div class="col-md-6">
@@ -161,7 +161,7 @@
                     <h5 class="text-center invite-option--title"><?php echo site_phrase('on-site_à_la_carte'); ?></h5>
                     <p class="invite-option--description">Your attendees get the possibility, during a certain period to orther their food they like following the menu of the Truck.</p>
                 </div>
-                <a href="<?php echo base_url('site/invite_foodtruck/' . sanitize(rawurlencode($foodtruck_details['slug'])) . '/' . sanitize($foodtruck_details['id']) . '/hiring'); ?>" class="text-uppercase invite-btn"><?php echo site_phrase('invite_now'); ?></a>
+                <a href="<?php echo base_url('site/invite_foodtruck/' . sanitize(rawurlencode($foodtruck_details['slug'])) . '/' . sanitize($foodtruck_details['id']) . '/hiring'); ?>" class="text-uppercase invite-btn"><?php echo site_phrase('reserve_now'); ?></a>
             </div>
         </div>            
     </div>
