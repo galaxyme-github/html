@@ -136,7 +136,7 @@
                 <!-- MODAL -->
                 <?php include 'info.php'; ?>
                 
-                <a href="#invite_section" class="text-uppercase long-radius-btn"><?php echo site_phrase('reserve_this_truck'); ?></a>
+                <a href="#invite_section" class="text-uppercase long-radius-btn"><?php echo site_phrase('reverse_this_truck'); ?></a>
             </div>
         </div>
     </div>
