@@ -1405,3 +1405,7 @@ h6 .foodtruck-name {
 .ft-hyper-text:hover {
     color:rgb(32, 126, 79);
 }
+
+.btn-success {
+    cursor: pointer;
+}

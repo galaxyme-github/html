@@ -488,9 +488,6 @@
 .occasion-items .occasion-title {
   font-weight: bold;
 }
-.btn-success {
-  cursor: pointer;
-}
 
 .card .card-title {
   font-size: 20px;

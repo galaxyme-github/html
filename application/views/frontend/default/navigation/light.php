@@ -1,9 +1,9 @@
-<div class="light-bg sticky-top">
+<div class="light-bg sticky-top nav-box--shadow">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<nav class="navbar navbar-expand-lg light-nav">
-					<a class="navbar-brand" href="<?php echo site_url("site"); ?>"> <img src="<?php echo base_url('assets/images/'); ?>dark_logo.png" class="system-icon"> <span class="d-none d-sm-inline-block"><?php //echo get_system_settings('system_name'); ?></span> </a>
+					<a class="navbar-brand" href="<?php echo site_url("site"); ?>"> <img src="<?php echo base_url('assets/images/'); ?>green-logo.png" class="system-icon"> <span class="d-none d-sm-inline-block"><?php //echo get_system_settings('system_name'); ?></span> </a>
 
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="icon-menu"></span>

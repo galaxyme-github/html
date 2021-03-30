@@ -82,11 +82,15 @@ p {
 }
 
 .light-bg {
-  background: #f3f4f7;
+  background: #fff;
 }
 
 .dark-bg {
   background: #252a33;
+}
+
+.nav-box--shadow {
+  box-shadow: 0 6px 10px rgb(28 42 31 / 48%);
 }
 
 /* ==============================================================
@@ -213,8 +217,7 @@ p {
 }
 
 .light-bg {
-  background-color: #e7eaeb;
-  /* border-bottom: 1px solid #cccfd5; */
+  background-color: #fff;
   color: #565a5c;
 }
 

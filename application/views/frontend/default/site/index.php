@@ -408,7 +408,7 @@
 		</div>
 		<div class="row mb-5">
 			<?php foreach ($states as $state): ?>
-				<div class="col-6 col-sm-4 col-md-2 col-lg-2"><a href=""><b class="font-bold text-white"><?php echo $state['state'];?></b></a></div>
+				<div class="col-6 col-sm-4 col-md-2 col-lg-2"><a href="<?php echo site_url('us/' . $state['abbr'] . '/'); ?>"><b class="font-bold text-white"><?php echo $state['state'];?></b></a></div>
 			<?php endforeach; ?>
 		</div>
 	</div>

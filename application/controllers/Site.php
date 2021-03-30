@@ -203,6 +203,24 @@ class Site extends Base
 
         $this->load->view(frontend('index'), $page_data);
     }
+
+    /**
+     * FOODTRUCKS IN A STATE
+     */
+    public function state_foodtrucks($country_abbr, $state_abbr)
+    {
+        $state_full_name = get_state_full_name($country_abbr, $state_abbr);
+
+        $page_data['page_name'] = 'state_foodtrucks/index';
+        $page_data['page_title'] = "Catering Foodtrucks by City in " . $state_full_name;
+        $page_data['area'] = array(
+            "state_full_name" => $state_full_name, 
+            "state_abbr" => $state_abbr, 
+            "country_abbr" => $country_abbr
+        );
+
+        $this->load->view(frontend('no-footer-index'), $page_data);
+    }
 }
 
 /* End of file Site.php */

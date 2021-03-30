@@ -230,6 +230,18 @@ function _d($date, $date_formats = "")
 
     return date($formats, strtotime($date));
 }
+
+// get full name of State from abbr.
+function get_state_full_name($country_abbr, $state_abbr)
+{
+    $CI    = &get_instance();
+    $CI->load->database();
+    $CI->db->where(array('country' => $country_abbr, 'abbr' => $state_abbr));
+    $state_full_name = $CI->db->get('state')->row()->state;
+
+    return $state_full_name;
+}
+
 // ------------------------------------------------------------------------
 /* End of file common_helper.php */
 /* Location: ./system/helpers/common.php */

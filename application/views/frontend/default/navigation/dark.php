@@ -1,4 +1,4 @@
-<div class="dark-bg sticky-top">
+<div class="dark-bg sticky-top nav-box--shadow">
 	<!-- <div class="container-fluid"> -->
 	<div class="container">
 		<div class="row">
