@@ -144,7 +144,7 @@
 <!--============================= INVITE FOOD TRUCK =============================-->
 <div class="invite-block" id="invite_section">
     <div class="container">
-        <h3 class="font-bold text-center invite-block--title"><?php echo site_phrase('invite'); ?> <?php echo sanitize($foodtruck_details['name']); ?></h3>
+        <h3 class="font-bold text-center invite-block--title"><?php echo site_phrase('reservation'); ?> <?php echo sanitize($foodtruck_details['name']); ?></h3>
         <div class="row justify-content-center">
             <!--========= FOOD TRUCK CATERING ==========-->
             <div class="col-md-6">
