@@ -1,16 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * CodeIgniter
- *
- * An open source application development framework for PHP 7 or newer
- *
- * @package		CodeIgniter
- * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
- * @license		http://codeigniter.com/user_guide/license.html
- * @link		http://codeigniter.com
- * @since		Version 1.0
- * @filesource
+ * Helper functions for BFT Notifications
+ * 
+ * @author Zita Yevloyeva
+ * @created 13th Apr 2021
  */
 
 // Success Notificaation and redirect
@@ -29,8 +22,32 @@ if (!function_exists('error')) {
     {
         $CI = &get_instance();
         $CI->session->set_flashdata('error_message', $message);
-        redirect($redirectTo, 'refresh');
+        if (!empty($redirectTo)) {
+            redirect($redirectTo, 'refresh');
+        }
     }
+}
+
+/**
+ * common notification and redirect
+ * 
+ * @param String message
+ * @param String type [info, warning, danger, success ...]
+ * @param String icon [alert-circle-o, block ... @url: https://zavoloklom.github.io/material-design-iconic-font/icons.html]
+ * @param String redirectTo
+ * @return Void
+ *  */
+function bft_notification($message = '', $type = '', $icon = '', $redirectTo = '')
+{
+    $CI = &get_instance();
+    $notification_body = '<div class="alert alert-' . $type . ' alert-dismissable">';
+    $notification_body .= '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+    $notification_body .= '<i class="zmdi zmdi-' . $icon . ' pull-left p-t-3 pr-15"></i><p class="pl-4 bft-alert-text">' . $message . '</p>';
+    $notification_body .= '<div class="clearfix"></div>';
+    $notification_body .= '</div>';
+
+    $CI->session->set_flashdata('bft_notification', $notification_body);
+    redirect($redirectTo, 'refresh');
 }
 // ------------------------------------------------------------------------
 /* End of file notification_helper.php */

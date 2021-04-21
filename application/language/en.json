@@ -984,5 +984,20 @@
     "back_to_application_list": "Back to application list",
     "list_of_applications": "List of applications",
     "bft_member_applicatoin": "Bft member applicatoin",
-    "catering_foodtrucks_by_city_in_alabama": "Catering foodtrucks by city in alabama"
+    "catering_foodtrucks_by_city_in_alabama": "Catering foodtrucks by city in alabama",
+    "reservation": "Reservation",
+    "minimum_price_per_person": "Minimum price per person",
+    "enter_minimum_price_per_person": "Enter minimum price per person",
+    "amount_of_attendees": "Amount of attendees",
+    "select_amount_of_attendees": "Select amount of attendees",
+    "attendees_amount": "Attendees amount",
+    "save": "Save",
+    "invalid_email": "Invalid email",
+    "dish_menu": "Dish menu",
+    "pending_applications": "Pending applications",
+    "your_profile": "Your profile",
+    "check_if_this_dish_has_discount": "Check if this dish has discount",
+    "dish_added_successfully": "Dish added successfully",
+    "page_styles_setting_has_been_updated_successfully": "Page styles setting has been updated successfully",
+    "page_styles_setting_has_been_reseted_successfully": "Page styles setting has been reseted successfully"
 }

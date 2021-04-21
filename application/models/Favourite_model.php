@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Favourite model handles all the database queries of favourite
  */
 
-class Favourite_model extends Base_model
+class Favourite_model extends MY_Model
 {
     function __construct()
     {
@@ -21,7 +21,7 @@ class Favourite_model extends Base_model
      */
     public function get_all()
     {
-        $this->db->where('customer_id', $this->logged_in_user_id);
+        $this->db->where('customer_id', $this->loggedin_user_id);
         $obj = $this->db->get($this->table);
         return $this->merger($obj);
     }
@@ -69,7 +69,7 @@ class Favourite_model extends Base_model
      */
     public function is_added($menu_id)
     {
-        $data['customer_id'] = $this->logged_in_user_id;
+        $data['customer_id'] = $this->loggedin_user_id;
         $data['menu_id'] = $menu_id;
         $previous_data = $this->db->get_where($this->table, $data)->num_rows();
         return $previous_data > 0 ? true : false;
@@ -80,7 +80,7 @@ class Favourite_model extends Base_model
      */
     function toggle_favourites($menu_id)
     {
-        $data['customer_id'] = $this->logged_in_user_id;
+        $data['customer_id'] = $this->loggedin_user_id;
         $data['menu_id'] = $menu_id;
         $menu_details = $this->db->get_where('food_menus', ['id' => $menu_id])->num_rows();
         if ($menu_details > 0) {
@@ -107,7 +107,7 @@ class Favourite_model extends Base_model
     {
         $user_role = $this->session->userdata('user_role');
         if ($user_role == "customer") {
-            $this->db->where('customer_id', $this->logged_in_user_id);
+            $this->db->where('customer_id', $this->loggedin_user_id);
         }
         return $this->db->get($this->table)->num_rows();
     }

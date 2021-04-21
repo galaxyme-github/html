@@ -1,45 +1,47 @@
 <?php
-$role = $this->session->userdata('user_role');
-$current_user = $this->user_model->get_user_by_id($this->session->userdata('user_id'));
-$exploded = explode('/', $page_name);
-$parent_dir = $exploded[0];
-$file_name  = $exploded[1];
+    $branch = (get_loggedin_user_role() == 'superadmin')?'admin':get_loggedin_user_role();
+    $loggedin_user_role = get_loggedin_user_role();
+    $loggedin_user_id = get_loggedin_user_id();
+    $loggedin_user = $this->user_model->get_user_detail($loggedin_user_id, $loggedin_user_role);
+    $exploded = explode('/', $page_name);
+    $parent_dir = $exploded[0];
+    $file_name  = $exploded[1];
 ?>
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <!-- Load BFT metas -->
+        <?php include 'partials/metas.php'; ?>
+        <!--// BFT metas -->
+        <?php include 'partials/styles.php'; ?>
+    </head>
+    <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+        <div class="wrapper">
+            <!-- Navbar -->
+            <?php include 'partials/navbar.php'; ?>
+            <!--// Navbar -->
 
-<head>
-    <!-- LOAD METAS -->
-    <?php include 'partials/metas.php'; ?>
-    <!-- LOAD STYLES -->
-    <?php include 'partials/styles.php'; ?>
-</head>
+            <!-- Left Sidebar -->
+            <?php include $branch . '/navigation/index.php'; ?>
+            <!--// Left Sidebar -->
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-    <div class="wrapper">
-        <!-- Navbar -->
-        <?php include 'partials/navbar.php'; ?>
-        <!-- /.navbar -->
+            <!-- Main Container -->
+            <div class="content-wrapper">
+                <?php include $branch . '/' . $page_name . '.php'; ?>
+            </div>
+            <!--// Main Container -->
 
-        <!-- Main Sidebar Container -->
-        <?php include $role . '/navigation/index.php'; ?>
-
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <?php include $role . '/' . $page_name . '.php'; ?>
+            <!-- BFT Control panel footer -->
+            <?php include 'partials/footer.php'; ?>
+            <!--// BFT Control panel footer -->
         </div>
-        <!-- /.content-wrapper -->
 
-        <!-- Main Footer -->
-        <?php include 'partials/footer.php'; ?>
-    </div>
-    <!-- ./wrapper -->
+        <!-- Load scripts -->
+        <?php include 'partials/scripts.php'; ?>
+        <!--// Load scripts -->
 
-    <!-- LOAD SCRIPTS -->
-    <?php include 'partials/scripts.php'; ?>
-
-    <!-- MODAL SCRIPTS -->
-    <?php include 'partials/modal.php'; ?>
-</body>
-
+        <!-- Load modal -->
+        <?php include 'partials/modal.php'; ?>
+        <!--// Load modal -->
+    </body>
 </html>

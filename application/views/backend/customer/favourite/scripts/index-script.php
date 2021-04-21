@@ -26,11 +26,11 @@
             },
             success: function(response) {
                 if (response === "false") {
-                    toastr.warning('<?php echo site_phrase('please_login_first'); ?>');
+                    toastr.warning('Please sign in first.');
                 } else {
                     if (Math.floor(response) == response && $.isNumeric(response)) {
                         $('.cart-items').text(response);
-                        toastr.success('<?php echo site_phrase('added_to_the_cart'); ?>');
+                        toastr.success('Added to the cart.');
                     }
                 }
             }

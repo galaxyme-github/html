@@ -55,7 +55,7 @@ if (!function_exists('required')) {
         if (strlen($trimmed_value) > 0) {
             return $trimmed_value;
         } else {
-            error(get_phrase('required_fields_can_not_be_empty'), $_SERVER['HTTP_REFERER']);
+            error('Please fulfill all fields.', $_SERVER['HTTP_REFERER']);
         }
     }
 }

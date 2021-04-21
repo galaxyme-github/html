@@ -1,3 +1,4 @@
+<!-- BFT customer branch header -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="card">
@@ -9,5 +10,6 @@
                 </div>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
 </div>
+<!-- // BFT customer branch header -->

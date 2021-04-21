@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Payment model handles all the database queries of payment related data
  */
 
-class Payment_model extends Base_model
+class Payment_model extends MY_Model
 {
     function __construct()
     {

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Checkout_model extends Base_model
+class Checkout_model extends MY_Model
 {
     function __construct()
     {

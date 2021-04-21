@@ -6,7 +6,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 *  date      : 13 September, 2020
 */
 
-class Email_model extends Base_model
+class Email_model extends MY_Model
 {
 
 	function password_reset($email_to = "", $email_message = "")

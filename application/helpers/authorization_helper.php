@@ -18,24 +18,19 @@ if (!function_exists('has_access')) {
     function has_access($table = '', $table_id = '')
     {
         $CI    = &get_instance();
-        $CI->load->database();
-
         $CI->db->where('id', $table_id);
         $data = $CI->db->get($table);
 
         if ($data->num_rows()) {
-            if ($CI->session->userdata('user_role') == 'admin') {
+            if ($CI->session->userdata('loggedin_type') == 'superadmin') {
                 return true;
-            } elseif ($CI->session->userdata('user_role') == 'owner') {
+            } elseif ($CI->session->userdata('loggedin_type') == 'owner') {
                 $data = $data->row_array();
                 //CHECK IF COLUMN EXISTS
                 if ($CI->db->field_exists('created_by', $table)) {
-                    return $data['created_by'] == $CI->session->userdata('user_id') ? true : false;
+                    return $data['created_by'] == $CI->session->userdata('loggedin_userid') ? true : false;
                 } elseif ($CI->db->field_exists('owner_id', $table)) {
-                    return $data['owner_id'] == $CI->session->userdata('user_id') ? true : false;
-                } elseif ($CI->db->field_exists('foodtruck_id', $table)) {
-                    $foodtruck_ids = $CI->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($CI->session->userdata('user_id'));
-                    return in_array($foodtruck_ids, $data['foodtruck_id']) ? true : false;
+                    return $data['owner_id'] == $CI->session->userdata('loggedin_userid') ? true : false;
                 }
             }
         }
@@ -51,16 +46,16 @@ if (!function_exists('authorization')) {
         $CI->load->database();
 
         if (is_array($roles)) {
-            $auth = in_array($CI->session->userdata('user_role'), $roles) ? true : false;
+            $auth = in_array($CI->session->userdata('loggedin_type'), $roles) ? true : false;
         } else {
-            $auth = $CI->session->userdata('is_logged_in') ? true : false;
+            $auth = $CI->session->userdata('loggedin') ? true : false;
         }
 
         if (!$auth && $doRedirect) {
             if (isset($_SERVER['HTTP_REFERER'])) {
-                error(get_phrase('you_are_not_authorized'), $_SERVER['HTTP_REFERER']);
+                error('You are not authorized!', $_SERVER['HTTP_REFERER']);
             } else {
-                error(get_phrase('you_are_not_authorized'), site_url('dashboard'));
+                error('You are not authorized!', site_url('dashboard'));
             }
         } else {
             return $auth;

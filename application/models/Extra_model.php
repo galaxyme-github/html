@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * User model handles all the database queries of Users
  */
 
-class Cuisine_model extends Base_model
+class Cuisine_model extends MY_Model
 {
     function __construct()
     {
@@ -78,7 +78,7 @@ class Cuisine_model extends Base_model
         }
         // UPLOAD THUMBNAIL
         $data['thumbnail']  = $this->upload('cuisine', $_FILES['thumbnail']);
-        $data['created_by'] = $this->logged_in_user_id;
+        $data['created_by'] = $this->loggedin_user_id;
         $data['created_at'] = strtotime(date('D, d-M-Y'));
         $this->db->insert('cuisines', $data);
         return true;

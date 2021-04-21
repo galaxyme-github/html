@@ -1,20 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * Product name : BookingFoodTrucks
- * Date : 20 - July - 2020
- * Author : TheDevs
- * Owner Controller controlls all the Food Truck Owners
- */
-
-include 'Authorization.php';
-
 class Owner extends Authorization
 {
-    /**
-     * CONSTRUCTOR CHECKS IF REQUIRED USER IS LOGGED IN
-     */
     public function __construct()
     {
         parent::__construct();
@@ -89,18 +77,6 @@ class Owner extends Authorization
             $this->session->set_flashdata('error_message', get_phrase('an_error_occurred'));
         }
         redirect(site_url('owner/profile/' . $id), 'refresh');
-    }
-
-    // MARK THIS RESTAURANT OWNER AS CUSTOMER ONLY
-    function become_customer($user_id)
-    {
-        $response = $this->owner_model->become_customer($user_id);
-        if ($response) {
-            $this->session->set_flashdata('flash_message', get_phrase('updated_successfully'));
-        } else {
-            $this->session->set_flashdata('error_message', get_phrase('an_error_occurred'));
-        }
-        redirect(site_url('owner'), 'refresh');
     }
 }
 

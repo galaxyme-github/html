@@ -3,12 +3,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    <span class="mt-5"><?php echo sanitize($foodtruck_status) ? get_phrase('list_of_registered_foodtrucks', true) : get_phrase('list_of_requested_foodtrucks', true); ?></span>
-                    <?php if ($foodtruck_status) : ?>
-                        <a href="<?php echo site_url('foodtruck/pending'); ?>" class="btn btn-secondary btn-rounded float-right"><?php echo get_phrase("show_requested_foodtrucks", true); ?></a>
-                    <?php else : ?>
-                        <a href="<?php echo site_url('foodtruck'); ?>" class="btn btn-success btn-rounded float-right"><?php echo get_phrase("show_approved_foodtrucks", true); ?></a>
-                    <?php endif; ?>
+                    <span class="mt-5"><?php echo sanitize($foodtruck_status) ? 'List of registered foodtrucks' : 'List of requested foodtrucks'; ?></span>
                 </h3>
             </div>
             <!-- /.card-header -->
@@ -21,7 +16,7 @@
                                 <th><?php echo get_phrase("owner"); ?></th>
                                 <th><?php echo get_phrase("address"); ?></th>
                                 <th><?php echo get_phrase("phone_number"); ?></th>
-                                <th><?php echo get_phrase("customers"); ?></th>
+                                <th><?php echo get_phrase("attendees_amount"); ?></th>
                                 <th><?php echo get_phrase("action"); ?></th>
                             </tr>
                         </thead>
@@ -44,12 +39,12 @@
                                     </td>
                                     <td><small><?php echo sanitize($foodtruck['address']); ?></small></td>
                                     <td><?php echo sanitize($foodtruck['phone']); ?></td>
-                                    <td><?php echo sanitize($foodtruck['customers_num']); ?></td>
+                                    <td><?php echo sanitize($foodtruck['attendees_amt']); ?></td>
                                     <td class="text-center">
                                         <button class="btn action-dropdown" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                         <ul class="dropdown-menu">
                                             <?php if ($foodtruck_status) : ?>
-                                                <li><a class="dropdown-item" href="<?php echo site_url('home/foodtruck/' . sanitize(rawurlencode($foodtruck['slug'])) . '/' . sanitize($foodtruck['id'])); ?>"><?php echo get_phrase("view_on_frontend"); ?></a></li>
+                                                <li><a class="dropdown-item" href="<?php echo site_url('site/foodtruck/' . sanitize(rawurlencode($foodtruck['slug'])) . '/' . sanitize($foodtruck['id'])); ?>"><?php echo get_phrase("view_on_frontend"); ?></a></li>
                                             <?php endif; ?>
                                             <li><a class="dropdown-item" href="javascript:void(0)" onclick="confirm_modal('<?php echo site_url('foodtruck/update_status/' . sanitize($foodtruck['id'])); ?>')"><?php echo sanitize($foodtruck['status']) ? get_phrase("mark_as_pending") : get_phrase("mark_as_approved"); ?></a></li>
                                             <li><a class="dropdown-item" href="<?php echo site_url('foodtruck/edit/' . sanitize($foodtruck['id']) . '/basic'); ?>"><?php echo get_phrase("edit"); ?></a></li>
@@ -64,9 +59,8 @@
                                 <th><?php echo get_phrase("foodtruck_name"); ?></th>
                                 <th><?php echo get_phrase("owner"); ?></th>
                                 <th><?php echo get_phrase("address"); ?></th>
-                                <th><?php echo get_phrase("zipcode"); ?></th>
                                 <th><?php echo get_phrase("phone_number"); ?></th>
-                                <th><?php echo get_phrase("customers"); ?></th>
+                                <th><?php echo get_phrase("attendees_amount"); ?></th>
                                 <th><?php echo get_phrase("action"); ?></th>
                             </tr>
                         </tfoot>

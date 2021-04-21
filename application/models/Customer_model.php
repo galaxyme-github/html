@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Customer model handles all the database queries of Customer
  */
 
-class Customer_model extends Base_model
+class Customer_model extends MY_Model
 {
     function __construct()
     {

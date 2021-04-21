@@ -21,6 +21,7 @@ if (!function_exists('get_menu_price')) {
     $CI    = &get_instance();
     $CI->load->database();
     $menu_details = $CI->menu_model->get_by_id($menu_id);
+  
     $price_decoder = json_decode($menu_details['price'], true);
     $discount_flag_decoder = json_decode($menu_details['has_discount'], true);
     $discounted_price_decoder = json_decode($menu_details['discounted_price'], true);

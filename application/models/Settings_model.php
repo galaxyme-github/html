@@ -1,14 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * Product name : BookingFoodTrucks
- * Date : 07 - July - 2020
- * Author : TheDevs
- * Settings model handles all the database queries of settings related data
- */
-
-class Settings_model extends Base_model
+class Settings_model extends MY_Model
 {
     function __construct()
     {
@@ -19,13 +12,6 @@ class Settings_model extends Base_model
     public function get_system_currencies()
     {
         return $this->db->get('currencies')->result_array();
-    }
-    // UPDATE METHOD UPDATES THE SETTINGS DATA
-    public function update()
-    {
-        $settings_type = required(sanitize($this->input->post('settings_type')));
-        $dynamic_function_name = "update_" . $settings_type . '_settings';
-        return $this->$dynamic_function_name();
     }
 
     // UPDATE DELIVERY SETTINGS
@@ -51,9 +37,7 @@ class Settings_model extends Base_model
     // UPDATE SYSTEM SETTINGS
     public function update_system_settings()
     {
-        authorization(['admin'], true);
-
-        $system_infos = ['purchase_code', 'system_name', 'system_title', 'system_email', 'address', 'phone', 'author', 'website_description', 'website_keywords', 'footer_text', 'footer_link', 'timezone'];
+        $system_infos = ['system_name', 'system_title', 'system_email', 'address', 'phone', 'author', 'website_description', 'website_keywords', 'footer_text', 'footer_link', 'timezone'];
         foreach ($system_infos as $system_info) {
             if ($system_info == "address" || $system_info == "website_keywords" || $system_info == "website_description") {
                 $updater = sanitize($this->input->post($system_info));
@@ -82,20 +66,18 @@ class Settings_model extends Base_model
     // UPDATE WEBSITE SETTINGS
     public function update_website_settings()
     {
-        authorization(['admin'], true);
+        // $website_infos = ['title', 'sub_title', 'about_us', 'terms_and_conditions', 'privacy_policy'];
+        // foreach ($website_infos as $website_info) {
+        //     if ($website_info == 'about_us' || $website_info == 'terms_and_conditions' || $website_info == 'privacy_policy') {
+        //         // SKIP SANITIZER FOR THE TEXT EDITOR VALUES
+        //         $updater = $this->input->post($website_info);
+        //     } else {
+        //         $updater = required(sanitize($this->input->post($website_info)));
+        //     }
 
-        $website_infos = ['title', 'sub_title', 'about_us', 'terms_and_conditions', 'privacy_policy'];
-        foreach ($website_infos as $website_info) {
-            if ($website_info == 'about_us' || $website_info == 'terms_and_conditions' || $website_info == 'privacy_policy') {
-                // SKIP SANITIZER FOR THE TEXT EDITOR VALUES
-                $updater = $this->input->post($website_info);
-            } else {
-                $updater = required(sanitize($this->input->post($website_info)));
-            }
-
-            $this->db->where('key', $website_info);
-            $this->db->update('website_settings', ['value' => $updater]);
-        }
+        //     $this->db->where('key', $website_info);
+        //     $this->db->update('website_settings', ['value' => $updater]);
+        // }
 
         // SOCIAL LINKS
         $social_link['facebook'] = sanitize($this->input->post('facebook_link'));
@@ -112,8 +94,6 @@ class Settings_model extends Base_model
     // WEBSITE GALLERY UPDATE
     public function update_gallery_settings()
     {
-        authorization(['admin'], true);
-
         $gallery_type = sanitize($this->input->post('gallery_type'));
         $previous_data = get_website_settings($gallery_type);
 
@@ -125,19 +105,6 @@ class Settings_model extends Base_model
         $this->db->where('key', $gallery_type);
         $this->db->update('website_settings', ['value' => $gallery_data]);
         return true;
-    }
-
-
-    // UPDATE LOGGED IN USER PROFILE
-    public function update_profile_settings()
-    {
-        $updater = sanitize($this->input->post('updater'));
-        if ($updater == 'profile') {
-            $response = $this->user_model->update_profile();
-        } else {
-            $response = $this->user_model->update_password();
-        }
-        return $response;
     }
 
     // UPDATE REVENUE SETTINGS
@@ -175,16 +142,65 @@ class Settings_model extends Base_model
         }
     }
 
-    // UPDATE RECAPTCHA SETTINGS
+    /* Update Recaptcha Keys */
     public function update_recaptcha_settings()
     {
-        authorization(['admin'], true);
-        $recaptcha_data = ['recaptcha_sitekey', 'recaptcha_secretkey'];
+        $recaptcha_data = ['recaptcha_v2_sitekey', 'recaptcha_v2_secretkey', 'recaptcha_v3_sitekey', 'recaptcha_v3_secretkey'];
         foreach ($recaptcha_data as $recaptcha_info) {
             $updater = required(sanitize($this->input->post($recaptcha_info)));
             $this->db->where('key', $recaptcha_info);
             $this->db->update('system_settings', ['value' => $updater]);
         }
+        return true;
+    }
+
+    /* Common update method */
+    public function update()
+    {
+        $settings_type = required(sanitize($this->input->post('settings_type')));
+        $dynamic_function_name = "update_" . $settings_type . '_settings';
+        return $this->$dynamic_function_name();
+    }
+
+    // UPDATE LOGGED IN USER PROFILE
+    public function update_profile_settings()
+    {
+        $response = $this->user_model->update_profile();
+        return $response;
+    }
+
+    /* Update logged in user password */
+    public function update_password_settings()
+    {
+        $this->user_model->update_password();
+    }
+
+    /* Get devices logged in current user's account for last 30 days. */
+    public function get_login_devices()
+    {
+        $credential_id = get_loggedin_id();
+        $this->db->where('created_at BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()');
+        $this->db->where('credential_id', $credential_id);
+        $result = $this->db->get('login_history')->result();
+        return $result;
+    }
+
+    /* Get account info */
+    public function get_account_info()
+    {
+        $credential_id = get_loggedin_id();
+        $this->db->where('id', $credential_id);
+        $result = $this->db->get('login_credential')->row();
+        return $result;
+    }
+
+    /* Update account data */
+    public function update_account_settings()
+    {
+        $credential_id = get_loggedin_id();
+        $account_name = required(sanitize($this->input->post('account_name')));
+        $this->db->where('id', $credential_id);
+        $this->db->update('login_credential', ['account_name'=> $account_name]);
         return true;
     }
 }

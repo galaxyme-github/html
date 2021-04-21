@@ -1,16 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * Product name : BookingFoodTrucks
- * Date : 25 - June - 2020
- * Author : TheDevs
- * Category Controller controlls the Food Menu Categories of a foodtruck
- */
 
-include 'Authorization.php';
-
-class Category extends Authorization
+class Category extends Authorization_Controller
 {
 
     /**
@@ -19,7 +11,7 @@ class Category extends Authorization
     public function __construct()
     {
         parent::__construct();
-        authorization(['admin', 'owner'], true);
+        authorization(['superadmin', 'owner'], true);
     }
 
     // index function responsible for showing the index page.

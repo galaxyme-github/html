@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-body">
-        <form action="<?php echo site_url('menu/index'); ?>" action="get">
+        <form action="<?php echo site_url('catering-menu'); ?>" action="get">
             <div class="row justify-content-sm-center">
                 <div class="col-lg-4">
                     <div class="form-group">
@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-1">
                     <div class="form-group mt-30">
-                        <button type="submit" class="btn btn-primary"><?php echo get_phrase('filter'); ?></button>
+                        <button type="submit" class="btn btn-default text-success"><?php echo get_phrase('filter'); ?></button>
                     </div>
                 </div>
             </div>
@@ -40,11 +40,11 @@
             <div class="col-md-3">
 
                 <!-- Profile Image -->
-                <div class="card card-primary card-outline">
+                <div class="card card-info card-outline">
                     <div class="card-body box-profile">
-                        <div class="text-center">
+                        <!-- <div class="text-center">
                             <img class="profile-user-img img-fluid img-circle light-thumb-circle square-100" src="<?php echo base_url('uploads/menu/' . sanitize($menu['thumbnail'])); ?>" alt="<?php echo get_phrase('menu_thumbnail'); ?>">
-                        </div>
+                        </div> -->
                         <h3 class="profile-username text-center">
                             <?php echo sanitize($menu['name']); ?>
                         </h3>
@@ -62,10 +62,8 @@
                                     <?php
                                     if ($menu['servings'] == "menu") {
                                         echo currency(get_menu_price($menu['id']));
-                                    } elseif ($menu['servings'] == "plate") {
-                                        echo currency(get_menu_price($menu['id'], "full_plate")) . ', ' . currency(get_menu_price($menu['id'], "half_plate"));
-                                    } ?>
-
+                                    }
+                                    ?>
                                 </a>
                             </li>
                             <li class="list-group-item">
@@ -79,7 +77,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <a href="<?php echo site_url('menu/edit/' . sanitize($menu['id'])); ?>" class="btn btn-primary btn-block"><b><?php echo get_phrase('details'); ?></b></a>
+                        <a href="<?php echo site_url('menu/edit/' . sanitize($menu['id'])); ?>" class="btn btn-info btn-block"><b><?php echo get_phrase('details'); ?></b></a>
                     </div>
                     <!-- /.card-body -->
                 </div>

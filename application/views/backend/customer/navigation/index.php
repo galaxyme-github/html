@@ -1,33 +1,26 @@
+<!-- Left Sider Bar -->
 <aside class="main-sidebar sidebar-dark-danger elevation-4">
-    <!-- Brand Logo -->
+    <!-- BFT Brand -->
     <a href="<?php echo site_url('dashboard'); ?>" class="brand-link">
         <img src="<?php echo base_url('uploads/system/' . get_website_settings('backend_logo')); ?>" alt="" class="brand-image">
-        <!--span class="brand-text font-weight-light"><?php echo get_system_settings('system_name'); ?></span-->
     </a>
-
-    <!-- Sidebar -->
+    <!--// BFT Brand -->
     <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="<?php echo base_url('uploads/user/' . sanitize($current_user['thumbnail'])); ?>" class="img-circle" alt="User Image">
+                <img src="<?php echo base_url('uploads/user/' . sanitize($loggedin_user->photo)); ?>" class="img-circle" alt="User Photo">
             </div>
             <div class="info">
-                <a href="<?php echo site_url('settings/profile'); ?>" class="d-block"><?php echo sanitize($current_user['name']); ?></a>
+                <a href="<?php echo site_url('settings/profile'); ?>" class="d-block"><?php echo sanitize($loggedin_user->name); ?></a>
             </div>
         </div>
-
-        <!-- Sidebar Menu -->
+        <!-- Main menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-                <li class="nav-header"><?php echo get_phrase("navigation_section", true); ?></li>
                 <li class="nav-item">
                     <a href="<?php echo site_url('dashboard'); ?>" class="nav-link <?php if ($page_name == "dashboard/index") echo 'active'; ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            <?php echo get_phrase('dashboard'); ?>
-                        </p>
+                        <p>Dashboard</p>
                     </a>
                 </li>
 
@@ -35,10 +28,7 @@
                 <li class="nav-item has-treeview <?php if ($page_name == "orders/index" && $order_type == "all"  || $order_type == "today" || $page_name == "orders/details") echo 'menu-open'; ?>">
                     <a href="#" class="nav-link <?php if ($page_name == "orders/index" && $order_type == "all"  || $order_type == "today" || $page_name == "orders/details") echo 'active'; ?>">
                         <i class="nav-icon fas fa-hamburger"></i>
-                        <p>
-                            <?php echo get_phrase('orders'); ?>
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
+                        <p>Orders<i class="fas fa-angle-left right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
@@ -84,7 +74,7 @@
                 </li>
             </ul>
         </nav>
-        <!-- /.sidebar-menu -->
+        <!--// Main menu -->
     </div>
-    <!-- /.sidebar -->
 </aside>
+<!--// Left Side bar -->

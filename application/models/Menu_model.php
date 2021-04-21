@@ -1,17 +1,12 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
-/**
- * Product name : BookingFoodTrucks
- * Date : 28 - June - 2020
- * Author : TheDevs
- * Menu model handles all the database queries of Menu
- */
-class Menu_model extends Base_model
+
+class Menu_model extends MY_Model
 {
     // DEFAULT CONSTRUCTOR. FOR INITIALIZING THE TABLE NAME
     function __construct()
     {
         parent::__construct();
-        $this->table = "food_menus";
+        $this->table = "catering_menu";
     }
 
     // GET ALL THE FOOD MENUS
@@ -60,16 +55,15 @@ class Menu_model extends Base_model
                 $category_data = $this->category_model->get_by_id($menu['category_id']);
                 $foodtruck_data = $this->foodtruck_model->get_by_id($menu['foodtruck_id']);
                 $menus[$key]['category_name']  = $category_data['name'];
-                $menus[$key]['foodtruck_name']  = $foodtruck_data['name'];
+                $menus[$key]['foodtruck_name']  = $foodtruck_data->name;
             }
-
             return $menus;
         } else {
             $menu = $query_obj->row_array();
             $category_data = $this->category_model->get_by_id($menu['category_id']);
             $menu['category_name']  = $category_data['name'];
             $foodtruck_data = $this->foodtruck_model->get_by_id($menu['foodtruck_id']);
-            $menu['foodtruck_name']  = $foodtruck_data['name'];
+            $menu['foodtruck_name']  = $foodtruck_data->name;
             return $menu;
         }
     }
@@ -83,16 +77,24 @@ class Menu_model extends Base_model
         }
 
         // GET THUMBNAIL FOR ONE TIME. IT DOES NOT WORK INSIDE FOREACH LOOP.
-        $gallery_data = $this->store_gallery_data();
+        // $gallery_data = $this->store_gallery_data();
 
         // FOREACH LOOP FOR MULTIPLE RESTAURANTS
         foreach ($foodtrucks as $foodtruck) {
-            $foodtruck_data['foodtruck_id'] = required($foodtruck);
-            $basic_data = $this->store_basic_data();
-            $details_data = $this->store_details_data();
-            $servings_and_price_data = $this->store_servings_and_price_data();
-            $data = array_merge($foodtruck_data, $basic_data, $details_data, $servings_and_price_data, $gallery_data);
-            $data['created_at'] = strtotime(date('D, d-M-Y'));
+            $data['foodtruck_id'] = required($foodtruck);
+            $data['name'] = required(sanitize($this->input->post('name')));
+            $data['category_id'] = required(sanitize($this->input->post('category_id')));
+            $data['availability'] = isset($_POST['availability']) ? 1 : 0;
+            $data['slug'] = slugify(sanitize($this->input->post('name')));
+            $data['details'] = sanitize($this->input->post('details'));
+            $menu_price = required(sanitize($this->input->post('per_menu_price')));
+            $menu_discount_flag = isset($_POST['per_menu_discount_flag']) ? 1 : 0;
+            $menu_discounted_price = sanitize($this->input->post('per_menu_discounted_price'));
+            $data['servings'] = 'menu';
+            $data['has_discount'] = json_encode(array('menu' => $menu_discount_flag));
+            $data['price'] = json_encode(array('menu' => $menu_price));
+            $data['discounted_price'] = json_encode(array('menu' => $menu_discounted_price));
+
             $this->db->insert($this->table, $data);
         }
 
@@ -103,19 +105,26 @@ class Menu_model extends Base_model
     public function update()
     {
         $menu_id = required(sanitize($this->input->post('id')));
+        
         $previous_data = $this->get_by_id($menu_id);
 
-        if (!empty($_FILES['food_menu_thumbnail']['name'])) {
-            $gallery_data['thumbnail']  = $this->upload('menu', $_FILES['food_menu_thumbnail'], $previous_data["thumbnail"]);
-        } else {
-            $gallery_data['thumbnail']  = $previous_data["thumbnail"];
-        }
-        $foodtruck_data['foodtruck_id'] = required(sanitize($this->input->post('foodtruck_id')));
-        $basic_data = $this->store_basic_data();
-        $details_data = $this->store_details_data();
-        $servings_and_price_data = $this->store_servings_and_price_data();
-        $data = array_merge($foodtruck_data, $basic_data, $details_data, $servings_and_price_data, $gallery_data);
-        $data['updated_at'] = strtotime(date('D, d-M-Y'));
+        // if (!empty($_FILES['food_menu_thumbnail']['name'])) {
+        //     $gallery_data['thumbnail']  = $this->upload('menu', $_FILES['food_menu_thumbnail'], $previous_data["thumbnail"]);
+        // } else {
+        //     $gallery_data['thumbnail']  = $previous_data["thumbnail"];
+        // }
+        $data['name'] = required(sanitize($this->input->post('name')));
+        $data['category_id'] = required(sanitize($this->input->post('category_id')));
+        $data['availability'] = isset($_POST['availability']) ? 1 : 0;
+        $data['slug'] = slugify(sanitize($this->input->post('name')));
+        $data['details'] = sanitize($this->input->post('details'));
+        $menu_price = required(sanitize($this->input->post('per_menu_price')));
+        $menu_discount_flag = isset($_POST['per_menu_discount_flag']) ? 1 : 0;
+        $menu_discounted_price = sanitize($this->input->post('per_menu_discounted_price'));
+        $data['servings'] = 'menu';
+        $data['has_discount'] = json_encode(array('menu' => $menu_discount_flag));
+        $data['price'] = json_encode(array('menu' => $menu_price));
+        $data['discounted_price'] = json_encode(array('menu' => $menu_discounted_price));
 
         $this->db->where('id', $menu_id);
         $this->db->update($this->table, $data);

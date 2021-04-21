@@ -10,7 +10,7 @@
                     <?php echo get_phrase('order_placed', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize($this->order_model->get_number_of_orders()); ?>
+                    <?php echo sanitize($this->order_model->count_orders()); ?>
                 </span>
             </div>
         </div>
@@ -27,7 +27,7 @@
                     <?php echo get_phrase('order_processed', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize($this->order_model->get_number_of_orders('processed')); ?>
+                    <?php //echo sanitize($this->order_model->get_number_of_orders('processed')); ?>
                 </span>
             </div>
         </div>
@@ -47,7 +47,7 @@
                     <?php echo get_phrase('order_delivered', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize($this->order_model->get_number_of_orders('delivered')); ?>
+                    <?php //echo sanitize($this->order_model->get_number_of_orders('delivered')); ?>
                 </span>
             </div>
         </div>
@@ -64,7 +64,7 @@
                     <?php echo get_phrase('order_canceled', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize($this->order_model->get_number_of_orders('canceled')); ?>
+                    <?php //echo sanitize($this->order_model->get_number_of_orders('canceled')); ?>
                 </span>
             </div>
         </div>
@@ -83,7 +83,7 @@
                     <?php echo get_phrase('foodtruck', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo count($this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->session->userdata('user_id'))); ?>
+                    <?php //echo count($this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->session->userdata('user_id'))); ?>
                 </span>
             </div>
         </div>
@@ -100,7 +100,7 @@
                     <?php echo get_phrase('foodtruck', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo count($this->foodtruck_model->get_pending_foodtruck_ids_by_owner_id($this->session->userdata('user_id'))); ?>
+                    <?php //echo count($this->foodtruck_model->get_pending_foodtruck_ids_by_owner_id($this->session->userdata('user_id'))); ?>
                 </span>
             </div>
         </div>
@@ -117,7 +117,7 @@
                     <?php echo get_phrase('active_customers', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo count($this->customer_model->get_approved_customers()); ?>
+                    <?php //echo count($this->customer_model->get_approved_customers()); ?>
 
                 </span>
             </div>
@@ -136,7 +136,7 @@
                     <?php echo get_phrase('active_owners', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo count($this->user_model->get_approved_owners()); ?>
+                    <?php //echo count($this->user_model->get_approved_owners()); ?>
                 </span>
             </div>
         </div>

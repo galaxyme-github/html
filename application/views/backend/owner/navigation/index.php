@@ -10,18 +10,16 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="<?php echo base_url('uploads/user/' . $current_user['thumbnail']); ?>" class="img-circle" alt="User Image">
+                <img src="<?php echo base_url('uploads/user/' . $loggedin_user->photo); ?>" class="img-circle" alt="User Image">
             </div>
             <div class="info">
-                <a href="<?php echo site_url('settings/profile'); ?>" class="d-block"><?php echo sanitize($current_user['name']); ?></a>
+                <a href="<?php echo site_url('settings/profile'); ?>" class="d-block"><?php echo get_account_name(); ?></a>
             </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-                <li class="nav-header"><?php echo get_phrase("navigation_section", true); ?></li>
                 <li class="nav-item">
                     <a href="<?php echo site_url('dashboard'); ?>" class="nav-link <?php if ($page_name == "dashboard/index") echo 'active'; ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -47,8 +45,8 @@
                                     <?php echo get_phrase('todays_orders', true); ?>
                                     <span class="badge badge-warning right">
                                         <?php
-                                        $number_of_todays_pending_orders = $this->order_model->get_number_of_todays_pending_orders();
-                                        echo sanitize($number_of_todays_pending_orders);
+                                        //$number_of_todays_pending_orders = $this->order_model->get_number_of_todays_pending_orders();
+                                        //echo sanitize($number_of_todays_pending_orders);
                                         ?>
                                     </span>
                                 </p>
@@ -63,19 +61,19 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="<?php echo site_url('cuisine'); ?>" class="nav-link <?php if ($page_name == "cuisine/index" || $page_name == "cuisine/create" || $page_name == "cuisine/edit") echo 'active'; ?>">
                         <i class="fas fa-pepper-hot nav-icon"></i>
                         <p>
                             <?php echo get_phrase('cuisine'); ?>
                         </p>
                     </a>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
-                    <a href="<?php echo site_url('foodtruck'); ?>" class="nav-link <?php if ($page_name == "foodtruck/index" || $page_name == "foodtruck/create" || $page_name == "foodtruck/edit") echo 'active'; ?>">
+                    <a href="<?php echo site_url('my-foodtrucks'); ?>" class="nav-link <?php if ($page_name == "foodtruck/index" || $page_name == "foodtruck/add" || $page_name == "foodtruck/edit") echo 'active'; ?>">
                         <i class="fas fa-truck-moving nav-icon"></i>
-                        <p><?php echo get_phrase("foodtrucks"); ?><span class="badge badge-warning right"><?php echo count($this->foodtruck_model->get_all_pending()); ?></span></p>
+                        <p><?php echo get_phrase("foodtrucks"); ?><span class="badge badge-warning right"><?php echo count($this->foodtruck_model->get_all()); ?></span></p>
                     </a>
                 </li>
 
@@ -85,8 +83,13 @@
                         <p><?php echo "QR ".get_phrase("menu_builder"); ?></p>
                     </a>
                 </li-->
-                
-                <li class="nav-item has-treeview <?php if ($page_name == "category/index" || $page_name == "category/create" || $page_name == "category/edit" || $page_name == "menu/index" || $page_name == "menu/create" || $page_name == "menu/edit") echo 'menu-open'; ?>">
+                <li class="nav-item">
+                    <a href="<?php echo site_url('catering-menu'); ?>" class="nav-link <?php if ($page_name == "menu/catering_menu" || $page_name == "menu/create" || $page_name == "menu/edit") echo 'active'; ?>">
+                        <i class="nav-icon fas fa-utensils"></i>
+                        <p>Catering Menu<span class="badge badge-warning right"><?php //echo count($this->foodtruck_model->get_all_pending()); ?></span></p>
+                    </a>
+                </li>
+                <!-- <li class="nav-item has-treeview <?php if ($page_name == "category/index" || $page_name == "category/create" || $page_name == "category/edit" || $page_name == "menu/index" || $page_name == "menu/create" || $page_name == "menu/edit") echo 'menu-open'; ?>">
                     <a href="#" class="nav-link <?php if ($page_name == "category/index" || $page_name == "category/create" || $page_name == "category/edit" || $page_name == "menu/index" || $page_name == "menu/create" || $page_name == "menu/edit") echo 'active'; ?>">
                         <i class="nav-icon fas fa-utensils"></i>
                         <p>
@@ -108,7 +111,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
 
                 <?php $report_type = isset($report_type) ? $report_type : ""; ?>
                 <li class="nav-item">
@@ -118,14 +121,10 @@
                     </a>
                 </li>
 
-                <li class="nav-header"><?php echo get_phrase("user_section", true); ?></li>
-
-                <li class="nav-item">
+                <li class="nav-item mt-4">
                     <a href="<?php echo site_url('customer'); ?>" class="nav-link <?php if ($page_name == "customer/index" || $page_name == "customer/create" || $page_name == "customer/edit" || $page_name == "customer/profile") echo 'active'; ?>">
                         <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            <?php echo get_phrase("customers"); ?>
-                        </p>
+                        <p>Customers</p>
                     </a>
                 </li>
 
@@ -138,15 +137,33 @@
                     </a>
                 </li-->
 
-                <li class="nav-header"><?php echo get_phrase("settings_section", true); ?></li>
-
-                <li class="nav-item">
-                    <a href="<?php echo site_url('settings/profile'); ?>" class="nav-link <?php if ($page_name == "settings/profile") echo 'active'; ?>">
-                        <i class="nav-icon fas fa-user-circle"></i>
-                        <p>
-                            <?php echo get_phrase("manage_profile"); ?>
-                        </p>
+                <li class="nav-item has-treeview <?php if ($page_name == "settings/profile" || $page_name == "settings/password" || $page_name == "settings/account_security" || $page_name == "settings/account") echo 'menu-open'; ?>">
+                    <a href="#" class="nav-link <?php if ($page_name == "settings/profile" || $page_name == "settings/password" || $page_name == "settings/account_security" || $page_name == "settings/account") echo 'active'; ?>">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>Settings<i class="fas fa-angle-left right"></i></p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('settings/profile'); ?>" class="nav-link <?php if ($page_name == "settings/profile") echo 'active'; ?>">
+                                <p>Profile</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('settings/password'); ?>" class="nav-link <?php if ($page_name == "settings/password") echo 'active'; ?>">
+                                <p>Password</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('settings/account-security'); ?>" class="nav-link <?php if ($page_name == "settings/account_security") echo 'active'; ?>">
+                                <p>Account Security</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('settings/account'); ?>" class="nav-link <?php if ($page_name == "settings/account") echo 'active'; ?>">
+                                <p>Account</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

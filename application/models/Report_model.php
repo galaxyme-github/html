@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Report model handles all the database queries of Report
  */
 
-class Report_model extends Base_model
+class Report_model extends MY_Model
 {
     function __construct()
     {
@@ -17,7 +17,7 @@ class Report_model extends Base_model
 
     public function get_commission_details($foodtruck_id)
     {
-        $dynamic_function_name = "get_commission_details_as_" . $this->logged_in_user_role;
+        $dynamic_function_name = "get_commission_details_as_" . $this->loggedin_user_role;
         return $this->$dynamic_function_name($foodtruck_id);
     }
 
@@ -36,7 +36,7 @@ class Report_model extends Base_model
 
     public function filter_commissions()
     {
-        $dynamic_function_name = "filter_commissions_as_" . $this->logged_in_user_role;
+        $dynamic_function_name = "filter_commissions_as_" . $this->loggedin_user_role;
         return $this->$dynamic_function_name();
     }
 
@@ -54,7 +54,7 @@ class Report_model extends Base_model
      */
     public function filter_commissions_as_owner()
     {
-        $approved_foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->logged_in_user_id);
+        $approved_foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->loggedin_user_id);
         $approved_foodtruck_ids = count($approved_foodtruck_ids) > 0 ? $approved_foodtruck_ids : [null];
 
         $conditions['foodtruck_id'] = (isset($_GET['foodtruck_id']) && $_GET['foodtruck_id'] != "all") ? $_GET['foodtruck_id'] : $approved_foodtruck_ids;

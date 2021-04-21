@@ -1,14 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * Product name : BookingFoodTrucks
- * Date : 10 - June - 2020
- * Author : TheDevs
- * User model handles all the database queries of Users
- */
-
-class Foodtruck_model extends Base_model
+class Foodtruck_model extends MY_Model
 {
     function __construct()
     {
@@ -18,7 +11,7 @@ class Foodtruck_model extends Base_model
     }
 
     /**
-     * GET ALL THE RESTAURANTS WITHOUT ANY CONDITIONS
+     * GET ALL THE FOODTRUCKS WITHOUT ANY CONDITIONS
      *
      */
     public function get_all()
@@ -28,18 +21,18 @@ class Foodtruck_model extends Base_model
     }
 
     /**
-     * GET RESTAURANT USING ID WITHOUT ANY CONDITIONS
+     * GET FOODTRUCK USING ID WITHOUT ANY CONDITIONS
      *
      */
     public function get_by_id($id)
     {
         $this->db->where('id', $id);
-        $foodtrucks = $this->db->get($this->table);
-        return $this->merger($foodtrucks, true);
+        $foodtrucks = $this->db->get($this->table)->row();
+        return $foodtrucks;
     }
 
     /**
-     * GET RESTAURANT USING CONDTIONS
+     * GET FOODTRUCK USING CONDTIONS
      *
      * @param array $conditions
      */
@@ -60,19 +53,19 @@ class Foodtruck_model extends Base_model
 
     public function get_all_approved()
     {
-        if ($this->logged_in_user_role == "owner") {
-            $this->db->where('owner_id', $this->logged_in_user_id);
+        if ($this->loggedin_user_role == "owner") {
+            $this->db->where('owner_id', $this->loggedin_user_id);
         }
         $this->db->where('status', 1);
         $this->db->order_by("id", "desc");
-        $foodtrucks = $this->db->get($this->table);
-        return $this->merger($foodtrucks);
+        $foodtrucks = $this->db->get($this->table)->result();
+        return $foodtrucks;
     }
 
     public function get_all_pending()
     {
-        if ($this->logged_in_user_role == "owner") {
-            $this->db->where('owner_id', $this->logged_in_user_id);
+        if ($this->loggedin_user_role == "owner") {
+            $this->db->where('owner_id', $this->loggedin_user_id);
         }
         $this->db->where('status', 0);
         $this->db->order_by("id", "desc");
@@ -80,7 +73,7 @@ class Foodtruck_model extends Base_model
         return $this->merger($foodtrucks);
     }
 
-    // FETCH ALL THE RELATED DATA WITH RESTAURANT
+    // FETCH ALL THE RELATED DATA WITH FOODTRUCK
     public function merger($query_obj, $is_single_row = false)
     {
         if (!$is_single_row) {
@@ -103,25 +96,37 @@ class Foodtruck_model extends Base_model
         }
     }
 
-    // THIS METHOD WILL SAVE ONLY THE RESTAURANT BASIC DATA
+    /* add food truck */
     public function store()
     {
-        $data['name']       = required(sanitize($this->input->post('foodtruck_name')));
-        $data['slug']       = slugify($data['name']);
-        $cuisine            = (isset($_POST['cuisine']) && !empty($_POST['cuisine'])) ? sanitize_array($this->input->post('cuisine')) : array();
-        $data['cuisine']    = json_encode(array_map('intval', $cuisine));
-        $data['created_at'] = strtotime(date('D, d-M-Y'));
-        $data['status']     = $this->logged_in_user_role == 'admin' ? 1 : 0;
-
-        if ($this->logged_in_user_role == "owner") {
-            $data['owner_id'] = $this->logged_in_user_id;
-        }
+        $data['name'] = required(sanitize($this->input->post('ft_name')));
+        $data['summary']  = $this->input->post('ft_summary');
+        $data['website_url']  = $this->input->post('ft_website_url');
+        $data['minimum_price_per_person']  = required(sanitize($this->input->post('minimum_price_per_person')));
+        $data['number_of_attendees']  = $this->input->post('number_of_attendees');
+        $data['schedule']  = required(json_encode($this->input->post('service_time')));
+        $data['needed_things_on_event_location']  = $this->input->post('needed_things_on_event_location');
+        $data['serviceable_areas']  = required($this->input->post('serving_areas'));
+        $data['serve_radius'] = $this->input->post('service_radius');
+        $data['city'] = required($this->input->post('ft_city'));
+        $data['state']  = required($this->input->post('ft_state'));
+        $data['zip_code']  = required(sanitize($this->input->post('ft_zip_code')));
+        $data['email']  = required($this->input->post('ft_email'));
+        $data['phone']  = required($this->input->post('ft_phone'));
+        $data['slug']  = slugify($data['name']);
+        $data['owner_id'] = get_loggedin_user_id();
+        // Get latitude and longitude from Zip Code
+        $geolocate = $this->app_lib->getGeolocateFromZipCode($data['zip_code']);
+        $data['latitude'] = $geolocate['latitude'];
+        $data['longitude'] = $geolocate['longitude'];
 
         $this->db->insert($this->table, $data);
-        return $this->db->insert_id();
+        $foodtruck_id = $this->db->insert_id();
+        $this->db->insert('foodtruck_page_styles', ['foodtruck_id' => $foodtruck_id]);
+        return $foodtruck_id;
     }
 
-    // PARENT FUNCTION FOR UPDATING A RESTAURANT
+    // PARENT FUNCTION FOR UPDATING A FOODTRUCK
     public function update($section)
     {
         $id = required(sanitize($this->input->post('id')));
@@ -133,157 +138,110 @@ class Foodtruck_model extends Base_model
         return false;
     }
 
-    // UPDATE BASIC INFOS FOR A RESTAURANT
+    // UPDATE BASIC INFOS FOR A FOODTRUCK
     public function update_basic()
     {
         $id = required(sanitize($this->input->post('id')));
         $data['name'] = required(sanitize($this->input->post('foodtruck_name')));
-        $data['slug'] = slugify($data['name']);
-        $cuisine = (isset($_POST['cuisine']) && !empty($_POST['cuisine'])) ? $this->input->post('cuisine') : array();
-        $data['cuisine']  = json_encode(array_map('intval', $cuisine));
-        $data['updated_at'] = strtotime(date('D, d-M-Y'));
-        $data['minimum_sales'] = sanitize($this->input->post('foodtruck_minimum_sales'));
-        $data['customers_num'] = sanitize($this->input->post('foodtruck_customers'));
-        $data['description'] = sanitize($this->input->post('foodtruck_description'));
-        $data['needs_on_location'] = sanitize($this->input->post('needs_on_location'));
+        $data['summary']  = $this->input->post('foodtruck_summary');
+        $data['website_url']  = $this->input->post('website_url');
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
         return true;
     }
 
-    // UPDATE ADDRESS AND PHONE INFOS FOR A RESTAURANT
-    public function update_address()
+    // UPDATE SERVICE AND PHONE INFOS FOR A FOODTRUCK
+    public function update_service()
     {
         $id = $this->input->post('id');
-        $data['address']    = sanitize($this->input->post('foodtruck_address'));
-        // $data['state']    = sanitize($this->input->post('foodtruck_state'));
-        $data['zip_code']    = sanitize($this->input->post('foodtruck_zipcode'));
-        $data['serve_radius']    = sanitize($this->input->post('foodtruck_serve_radius'));
-        // $data['latitude']   = sanitize($this->input->post('foodtruck_latitude'));
-        // $data['longitude']  = sanitize($this->input->post('foodtruck_longitude'));
-        $data['phone']      = sanitize($this->input->post('foodtruck_phone'));
-        $data['website']    = sanitize($this->input->post('foodtruck_website_link'));
-        $data['serviceable_areas']    = sanitize($this->input->post('serviceable_areas'));
-        $data['updated_at'] = strtotime(date('D, d-M-Y'));
-
-        $url = "https://maps.googleapis.com/maps/api/geocode/json?address='".$data['zip_code']."'&sensor=false&key=AIzaSyCvRwR3-fGr8AsnMdzmQVkgCdlWhqUiCG0";
-            
-        $curl = curl_init($url);
-
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, '');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-
-        $json = curl_exec($curl);
-
-        $decode = json_decode($json, true);
-
-        $result1[]=$decode['results'][0];
-        $result2[]=$result1[0]['geometry'];
-        $result3[]=$result2[0]['location'];
-
-        $data['latitude'] = $result3[0]['lat'];
-        $data['longitude'] = $result3[0]['lng'];
+        $data['minimum_price_per_person']  = required(sanitize($this->input->post('minimum_price_per_person')));
+        $data['number_of_attendees']  = $this->input->post('number_of_attendees');
+        $data['schedule']  = required(json_encode($this->input->post('service_time')));
+        $data['needed_things_on_event_location']  = $this->input->post('needed_things_on_event_location');
+        $data['serviceable_areas']  = required($this->input->post('serving_areas'));
+        $data['serve_radius'] = $this->input->post('service_radius');
 
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
         return true;
     }
 
-    // UPDATE OWNER INFOS FOR A RESTAURANT
-    public function update_owner()
+    // UPDATE LOCATIOIN DATA FOR A FOODTRUCK
+    public function update_location()
     {
         $id = required(sanitize($this->input->post('id')));
-
-        // OWNER CAN BE UPDATED BY ADMIN ONLY
-        if ($this->logged_in_user_role != "admin") {
-            error(get_phrase('you_are_not_authorized_for_this_action'), site_url('foodtruck'));
-        }
-
-        if (isset($_POST['foodtruck_owner_type']) && !empty($_POST['foodtruck_owner_type']) && $this->input->post('foodtruck_owner_type') == 'new') { // FOR NEW RESTAURANT OWNER
-            $foodtruck_owner_data['name']     = sanitize($this->input->post('foodtruck_owner_name'));
-            $foodtruck_owner_data['email']    = sanitize($this->input->post('foodtruck_owner_email'));
-            $foodtruck_owner_data['password'] = sha1($this->input->post('foodtruck_owner_password'));
-            $foodtruck_owner_data['role_id']  = 3; // RESTAURANT OWNER ROLE
-            $foodtruck_owner_data['status']   = 1;
-
-            if (email_duplication($foodtruck_owner_data['email'])) {
-                $this->db->insert('users', $foodtruck_owner_data);
-                $data['owner_id'] = $this->db->insert_id();
-                $this->db->where('id', $id);
-                $this->db->update($this->table, $data);
-            }
-
-            return true;
-        } elseif (isset($_POST['foodtruck_owner_type']) && !empty($_POST['foodtruck_owner_type']) && $this->input->post('foodtruck_owner_type') == 'existing') { // FOR EXISTING RESTAURANT OWNER
-            $data['owner_id'] = sanitize($this->input->post('foodtruck_owner_id'));
-            $this->db->where('id', $id);
-            $this->db->update($this->table, $data);
-
-            // BECOME A RESTAURANT OWNER IF HE / SHE IS A CUSTOMER
-            $this->owner_model->become_foodtruck_owner($data['owner_id']);
-
-            return true;
-        } else { // ERROR
-            return false;
-        }
-    }
-
-    // UPDATE DELIVERY DATA FOR A RESTAURANT
-    public function update_delivery()
-    {
-        $id = required(sanitize($this->input->post('id')));
-        $data['delivery_charge']     = sanitize($this->input->post('delivery_charge'));
-        $data['maximum_time_to_deliver'] = sanitize($this->input->post('maximum_time_to_deliver'));
-        $data['updated_at'] = strtotime(date('D, d-M-Y'));
+        $data['city'] = required($this->input->post('ft_city'));
+        $data['state']  = required($this->input->post('ft_state'));
+        $data['zip_code']  = required(sanitize($this->input->post('ft_zip_code')));
+        // Get latitude and longitude from Zip Code
+        $geolocate = $this->app_lib->getGeolocateFromZipCode($data['zip_code']);
+        $data['latitude'] = $geolocate['latitude'];
+        $data['longitude'] = $geolocate['longitude'];
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
         return true;
     }
 
-    // UPDATE SCHEDULE DATA FOR A RESTAURANT
-    public function update_schedule()
+    // UPDATE DELIVERY DATA FOR A FOODTRUCK
+    public function update_contact()
     {
         $id = required(sanitize($this->input->post('id')));
-        $days = ['saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-        $schedule = array();
-        foreach ($days as $day) {
-            $schedule[$day . '_opening'] = sanitize($this->input->post($day . '_opening'));
-            $schedule[$day . '_closing'] = sanitize($this->input->post($day . '_closing'));
-        }
-
-        $data['schedule'] = json_encode($schedule);
-        $data['updated_at'] = strtotime(date('D, d-M-Y'));
+        $data['email']  = required($this->input->post('ft_email'));
+        $data['phone']  = required($this->input->post('ft_phone'));
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
         return true;
     }
 
-    // UPDATE SEO DATA FOR A RESTAURANT
+    // UPDATE SCHEDULE DATA FOR A FOODTRUCK
+    // public function update_schedule()
+    // {
+    //     $id = required(sanitize($this->input->post('id')));
+    //     $days = ['saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+    //     $schedule = array();
+    //     foreach ($days as $day) {
+    //         $schedule[$day . '_opening'] = sanitize($this->input->post($day . '_opening'));
+    //         $schedule[$day . '_closing'] = sanitize($this->input->post($day . '_closing'));
+    //     }
+
+    //     $data['schedule'] = json_encode($schedule);
+    //     $data['updated_at'] = strtotime(date('D, d-M-Y'));
+    //     $this->db->where('id', $id);
+    //     $this->db->update($this->table, $data);
+    //     return true;
+    // }
+
+    // UPDATE SEO DATA FOR A FOODTRUCK
     public function update_seo()
     {
         $id = required(sanitize($this->input->post('id')));
         $data['seo_tags']     = sanitize($this->input->post('seo_tags'));
         $data['seo_description']     = sanitize($this->input->post('seo_description'));
-        $data['updated_at'] = strtotime(date('D, d-M-Y'));
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
         return true;
     }
 
-    // UPDATE GALLERY AND THUMBNAIL INFOS FOR A RESTAURANT
+    // UPDATE GALLERY AND THUMBNAIL INFOS FOR A FOODTRUCK
     public function update_gallery()
     {
         $id = required(sanitize($this->input->post('id')));
         $previous_data = $this->get_by_id($id);
 
-        $previous_gallery_images = empty($previous_data['gallery']) ? ['placeholder.png', 'placeholder.png', 'placeholder.png', 'placeholder.png', 'placeholder.png', 'placeholder.png', 'placeholder.png', 'placeholder.png', 'placeholder.png'] : json_decode($previous_data['gallery']);
+        $previous_gallery_images = empty($previous_data->gallery) ? [
+                            'placeholder.png', 
+                            'placeholder.png', 
+                            'placeholder.png', 
+                            'placeholder.png', 
+                            'placeholder.png', 
+                            'placeholder.png', 
+                            'placeholder.png', 
+                            'placeholder.png', 
+                            'placeholder.png'
+                        ] : json_decode($previous_data->gallery);
 
         if (!empty($_FILES['foodtruck_thumbnail']['name'])) {
-            $data['thumbnail']  = $this->upload('foodtruck/thumbnail', $_FILES['foodtruck_thumbnail'], $previous_data["thumbnail"]);
+            $data['thumbnail']  = $this->upload('foodtruck/thumbnail', $_FILES['foodtruck_thumbnail'], $previous_data->thumbnail);
         }
 
 
@@ -294,11 +252,49 @@ class Foodtruck_model extends Base_model
         }
 
         $data['gallery'] = json_encode($previous_gallery_images);
-        $data['updated_at'] = strtotime(date('D, d-M-Y'));
 
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
         return true;
+    }
+    
+    // UPDATE OWNER INFOS FOR A FOODTRUCK
+    public function update_owner()
+    {
+        $id = required(sanitize($this->input->post('id')));
+
+        // OWNER CAN BE UPDATED BY ADMIN ONLY
+        if ($this->loggedin_user_role != "admin") {
+            error(get_phrase('you_are_not_authorized_for_this_action'), site_url('foodtruck'));
+        }
+
+        if (isset($_POST['foodtruck_owner_type']) && !empty($_POST['foodtruck_owner_type']) && $this->input->post('foodtruck_owner_type') == 'new') { // FOR NEW FOODTRUCK OWNER
+            $foodtruck_owner_data['name']     = sanitize($this->input->post('foodtruck_owner_name'));
+            $foodtruck_owner_data['email']    = sanitize($this->input->post('foodtruck_owner_email'));
+            $foodtruck_owner_data['password'] = sha1($this->input->post('foodtruck_owner_password'));
+            $foodtruck_owner_data['role_id']  = 3; // FOODTRUCK OWNER ROLE
+            $foodtruck_owner_data['status']   = 1;
+
+            if (email_duplication($foodtruck_owner_data['email'])) {
+                $this->db->insert('users', $foodtruck_owner_data);
+                $data['owner_id'] = $this->db->insert_id();
+                $this->db->where('id', $id);
+                $this->db->update($this->table, $data);
+            }
+
+            return true;
+        } elseif (isset($_POST['foodtruck_owner_type']) && !empty($_POST['foodtruck_owner_type']) && $this->input->post('foodtruck_owner_type') == 'existing') { // FOR EXISTING FOODTRUCK OWNER
+            $data['owner_id'] = sanitize($this->input->post('foodtruck_owner_id'));
+            $this->db->where('id', $id);
+            $this->db->update($this->table, $data);
+
+            // BECOME A FOODTRUCK OWNER IF HE / SHE IS A CUSTOMER
+            $this->owner_model->become_foodtruck_owner($data['owner_id']);
+
+            return true;
+        } else { // ERROR
+            return false;
+        }
     }
 
     // UPDATE RESTARAURANT STATUS
@@ -320,7 +316,7 @@ class Foodtruck_model extends Base_model
         return false;
     }
 
-    // IN WHICH RESTAURANTS A PARTICULAR CUISINE BELONGS
+    // IN WHICH FOODTRUCKS A PARTICULAR CUISINE BELONGS
     public function get_foodtrucks_by_cuisine($cuisine_id)
     {
         $foodtrucks = $this->db->get_where($this->table, ['status' => 1])->result_array();
@@ -334,7 +330,7 @@ class Foodtruck_model extends Base_model
         return $foodtrucks;
     }
 
-    // GET POPULAR RESTAURANTS. THIS BASICALLY CHECKS THE TOP RESTAURANTS BY RATINGS
+    // GET POPULAR FOODTRUCKS. THIS BASICALLY CHECKS THE TOP FOODTRUCKS BY RATINGS
     public function get_popular_foodtrucks($limit = false)
     {
         if ($limit) {
@@ -347,7 +343,7 @@ class Foodtruck_model extends Base_model
     }
 
     /**
-     * GET PLAIN RESTAURANT IDS AS A NUMERIC ARRAY LIKE [1,2,3,4]
+     * GET PLAIN FOODTRUCK IDS AS A NUMERIC ARRAY LIKE [1,2,3,4]
      *
      * @return array
      */
@@ -363,8 +359,20 @@ class Foodtruck_model extends Base_model
         return $foodtruck_ids;
     }
 
+    public function get_foodtruck_ids_by_owner_id($owner_id)
+    {
+        $foodtruck_ids = [];
+        $foodtrucks = $this->db->get_where('foodtrucks', ['owner_id' => $owner_id])->result_array();
+        foreach ($foodtrucks as $foodtruck) {
+            if (!in_array($foodtruck['id'], $foodtruck_ids)) {
+                array_push($foodtruck_ids, $foodtruck['id']);
+            }
+        }
+        return $foodtruck_ids;
+    }
+
     /**
-     * GET PLAIN RESTAURANT IDS AS A NUMERIC ARRAY LIKE [1,2,3,4]
+     * GET PLAIN FOODTRUCK IDS AS A NUMERIC ARRAY LIKE [1,2,3,4]
      *
      * @return array
      */
@@ -382,13 +390,13 @@ class Foodtruck_model extends Base_model
 
 
     /**
-     * FILTER RESTAURANTS FOR FRONTEND
+     * FILTER FOODTRUCKS FOR FRONTEND
      */
 
     public function filter_foodtruck_frontend()
     {
-        $cuisine    = nuller(sanitize($this->input->get('cuisine')));
-        $category   = nuller(sanitize($this->input->get('category')));
+        // $cuisine    = nuller(sanitize($this->input->get('cuisine')));
+        // $category   = nuller(sanitize($this->input->get('category')));
         $search_string   = nuller(sanitize($this->input->get('query')));
 
         // $address    = nuller(sanitize($this->input->get('address')));
@@ -396,8 +404,9 @@ class Foodtruck_model extends Base_model
         $search_latitude   = nuller(sanitize($this->input->get('search_latitude')));
         $search_longitude   = nuller(sanitize($this->input->get('search_longitude')));
         $event_date   = nuller(sanitize($this->input->get('event_date')));
+        $event_time   = nuller(sanitize($this->input->get('event_time')));
         $number_people   = nuller(sanitize($this->input->get('number_people')));
-        $event_week_name = strtolower(date("l", strtotime($event_date))) . "_opening";
+        // $event_week_name = strtolower(date("l", strtotime($event_date))) . "_opening";
 
         $filtered_foodtruck_ids_nearby_location = array();
         $foodtruck_ids_have_amount_of_persons_and_event_week_name = array();
@@ -474,18 +483,29 @@ class Foodtruck_model extends Base_model
 
 
         if($number_people) {
-            $where .= "and customers_num='$number_people'";
+            $where .= "and attendees_amt='$number_people'";
         }
         
         $sql = "select * from ".$this->table.$where;
         $query = $this->db->query($sql);
         $result = $query->result_array();
 
-        $event_date_open_status = '"'.$event_week_name.'":"closed"';
+        // $event_date_open_status = '"'.$event_week_name.'":"closed"';
 
+        // foreach ($result as $row) {
+        //     if($event_date) {
+        //         if (strpos($row['schedule'], $event_date_open_status) == false) {
+        //             array_push($available_foodtruck_ids, $row['id']);
+        //         } else {
+        //             array_push($not_available_foodtruck_ids, $row['id']);
+        //         }
+        //     } else {
+        //         array_push($foodtruck_ids_have_amount_of_persons_and_event_week_name, $row['id']);
+        //     }
+        // }
         foreach ($result as $row) {
-            if($event_date) {
-                if (strpos($row['schedule'], $event_date_open_status) == false) {
+            if($event_time) {
+                if (strpos($row['schedule'], $event_time) == false) {
                     array_push($available_foodtruck_ids, $row['id']);
                 } else {
                     array_push($not_available_foodtruck_ids, $row['id']);
@@ -615,5 +635,41 @@ class Foodtruck_model extends Base_model
         }
 
         return $filtered_foodtruck_ids;
+    }
+
+    public function get_foodtruck_page_styles($foodtruck_id)
+    {
+        $this->db->where('foodtruck_id', $foodtruck_id);
+        return $this->db->get('foodtruck_page_styles')->row();
+    }
+
+    public function reset_page_styles($foodtruck_id)
+    {
+        $data = array(
+            'page_bg_color' => '#fff',
+            'ft_name_color' => '#333',
+            'menu_category_name_color' => '#1b1f23',
+            'dish_name_color' => '#333',
+            'ft_text_color' => '#212529',
+            'dish_text_color' => '#212529',
+            'bg_theme' => null,
+        );
+        $this->db->where('foodtruck_id', $foodtruck_id);
+        $this->db->update('foodtruck_page_styles', $data);
+        return true;
+    }
+
+    public function update_page_styles($foodtruck_id)
+    {
+        $styles['page_bg_color'] = required($this->input->post('page_bg_color'));
+        $styles['ft_name_color'] = required($this->input->post('ft_name_color'));
+        $styles['menu_category_name_color'] = required($this->input->post('menu_category_name_color'));
+        $styles['dish_name_color'] = required($this->input->post('dish_name_color'));
+        $styles['ft_text_color'] = required($this->input->post('ft_text_color'));
+        $styles['dish_text_color'] = required($this->input->post('dish_text_color'));
+        $styles['bg_theme'] = $this->input->post('theme');
+        $this->db->where('foodtruck_id', $foodtruck_id);
+        $this->db->update('foodtruck_page_styles', $styles);
+        return true;
     }
 }

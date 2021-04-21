@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Driver model handles all the database queries of Drivers
  */
 
-class Driver_model extends Base_model
+class Driver_model extends MY_Model
 {
     function __construct()
     {
@@ -166,7 +166,7 @@ class Driver_model extends Base_model
 
     public function get_this_week_delivered_order_data($driver_id = null)
     {
-        $driver_id = $driver_id ? $driver_id : $this->logged_in_user_id;
+        $driver_id = $driver_id ? $driver_id : $this->loggedin_user_id;
         $conditions['driver_id'] = $driver_id;
 
         $day = date('w');
@@ -183,7 +183,7 @@ class Driver_model extends Base_model
 
     public function get_this_month_delivered_order_data($driver_id = null)
     {
-        $driver_id = $driver_id ? $driver_id : $this->logged_in_user_id;
+        $driver_id = $driver_id ? $driver_id : $this->loggedin_user_id;
         $conditions['driver_id'] = $driver_id;
 
         $first_day_of_month = "1 " . date("M") . " " . date("Y") . ' 00:00:00';
@@ -199,7 +199,7 @@ class Driver_model extends Base_model
 
     public function get_total_delivered_order_data($driver_id = null)
     {
-        $driver_id = $driver_id ? $driver_id : $this->logged_in_user_id;
+        $driver_id = $driver_id ? $driver_id : $this->loggedin_user_id;
         $conditions['driver_id'] = $driver_id;
         $conditions['order_status'] = "delivered";
         return $this->order_model->get_by_condition($conditions);
@@ -211,7 +211,7 @@ class Driver_model extends Base_model
 
     public function in_ride($driver_id = null)
     {
-        $driver_id = $driver_id ? $driver_id : $this->logged_in_user_id;
+        $driver_id = $driver_id ? $driver_id : $this->loggedin_user_id;
         $conditions['driver_id'] = $driver_id;
         $starting_time = date('D, d-M-Y') . ' 00:00:00';
         $ending_time = date('D, d-M-Y') . ' 23:59:59';

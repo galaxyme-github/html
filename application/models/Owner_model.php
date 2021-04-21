@@ -1,19 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * Product name : BookingFoodTrucks
- * Date : 20 - June - 2020
- * Author : TheDevs
- * Owner model handles all the database queries of Owner
- */
-
-class Owner_model extends Base_model
+class Owner_model extends MY_Model
 {
     function __construct()
     {
         parent::__construct();
-        $this->table = "users";
+        $this->table = "owners";
     }
 
     // GET ALL OWNERS, WHICH IS ROLE ID 3
@@ -43,8 +36,8 @@ class Owner_model extends Base_model
     // GET OWNER BY ID
     public function get_owner_by_id($id)
     {
-        $owner = $this->db->get_where($this->table, array('id' => $id, 'role_id' => 3));
-        return $this->owner_merger($owner, true);
+        $owner = $this->db->get_where($this->table, array('id' => $id))->row();
+        return $owner;
     }
 
     // owner MERGER
@@ -91,28 +84,38 @@ class Owner_model extends Base_model
     //UPDATE owner DATA
     public function update_owner()
     {
-        $id = required(sanitize($this->input->post('id')));
+        $owner_id = get_loggedin_user_id();
+        $credential_id = get_loggedin_id();
+        $previous_data = $this->get_owner_by_id($owner_id);
+        
         $email = required(sanitize($this->input->post('email')));
-        $previous_data = $this->get_owner_by_id($id);
 
-        if (email_duplication($email, $id)) {
-            $data['name'] = required(sanitize($this->input->post('name')));
-            $data['email'] = $email;
-            $data['phone'] = required(sanitize($this->input->post('phone')));
-            $data['updated_at'] = strtotime(date('d-m-y'));
-            // UPLOAD THUMBNAIL
+        if ($this->unique_email($email)) {
+            $owner_data['first_name'] = required(sanitize($this->input->post('first_name')));
+            $owner_data['last_name'] = required(sanitize($this->input->post('last_name')));
+            $owner_data['email'] = $email;
+            $owner_data['phone'] = required(sanitize($this->input->post('phone')));
+            $owner_data['address_1'] = required(sanitize($this->input->post('address_1')));
+            $owner_data['address_2'] = sanitize($this->input->post('address_2'));
+            $owner_data['city'] = required(sanitize($this->input->post('city')));
+            $owner_data['state'] = required(sanitize($this->input->post('state')));
+            $owner_data['zip_code'] = required(sanitize($this->input->post('zip_code')));
+            $owner_data['company'] = sanitize($this->input->post('company'));
+            $owner_data['headline'] = sanitize($this->input->post('headline'));
+            $owner_data['summary'] = sanitize($this->input->post('summary'));
+
+            // Upload Profile Image
             if (!empty($_FILES['image']['name'])) {
-                $data['thumbnail']  = $this->upload('user', $_FILES['image'], $previous_data["thumbnail"]);
+                $owner_data['photo']  = $this->upload('user', $_FILES['image'], $previous_data["photo"]);
             }
 
-            $this->db->where('id', $id);
-            $this->db->update($this->table, $data);
+            $this->db->trans_start();
+            $this->db->where('id', $owner_id);
+            $this->db->update($this->table, $owner_data);
 
-            $owner_data = $this->update_owner_address();
-
-            $this->db->where('user_id', $id);
-            $this->db->update('customers', $owner_data);
-
+            $this->db->where('id', $credential_id);
+            $this->db->update('login_credential', array('email' => $email));
+            $this->db->trans_complete();
             return true;
         }
     }
@@ -169,28 +172,21 @@ class Owner_model extends Base_model
 
         return true;
     }
-
-    // UPDATE THIS RESTAURANT OWNER ROLE TO CUSTOMER
-    public function become_customer($user_id)
+    /* unique valid email verification is done here */
+    function unique_email($email)
     {
-        $previous_data = $this->user_model->get_user_by_id($user_id);
-        if ($previous_data['role_id'] != 1 && $previous_data['role_id'] != 4) {
-            $this->db->where('id', $user_id);
-            $this->db->update('users', ['role_id' => 2]);
+        if (empty($email)) {
             return true;
         }
-        return false;
-    }
+        $this->db->where_not_in('id', get_loggedin_id());
+        $this->db->where('email', $email);
+        $query = $this->db->get('login_credential');
 
-    // UPDATE CUSTOMER ROLE TO RESTAURANT OWNER ROLE MEANS UPDATE TOT 2 -> 3
-    public function become_foodtruck_owner($user_id)
-    {
-        $previous_data = $this->user_model->get_user_by_id($user_id);
-        if ($previous_data['role_id'] != 1 && $previous_data['role_id'] != 4) {
-            $this->db->where('id', $user_id);
-            $this->db->update('users', ['role_id' => 3]);
+        if ($query->num_rows() > 0) {
+            error('Email is duplicated.', site_url('settings/profile'));
+            return false;
+        } else {
             return true;
         }
-        return false;
     }
 }

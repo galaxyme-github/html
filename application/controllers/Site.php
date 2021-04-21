@@ -2,24 +2,22 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * Product name : BookingFoodTrucks
- * Date : 14 - July - 2020
- * Author : TheDevs
- * Site Controller controlls the The Frontend Stuffs
+ * @product name : BFT
+ * @created : 13th April 2021
+ * @author : Zita Yevloyeva
  */
 
-include 'Base.php';
-class Site extends Base
+class Site extends MY_Controller
 {
-
-    // INDEX FUNCTION IS FOODTRUCK FOR SHOWING INDEX PAGE
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('recaptcha');
+    }
     function index()
     {
         $page_data['page_name']        = 'site/index';
-        $page_data['page_title']       = site_phrase("site", true);
-        $page_data['featured_cuisines'] = $this->cuisine_model->get_featured_cuisine();
-        $page_data['popular_foodtrucks'] = $this->foodtruck_model->get_popular_foodtrucks(9);
-        $page_data['categories'] = $this->category_model->get_featured_categories();
+        $page_data['page_title']       = 'Find the best food truck service';
         $page_data['states'] = $this->total_model->state_get_all();
         $this->load->view(frontend('index'), $page_data);
     }
@@ -28,8 +26,9 @@ class Site extends Base
     function foodtruck($slug = "", $foodtruck_id = "")
     {
         $page_data['foodtruck_details'] = $this->foodtruck_model->get_by_id($foodtruck_id);
+        $page_data['page_styles'] = $this->foodtruck_model->get_foodtruck_page_styles($foodtruck_id);
         $page_data['page_name']          = 'foodtruck/index';
-        $page_data['page_title']         = site_phrase("foodtruck", true);
+        $page_data['page_title']         = 'Food Truck';
         $this->load->view(frontend('index'), $page_data);
     }
 
@@ -55,8 +54,8 @@ class Site extends Base
             $condition['status'] = 1;
             $foodtrucks = $this->foodtruck_model->get_all_approved();
         } elseif ($type == "filter") {
-            $page_title = site_phrase('filtered_foodtrucks', true);
-            $page_header = site_phrase('filtered_foodtrucks');
+            $page_title = 'Filtered Food Trucks';
+            $page_header = 'Filtered Food Trucks';
             // $order_by = 'rating';
             $order_by = 'serve_radius';
             $order = 'asc';
@@ -71,11 +70,15 @@ class Site extends Base
         $current_page = sanitize($this->input->get('page', 0));
         $this->pagination->initialize($config);
 
-        $page_data['foodtrucks'] = $this->foodtruck_model->filter_special_paginate($page_size, $current_page, $condition, $order_by, $order);
+        $page_data['foodtrucks'] = $this->foodtruck_model->special_sort_paginate($page_size, $current_page, $condition, $order_by, $order);
         /**PAGINATION ENDS**/
-        $event_date   = nuller(sanitize($this->input->get('event_date')));
-        if ( $event_date ) {
-            $page_date['event_date'] = $event_date;
+        // $event_date   = nuller(sanitize($this->input->get('event_date')));
+        // if ( $event_date ) {
+        //     $page_date['event_date'] = $event_date;
+        // }
+        $event_time   = nuller(sanitize($this->input->get('event_time')));
+        if ( $event_time ) {
+            $page_date['event_time'] = $event_time;
         }
         // get filter city name and return to search result page
         $page_data['city_name'] = $this->input->get("search_input_city_name");
@@ -89,37 +92,31 @@ class Site extends Base
         $this->load->view(frontend('index'), $page_data);
     }
 
-    /**
-     * THIS FUNCTION IS FOODTRUCK FOR SHOWING THE ABOUT US PAGE
-     *
-     * @return void
-     */
-    public function about_us()
+    public function about()
     {
-        $page_data['page_name']        = 'about_us/index';
-        $page_data['page_title']       = site_phrase("about_us", true);
+        $page_data['page_name'] = 'about/index';
+        $page_data['page_title'] = 'About Us';
         $this->load->view(frontend('index'), $page_data);
     }
 
-    public function how_it_works()
+    public function how_it_works($user_type)
     {
-        $page_data['page_name']        = 'how_it_works/index';
-        $page_data['page_title']       = site_phrase("how_it_works", true);
-        $page_data['cuisines'] = $this->cuisine_model->get_all();
+        $page_data['page_name']        = 'how_it_works/' . $user_type;
+        $page_data['page_title']       = 'How it Works';
         $this->load->view(frontend('index'), $page_data);
     }
 
-    public function contact_us()
+    public function contact()
     {
-        $page_data['page_name']        = 'contact_us/index';
-        $page_data['page_title']       = site_phrase("contact_us", true);
+        $page_data['page_name']        = 'contact/index';
+        $page_data['page_title']       = 'Contact Us';
         $this->load->view(frontend('index'), $page_data);
     }
 
-    public function bft_garantee()
+    public function guarantee()
     {
-        $page_data['page_name']        = 'bft_garantee/index';
-        $page_data['page_title']       = site_phrase("bft_garantee", true);
+        $page_data['page_name']        = 'guarantee/index';
+        $page_data['page_title']       = 'BFT Guarantee';
         $this->load->view(frontend('index'), $page_data);
     }
 
@@ -131,19 +128,14 @@ class Site extends Base
     public function privacy_policy()
     {
         $page_data['page_name']        = 'privacy_policy/index';
-        $page_data['page_title']       = site_phrase("privacy_policy", true);
+        $page_data['page_title']       = 'Privacy Policy';
         $this->load->view(frontend('index'), $page_data);
     }
 
-    /**
-     * THIS FUNCTION IS FOODTRUCK FOR SHOWING THE TERMS AND CONDITIONS PAGE
-     *
-     * @return void
-     */
-    public function terms_and_conditions()
+    public function terms()
     {
-        $page_data['page_name']        = 'terms_and_conditions/index';
-        $page_data['page_title']       = site_phrase("terms_and_conditions", true);
+        $page_data['page_name']        = 'terms/index';
+        $page_data['page_title']       = 'Terms of Service';
         $this->load->view(frontend('index'), $page_data);
     }
 
@@ -168,7 +160,7 @@ class Site extends Base
     {
         $page_data['foodtruck_details'] = $this->foodtruck_model->get_by_id($foodtruck_id);
         $page_data['page_name']          = 'foodtruck/invite';
-        $page_data['page_title']         = site_phrase("foodtruck", true);
+        $page_data['page_title']         = 'Food Truck';
         $page_data['invite_type']        = $type;
         
         $this->load->view(frontend('index'), $page_data);
@@ -196,10 +188,10 @@ class Site extends Base
     /**
      * THIS FUNCTION IS FOR APPLY TO BECOME A FOODTRUCK MEMBER
      */
-    public function become_a_member()
+    public function become_bft_member()
     {
-        $page_data['page_name'] = 'apply_member/index';
-        $page_data['page_title'] = site_phrase("become_a_foodtruck_member", true);
+        $page_data['page_name'] = 'become_bft_member/index';
+        $page_data['page_title'] = 'Become a BFT Member';
 
         $this->load->view(frontend('index'), $page_data);
     }
@@ -219,7 +211,13 @@ class Site extends Base
             "country_abbr" => $country_abbr
         );
 
-        $this->load->view(frontend('no-footer-index'), $page_data);
+        $this->load->view(frontend('no_footer_index'), $page_data);
+    }
+
+    // THIS FUNCTION FOR APPLYING TO BECOME A FOOD TRUCK MEMBER
+    public function join_request()
+    {
+        $this->member_model->join_request();
     }
 }
 

@@ -80,28 +80,33 @@ if (!function_exists('is_foodtruck_owner')) {
 }
 
 // THIS HELPER METHOD MAKE USERNAME TO DISPLAY NAVBAR AND PROFILE BAR FROM EMAIL AND FULL NAME
-if (!function_exists('make_username')) {
-	function make_username($user_id = "")
+if (!function_exists('get_account_name')) {
+	function get_account_name()
 	{
+        $user_table = '';
 		$CI	= &get_instance();
 		$CI->load->database();
 
-		if (empty($user_id)) {
-			$user_id = $CI->session->userdata('user_id');
-		}
-		$user_data = $CI->db->get_where('users', array('id' => $user_id))->row_array();
+		$credential_id = $CI->session->userdata('loggedin_id');
+        $user_id = $CI->session->userdata('loggedin_userid');
+        $role_type = $CI->session->userdata('loggedin_type');
+        if ($role_type == 'superadmin' || $role_type == 'admin') {
+            $user_table = 'staff';
+        } else if ($role_type == 'owner') {
+            $user_table = 'owners';
+        } else if ($role_type == 'customer') {
+            $user_table = 'customers';
+        }
 
-		$full_name = $user_data['name'];
-		$email = $user_data['email'];
+        $account_name = $CI->db->select('account_name')->where('id', $credential_id)->get('login_credential')->row()->account_name;
+        if (empty($account_name)) {
+            $user_data = $CI->db->get_where($user_table, array('id' => $user_id))->row_array();
 
-		if (!empty($full_name)) {
-			$username = explode(' ', $full_name)[0];
-	
-		} else {
-			$username = '@'.explode('@', $email)[0];
-		}
-
-		return $username;
+            $email = $user_data['email'];
+            $account_name = '@'.explode('@', $email)[0];
+            
+        }
+		return $account_name;
 	}
 }
 

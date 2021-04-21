@@ -1,9 +1,9 @@
 <!-- Swipper Slider -->
-<link rel="stylesheet" href="<?php echo base_url('assets/frontend/default/css/swiper.min.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/frontend/css/swiper.min.css'); ?>">
 <!-- Magnific Popup CSS -->
-<link rel="stylesheet" href="<?php echo base_url('assets/frontend/default/css/magnific-popup.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/frontend/css/magnific-popup.css'); ?>">
 <!-- Datepicker CSS -->
-<link rel="stylesheet" href="<?php echo base_url('assets/frontend/default/css/bootstrap-datepicker.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/frontend/css/bootstrap-datepicker.css'); ?>">
 
 <!-- LEAFLET CSS -->
 <link rel="stylesheet" href="<?php echo base_url('assets/global/leaflet/leaflet.css'); ?>">
@@ -116,176 +116,185 @@
 </style>
 
 <style media="screen">
+.btn-group1 {
+    width: 73%;
+}
+
+@media (max-width: 576px) {
     .btn-group1 {
-        width: 73%;
+        width: 100%;
+        border-radius: 3px;
+        margin: 0 0 10px;
+        padding: 17px;
     }
+}
 
-    @media (max-width: 576px) {
-        .btn-group1 {
-            width: 100%;
-            border-radius: 3px;
-            margin: 0 0 10px;
-            padding: 17px;
-        }
-    }
+.slider {
+    /*background: linear-gradient(0deg, rgba(33, 33, 33, 0.3), rgba(33, 33, 33, 0.4)), url(<?php echo base_url('uploads/system/' . sanitize(get_website_settings('banner_image'))); ?>) no-repeat;*/
+    background: url(<?php echo base_url('uploads/system/' . sanitize(get_website_settings('banner_image'))); ?>) no-repeat;
+    background-position: center bottom;
+    background-size: cover;
+    min-height: 980px;
+}
 
-    .slider {
-        /*background: linear-gradient(0deg, rgba(33, 33, 33, 0.3), rgba(33, 33, 33, 0.4)), url(<?php echo base_url('uploads/system/' . sanitize(get_website_settings('banner_image'))); ?>) no-repeat;*/
-        background: url(<?php echo base_url('uploads/system/' . sanitize(get_website_settings('banner_image'))); ?>) no-repeat;
-        background-position: center bottom;
-        background-size: cover;
-        min-height: 980px;
-    }
+.slider-content_wrap h5 {
+    color: #fff;
+}
 
-    .slider-content_wrap h5 {
-        color: #fff;
-    }
+.slider-link a {
+    color: #fff;
+}
 
-    .slider-link a {
-        color: #fff;
-    }
-
-    .slider-link {
-        color: #fff;
-    }
+.slider-link {
+    color: #fff; 
+}
 </style>
 
 <style>
-  @import url(https://fonts.googleapis.com/css?family=Muli:400, 300);
-  .calendar, .calendar_weekdays, .calendar_content {
-      max-width: 300px;
-  }
-  .calendar {
-      margin: auto;
-      font-family:'Muli', sans-serif;
-      font-weight: 400;
-  }
-  .calendar_content, .calendar_weekdays, .calendar_header {
-      position: relative;
-      overflow: hidden;
-  }
-  .calendar_weekdays div {
-      display:inline-block;
-      vertical-align:top;
-  }
-  .calendar_weekdays div, .calendar_content div {
-      width: 14.28571%;
-      overflow: hidden;
-      text-align: center;
-      background-color: transparent;
-      color: #6f6f6f;
-      font-size: 14px;
-  }
-  .calendar_content div {
-      border: 1px solid transparent;
-      float: left;
-  }
-  .calendar_content div:hover {
-      border: 1px solid #dcdcdc;
-      cursor: default;
-  }
-  .calendar_content div.blank:hover {
-      cursor: default;
-      border: 1px solid transparent;
-  }
-  .calendar_content div.past-date {
-      color: #d5d5d5;
-  }
-  .calendar_content div.today {
-      font-weight: bold;
-      font-size: 14px;
-      color: #87b633;
-      border: 1px solid #dcdcdc;
-  }
-  .calendar_content div.selected {
-      background-color: #f0f0f0;
-  }
-  .calendar_header {
-      width: 100%;
-      text-align: center;
-  }
-  .calendar_header h2 {
-      padding: 0 10px;
-      font-family:'Muli', sans-serif;
-      font-weight: 300;
-      font-size: 18px;
-      color: #87b633;
-      float:left;
-      width:70%;
-      margin: 0 0 10px;
-  }
-  button.switch-month {
-      background-color: transparent;
-      padding: 0;
-      outline: none;
-      border: none;
-      color: #dcdcdc;
-      float: left;
-      width:15%;
-      transition: color .2s;
-  }
-  button.switch-month:hover {
-      color: #87b633;
-  }
-  .descriptions .description {
-    text-align: center;
-  }
-  .descriptions .description .search-icon {
-    background-image: url(<?php echo site_url("assets/frontend/default/images/search-icon.webp"); ?>);
-  }
-  .descriptions .description .pay-icon {
-    background-image: url(<?php echo site_url("assets/frontend/default/images/pay-icon.webp"); ?>);
-  }
-  .descriptions .description .relax-icon {
-    background-image: url(<?php echo site_url("assets/frontend/default/images/relax-icon.webp"); ?>);
-  }
-  .descriptions .description .icon {
-    width: 80px;
-    height: 80px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: 50%;
-    margin: auto;
-  }
-  .form-control[readonly] {
-    cursor: default;
-    background-color: #fff;
-  }
+@import url(https://fonts.googleapis.com/css?family=Muli:400, 300);
+.calendar, .calendar_weekdays, .calendar_content {
+  max-width: 300px;
+}
+.calendar {
+  margin: auto;
+  font-family:'Muli', sans-serif;
+  font-weight: 400;
+}
+.calendar_content, .calendar_weekdays, .calendar_header {
+  position: relative;
+  overflow: hidden;
+}
+.calendar_weekdays div {
+  display:inline-block;
+  vertical-align:top;
+}
+.calendar_weekdays div, .calendar_content div {
+  width: 14.28571%;
+  overflow: hidden;
+  text-align: center;
+  background-color: transparent;
+  color: #6f6f6f;
+  font-size: 14px;
+}
+.calendar_content div {
+  border: 1px solid transparent;
+  float: left;
+}
+.calendar_content div:hover {
+  border: 1px solid #dcdcdc;
+  cursor: default;
+}
+.calendar_content div.blank:hover {
+  cursor: default;
+  border: 1px solid transparent;
+}
+.calendar_content div.past-date {
+  color: #d5d5d5;
+}
+.calendar_content div.today {
+  font-weight: bold;
+  font-size: 14px;
+  color: #87b633;
+  border: 1px solid #dcdcdc;
+}
+.calendar_content div.selected {
+  background-color: #f0f0f0;
+}
+.calendar_header {
+  width: 100%;
+  text-align: center;
+}
+.calendar_header h2 {
+  padding: 0 10px;
+  font-family:'Muli', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  color: #87b633;
+  float:left;
+  width:70%;
+  margin: 0 0 10px;
+}
+button.switch-month {
+  background-color: transparent;
+  padding: 0;
+  outline: none;
+  border: none;
+  color: #dcdcdc;
+  float: left;
+  width:15%;
+  transition: color .2s;
+}
+button.switch-month:hover {
+  color: #87b633;
+}
+.descriptions .description {
+text-align: center;
+}
+.descriptions .description .search-icon {
+background-image: url(<?php echo site_url("assets/frontend/images/search-icon.webp"); ?>);
+}
+.descriptions .description .pay-icon {
+background-image: url(<?php echo site_url("assets/frontend/images/pay-icon.webp"); ?>);
+}
+.descriptions .description .relax-icon {
+background-image: url(<?php echo site_url("assets/frontend/images/relax-icon.webp"); ?>);
+}
+.descriptions .description .icon {
+width: 80px;
+height: 80px;
+background-size: contain;
+background-repeat: no-repeat;
+background-position: 50%;
+margin: auto;
+}
+.form-control[readonly] {
+cursor: default;
+background-color: #fff;
+}
 
-  .ft-search-frm #address {
-    background-image: url(<?php echo site_url("assets/frontend/default/images/location-pin.png"); ?>);
-  }
+.ft-search-frm #address {
+  background-image: url(<?php echo site_url("assets/frontend/images/location-pin.png"); ?>);
+}
 
-  .ft-search-frm #event_date {
-    background-image: url(<?php echo site_url("assets/frontend/default/images/sb-calendar.png"); ?>);
-  }
+.ft-search-frm #event_date {
+  background-image: url(<?php echo site_url("assets/frontend/images/sb-calendar.png"); ?>);
+}
 
-  .ft-search-frm .select-selected {
-    background-image: url(<?php echo site_url("assets/frontend/default/images/sb-user.png"); ?>);
-    padding-left: 39px;
-    background-repeat: no-repeat;
-    background-size: 20px;
-    background-position: 4px center;
-    text-align: left;
-  }
+.ft-search-frm .bg-user-icon {
+  background-image: url(<?php echo site_url("assets/frontend/images/sb-user.png"); ?>);
+  padding-left: 3px;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position: 15px center;
+  text-align: left;
+}
 
-  #address, #event_date {
-    padding-left: 50px;
-    background-repeat: no-repeat;
-    background-size: 20px;
-    background-position: 16px center;
-  }
-  .datepicker-days table tr th.dow {
-    color: #6b6b6b !important;
-  }
-  .datepicker {
-    -webkit-box-shadow: 0 2px 16px rgb(0 0 0 / 15%);
-    box-shadow: 0 2px 16px rgb(0 0 0 / 15%);
-  }
-  .ft-sb-select option:hover {
-    display: none;
-    background-color: red !important;
-  }
+.ft-search-frm .bg-meal-icon {
+  background-image: url(<?php echo site_url("assets/frontend/images/sb-meal-time.png"); ?>);
+  padding-left: 3px;
+  background-repeat: no-repeat;
+  background-size: 25px;
+  background-position: 15px center;
+  text-align: left;
+}
+
+#address, #event_date {
+  padding-left: 50px;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position: 16px center;
+}
+.datepicker-days table tr th.dow {
+  color: #6b6b6b !important;
+}
+.datepicker {
+  -webkit-box-shadow: 0 2px 16px rgb(0 0 0 / 15%);
+  box-shadow: 0 2px 16px rgb(0 0 0 / 15%);
+}
+.ft-sb-select option:hover {
+  display: none;
+  background-color: red !important;
+}
 /*the container must be positioned relative:*/
 .ft-sb-select {
     position: relative;
@@ -336,12 +345,12 @@
 }
 
 .ft-sb-btn {
-  background-color: #01BD70;
+  background-color: #20a268;
   color: #fff;
 }
 
 .ft-sb-btn:hover {
-  background-color: #28A745;
+  background-color: #1db370;
   color: #fff;
 }
 
@@ -500,5 +509,6 @@
 
 .swiper-slide {
   margin: 0 0.1rem;
+  width: 367px !important
 }
 </style>

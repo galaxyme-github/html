@@ -1,5 +1,4 @@
 "use strict";
-
 // INIT DATATABLES
 function initDataTables(tableIds, pageLength = 10) {
   tableIds.map(tableId => {

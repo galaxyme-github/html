@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Cart model handles all the database queries of Cart
  */
 
-class Cart_model extends Base_model
+class Cart_model extends MY_Model
 {
     function __construct()
     {
@@ -21,7 +21,7 @@ class Cart_model extends Base_model
      */
     function add_to_cart()
     {
-        $data['customer_id'] = $this->logged_in_user_id;
+        $data['customer_id'] = $this->loggedin_user_id;
         $data['menu_id'] = required(sanitize($this->input->post('menuId')));
         $data['servings'] = required(sanitize($this->input->post('servings')));
         $data['quantity'] = sanitize($this->input->post('quantity')) > 0 ? sanitize($this->input->post('quantity')) : 1;
@@ -50,7 +50,7 @@ class Cart_model extends Base_model
     function update_cart()
     {
         $cart_id = required(sanitize($this->input->post('cartId')));
-        $data['customer_id'] = $this->logged_in_user_id;
+        $data['customer_id'] = $this->loggedin_user_id;
         $data['menu_id'] = required(sanitize($this->input->post('menuId')));
         $data['servings'] = required(sanitize($this->input->post('servings')));
         $data['quantity'] = sanitize($this->input->post('quantity')) > 0 ? sanitize($this->input->post('quantity')) : 1;
@@ -87,7 +87,7 @@ class Cart_model extends Base_model
      */
     function total_cart_items()
     {
-        $data['customer_id'] = $this->logged_in_user_id;
+        $data['customer_id'] = $this->loggedin_user_id;
         return $this->db->get_where($this->table, $data)->num_rows();
     }
 
@@ -96,7 +96,7 @@ class Cart_model extends Base_model
      */
     function get_all()
     {
-        $data['customer_id'] = $this->logged_in_user_id;
+        $data['customer_id'] = $this->loggedin_user_id;
         $obj = $this->db->get_where($this->table, $data);
         return $this->merger($obj);
     }
@@ -241,7 +241,7 @@ class Cart_model extends Base_model
      */
     public function clearing_cart()
     {
-        $data['customer_id'] = $this->logged_in_user_id;
+        $data['customer_id'] = $this->loggedin_user_id;
         $this->db->where($data);
         return $this->db->delete($this->table);
     }
@@ -254,7 +254,7 @@ class Cart_model extends Base_model
     {
         $user_role = $this->session->userdata('user_role');
         if ($user_role == "customer") {
-            $this->db->where('customer_id', $this->logged_in_user_id);
+            $this->db->where('customer_id', $this->loggedin_user_id);
         }
         return $this->db->get($this->table)->num_rows();
     }

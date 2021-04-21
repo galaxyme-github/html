@@ -1,14 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * Product name : BookingFoodTrucks
- * Date : 21 - August - 2020
- * Author : TheDevs
- * Order model handles all the database queries of Cart
- */
-
-class Order_model extends Base_model
+class Order_model extends MY_Model
 {
     function __construct()
     {
@@ -102,25 +95,24 @@ class Order_model extends Base_model
         return $this->order_merger($obj);
     }
 
-    // GET TODAYS ORDERS. IT WILL BE DIFFERENT USER WISE
-    public function get_todays_orders()
+    // Get today's orders
+    public function get_today_orders()
     {
-        $dynamic_function_name = "get_todays_orders_as_" . $this->logged_in_user_role;
+        $dynamic_function_name = "get_today_orders_as_" . $this->loggedin_user_role;
         return $this->$dynamic_function_name();
     }
 
     /**
-     * THIS FUNCTION IS ONLY APPLICABLE FOR CUSTOMERS ORDERS. IT WILL BE CALLED INTERNALLY
-     *
+     * This function is only responsible for customers' orders.
      * @return object
      */
-    public function get_todays_orders_as_customer()
+    public function get_today_orders_as_customer()
     {
         $todays_starting_time = strtotime(date('D, d-M-Y') . ' 00:00:01');
         $todays_ending_time = strtotime(date('D, d-M-Y') . ' 23:59:59');
         $this->db->where('order_placed_at >=', $todays_starting_time);
         $this->db->where('order_placed_at <=', $todays_ending_time);
-        $this->db->where('customer_id', $this->logged_in_user_id);
+        $this->db->where('customer_id', $this->loggedin_user_id);
         $this->db->order_by("id", "desc");
         $obj = $this->db->get('orders');
         return $this->order_merger($obj);
@@ -139,7 +131,7 @@ class Order_model extends Base_model
         // APPROVED ORDERS
         $this->db->where('order_placed_at >=', $todays_starting_time);
         $this->db->where('order_placed_at <=', $todays_ending_time);
-        $this->db->where('driver_id', $this->logged_in_user_id);
+        $this->db->where('driver_id', $this->loggedin_user_id);
         $this->db->order_by("id", "asc");
         $this->db->where('order_status', 'approved');
         $obj = $this->db->get('orders');
@@ -148,7 +140,7 @@ class Order_model extends Base_model
         // PREPARING
         $this->db->where('order_placed_at >=', $todays_starting_time);
         $this->db->where('order_placed_at <=', $todays_ending_time);
-        $this->db->where('driver_id', $this->logged_in_user_id);
+        $this->db->where('driver_id', $this->loggedin_user_id);
         $this->db->order_by("id", "asc");
         $this->db->where('order_status', 'preparing');
         $obj = $this->db->get('orders');
@@ -157,7 +149,7 @@ class Order_model extends Base_model
         // PREPARED ORDERS
         $this->db->where('order_placed_at >=', $todays_starting_time);
         $this->db->where('order_placed_at <=', $todays_ending_time);
-        $this->db->where('driver_id', $this->logged_in_user_id);
+        $this->db->where('driver_id', $this->loggedin_user_id);
         $this->db->order_by("id", "asc");
         $this->db->where('order_status', 'prepared');
         $obj = $this->db->get('orders');
@@ -166,7 +158,7 @@ class Order_model extends Base_model
         // DELIVERED ORDERS
         $this->db->where('order_placed_at >=', $todays_starting_time);
         $this->db->where('order_placed_at <=', $todays_ending_time);
-        $this->db->where('driver_id', $this->logged_in_user_id);
+        $this->db->where('driver_id', $this->loggedin_user_id);
         $this->db->order_by("id", "asc");
         $this->db->where('order_status', 'delivered');
         $obj = $this->db->get('orders');
@@ -214,7 +206,7 @@ class Order_model extends Base_model
     public function get_todays_orders_as_owner()
     {
         // AT FIRST CHECK IF THE OWNER HAS ANY RESTAURANT
-        $foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->logged_in_user_id);
+        $foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->loggedin_user_id);
         if (count($foodtruck_ids)) {
             // CHECK RESTAURANT SELECTION
             $foodtruck_id = nuller(sanitize($this->input->get('foodtruck_id')));
@@ -315,7 +307,7 @@ class Order_model extends Base_model
         $address_id = !empty($address_id_arg) ? $address_id_arg : sanitize($this->input->post('address_number'));
         
         $data['code'] = "OR-" . strtotime(date('D, d-M-Y H:i:s')) . "-" . $this->session->userdata('user_id');
-        $data['customer_id'] = $this->logged_in_user_id;
+        $data['customer_id'] = $this->loggedin_user_id;
         $data['customer_address_id'] = $address_id;
         $data['order_placed_at'] = strtotime(date('D, d-M-Y H:i:s'));
         $data['order_status'] = "pending";
@@ -358,10 +350,10 @@ class Order_model extends Base_model
     {
 
         if ($this->session->userdata('customer_login')) {
-            $this->db->where(['customer_id' => $this->logged_in_user_id, 'code' => $order_code]);
+            $this->db->where(['customer_id' => $this->loggedin_user_id, 'code' => $order_code]);
             $order_rows = $this->db->get('orders')->num_rows();
         } elseif ($this->session->userdata('owner_login')) {
-            $owners_approved_foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->logged_in_user_id);
+            $owners_approved_foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->loggedin_user_id);
             if (count($owners_approved_foodtruck_ids) > 0) {
                 $this->db->where('order_code', $order_code);
                 $this->db->where_in('foodtruck_id', $owners_approved_foodtruck_ids);
@@ -370,7 +362,7 @@ class Order_model extends Base_model
                 return false;
             }
         } elseif ($this->session->userdata('driver_login')) {
-            $this->db->where(['driver_id' => $this->logged_in_user_id, 'code' => $order_code]);
+            $this->db->where(['driver_id' => $this->loggedin_user_id, 'code' => $order_code]);
             $order_rows = $this->db->get('orders')->num_rows();
         } else {
             $order_rows = $this->db->get('orders')->num_rows();
@@ -396,7 +388,7 @@ class Order_model extends Base_model
     // FILTER ORDERS
     public function filter()
     {
-        $dynamic_function_name = "filter_orders_as_" . $this->logged_in_user_role;
+        $dynamic_function_name = "filter_orders_as_" . $this->loggedin_user_role;
         return $this->$dynamic_function_name();
     }
 
@@ -408,7 +400,7 @@ class Order_model extends Base_model
     public function filter_orders_as_customer()
     {
         // CUSTOMER ID INTEGRATING TO THE CONDITION
-        $conditions['customer_id'] = $this->logged_in_user_id;
+        $conditions['customer_id'] = $this->loggedin_user_id;
 
         // CHECK DATE RANGE
         if (isset($_GET['date_range']) && !empty($_GET['date_range'])) {
@@ -471,7 +463,7 @@ class Order_model extends Base_model
     public function filter_orders_as_owner()
     {
         // AT FIRST CHECK IF THE OWNER HAS ANY RESTAURANT
-        $foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->logged_in_user_id);
+        $foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->loggedin_user_id);
         if (count($foodtruck_ids)) {
             // CHECK RESTAURANT SELECTION
             $foodtruck_id = nuller(sanitize($this->input->get('foodtruck_id')));
@@ -544,7 +536,7 @@ class Order_model extends Base_model
         $conditions['customer_id']     = nuller(sanitize($this->input->get('customer_id')));
 
         // DRIVER ID WOULD BE THE LOGGED IN USER ID
-        $conditions['driver_id']     = $this->logged_in_user_id;
+        $conditions['driver_id']     = $this->loggedin_user_id;
 
         // CHECK STATUS SELECTION
         $conditions['order_status']     = nuller(sanitize($this->input->get('status')));
@@ -558,7 +550,7 @@ class Order_model extends Base_model
      */
     public function process($order_code, $phase)
     {
-        $dynamic_function_name = "process_orders_as_" . $this->logged_in_user_role;
+        $dynamic_function_name = "process_orders_as_" . $this->loggedin_user_role;
         return $this->$dynamic_function_name($order_code, $phase);
     }
 
@@ -605,7 +597,7 @@ class Order_model extends Base_model
             $index = array_search($phase, $phases);
 
             $order_details = $this->db->get_where($this->table, ['code' => $order_code])->row_array();
-            if (count($order_details) > 0 && $order_details['driver_id'] == $this->logged_in_user_id) {
+            if (count($order_details) > 0 && $order_details['driver_id'] == $this->loggedin_user_id) {
                 if ($index && $phases[$index - 1] == $order_details['order_status']) {
                     $this->db->where('code', $order_code);
                     $this->db->update('orders', ['order_status' => $phase, 'order_' . $phase . '_at' => strtotime(date('D, d-M-Y H:i:s'))]);
@@ -636,7 +628,7 @@ class Order_model extends Base_model
      */
     public function assign_driver()
     {
-        $dynamic_function_name = "assign_driver_as_" . $this->logged_in_user_role;
+        $dynamic_function_name = "assign_driver_as_" . $this->loggedin_user_role;
         $this->$dynamic_function_name();
     }
 
@@ -662,16 +654,16 @@ class Order_model extends Base_model
     // ASSIGNING A DRIVER AS RESTAURANT OWNER
 
 
-    // DASHBOARD TILE DATA USER AND STATUS WISE
-    public function get_number_of_orders($order_status = "")
+    /* Count total orders */
+    public function count_orders($order_status = "")
     {
-        $user_role = $this->session->userdata('user_role');
+        $user_role = get_loggedin_user_role();
 
-        /*AT FIRST CHECK USER ROLE*/
+        // Check user role
         if ($user_role == "customer") {
-            $this->db->where('customer_id', $this->logged_in_user_id);
+            $this->db->where('customer_id', $this->loggedin_user_id);
         } elseif ($user_role == "owner") {
-            $foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->logged_in_user_id);
+            $foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->loggedin_user_id);
             if (count($foodtruck_ids)) {
                 $order_codes = $this->get_order_code_by_foodtruck_id($foodtruck_ids);
                 if (count($order_codes) > 0) {
@@ -699,13 +691,13 @@ class Order_model extends Base_model
 
 
     // DASHBOARD TILE DATA USER AND STATUS WISE
-    public function get_number_of_todays_pending_orders()
+    public function count_today_pending_orders()
     {
-        $user_role = $this->session->userdata('user_role');
+        $user_role = get_loggedin_user_role();
 
         /*AT FIRST CHECK USER ROLE*/
         if ($user_role == "owner") {
-            $foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->logged_in_user_id);
+            $foodtruck_ids = $this->foodtruck_model->get_approved_foodtruck_ids_by_owner_id($this->loggedin_user_id);
             if (count($foodtruck_ids)) {
                 $order_codes = $this->get_order_code_by_foodtruck_id($foodtruck_ids);
                 if (count($order_codes) > 0) {
@@ -730,7 +722,7 @@ class Order_model extends Base_model
     {
         $order_code = required(sanitize($this->input->post('code')));
         $order_details = $this->get_by_code($order_code);
-        if ($order_details['driver_id'] == $this->logged_in_user_id) {
+        if ($order_details['driver_id'] == $this->loggedin_user_id) {
             $data['note'] = required(sanitize($this->input->post('note')));
             $this->db->where('code', $order_code);
             $this->db->update('orders', $data);

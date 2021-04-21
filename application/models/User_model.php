@@ -1,19 +1,14 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * Product name : BookingFoodTrucks
- * Date : 09 - June - 2020
- * Author : TheDevs
- * User model handles all the database queries of Users
- */
 
-class User_model extends Base_model
+class User_model extends MY_Model
 {
     function __construct()
     {
         parent::__construct();
-        $this->table = "users";
+        $this->loggedin_user_id = get_loggedin_user_id();
+        $this->loggedin_user_role = get_loggedin_user_role();
     }
 
     // GET USER BY ID
@@ -51,90 +46,183 @@ class User_model extends Base_model
         return $this->db->get($this->table)->result_array();
     }
 
-    // UPDATE LOGGED IN USER PROFILE INFO
+    /* Update user profile */
     public function update_profile()
     {
-        if (get_user_role('user_role', $this->session->userdata('user_id')) == "admin") {
+        $user_role = $this->loggedin_user_role;
+        if ($user_role == 'superadmin' || $user_role == 'admin') {
             return $this->update_admin_profile();
-        } elseif (get_user_role('user_role', $this->session->userdata('user_id')) == "customer" || get_user_role('user_role', $this->session->userdata('user_id')) == "owner") {
+        } elseif ($user_role == 'customer') {
             return $this->update_customer_profile();
         } else {
-            return $this->update_driver_profile();
+            return $this->update_owner_profile();
         }
     }
 
-    // UPDATE ADMIN PROFILE
+    /* Update admin profile */
     public function update_admin_profile()
     {
-        $logged_in_user_id = $this->session->userdata('user_id');
-        $previous_data = $this->get_user_by_id($logged_in_user_id);
+        $loggedin_user_id = $this->loggedin_user_id;
+        $previous_data = $this->get_user_detail($loggedin_user_id, $this->loggedin_user_role);
         $email = required(sanitize($this->input->post('email')));
-        if (email_duplication($email, $logged_in_user_id)) {
+        if ($this->unique_email($email)) {
             $profile['email'] = $email;
             $profile['name'] = required(sanitize($this->input->post('name')));
             $profile['phone'] = required(sanitize($this->input->post('phone')));
-            $profile['updated_at'] = strtotime(date('d-m-y'));
-            // UPLOAD THUMBNAIL
+            $profile['address_2'] = required(sanitize($this->input->post('address_2')));
+            $profile['address_1'] = required(sanitize($this->input->post('address_1')));
+            $profile['city'] = required(sanitize($this->input->post('city')));
+            $profile['state'] = required(sanitize($this->input->post('state')));
+            $profile['zip_code'] = required(sanitize($this->input->post('zip_code')));
+            // Upload user photo
             if (!empty($_FILES['user_image']['name'])) {
-                $profile['thumbnail']  = $this->upload('user', $_FILES['user_image'], $previous_data["thumbnail"]);
+                $profile['photo']  = $this->upload('user', $_FILES['user_image'], $previous_data->photo);
             }
+            $this->db->trans_start();
+            $this->db->where('id', $loggedin_user_id);
+            $this->db->update('staff', $profile);
 
-            $this->db->where('id', $logged_in_user_id);
-            $this->db->update('users', $profile);
-
+            $this->db->where('id', get_loggedin_id());
+            $this->db->update('login_credential', array('email' =>  $email));
+            $this->db->trans_complete();
             return true;
         }
     }
-    // UPDATE CUSTOMER PROFILE
+
+    /* update customer profile */
     public function update_customer_profile()
     {
         return $this->customer_model->update_customer();
     }
-    // UPDATE DRIVER PROFILE
-    public function update_driver_profile()
+
+    /* update owner profile */
+    public function update_owner_profile()
     {
-        $logged_in_user_id = $this->session->userdata('user_id');
-        $previous_data = $this->get_user_by_id($logged_in_user_id);
-        $email = required(sanitize($this->input->post('email')));
-        if (email_duplication($email, $logged_in_user_id)) {
-            $profile['email'] = $email;
-            $profile['name'] = required(sanitize($this->input->post('name')));
-            $profile['phone'] = required(sanitize($this->input->post('phone')));
-            $profile['updated_at'] = strtotime(date('d-m-y'));
-            // UPLOAD THUMBNAIL
-            if (!empty($_FILES['user_image']['name'])) {
-                $profile['thumbnail']  = $this->upload('user', $_FILES['user_image'], $previous_data["thumbnail"]);
-            }
+        return $this->owner_model->update_owner();
+    }
 
-            $this->db->where('id', $logged_in_user_id);
-            $this->db->update('users', $profile);
-
-            $driver_data['vehicle_type'] = sanitize($this->input->post('vehicle_type'));
-            $driver_data['address'] = sanitize($this->input->post('address'));
-            $this->db->where('user_id', $logged_in_user_id);
-            $this->db->update('drivers', $driver_data);
-            return true;
+    // when user change his password
+    public function update_password()
+    {
+        $user_role = get_loggedin_user_role();
+        if ($user_role == 'superadmin' || $user_role == 'admin') {
+            return $this->update_admin_password();
+        } else {
+            return $this->update_user_password();
         }
     }
 
-    // UPDATE LOGGED IN USERS PASSWORD
-    public function update_password()
+    /* admin password change */
+    public function update_admin_password()
     {
-        $logged_in_user_id = $this->session->userdata('user_id');
-        $previous_data = $this->get_user_by_id($logged_in_user_id);
+        $loggedin_user_id = $this->loggedin_user_id;
+        $previous_data = $this->get_user_detail($loggedin_user_id, $this->loggedin_user_role);
 
-        // DO NOT SANITIZE PASSWORDS, IT CAN CARRY SPECIAL CHARACTERS
-        $current_password = sha1(required($this->input->post('current_password')));
-        $new_password = sha1(required($this->input->post('new_password')));
-        $confirm_password = sha1(required($this->input->post('confirm_password')));
+        $current_password = required($this->input->post('current_password'));
 
-        // CHECK PASSWORDS
-        if ($previous_data['password'] == $current_password && $new_password == $confirm_password) {
-            $data['password'] = $new_password;
-            $this->db->where('id', $logged_in_user_id);
-            $this->db->update('users', $data);
+        if ($this->check_validate_password($current_password)) {
+            $new_password = required($this->input->post('new_password'));
+            $confirm_password = required($this->input->post('confirm_password'));
+
+            if ($new_password == $confirm_password) {
+                $this->db->where('id', get_loggedin_id());
+                $this->db->update('login_credential', array('password' => $this->app_lib->password_encrypt($new_password)));
+                success('Password has been changed successfully!', site_url('settings/profile'));
+            } else {
+                error('New password is not matched.', site_url('settings/profile'));
+            }
+        } else {
+            error('Current password is invalid.', site_url('settings/profile'));
+        }
+    }
+
+    /* user password change */
+    public function update_user_password()
+    {
+        $loggedin_user_id = $this->loggedin_user_id;
+        $previous_data = $this->get_user_detail($loggedin_user_id, $this->loggedin_user_role);
+
+        $current_password = required($this->input->post('current_password'));
+
+        if ($this->check_validate_password($current_password)) {
+            $new_password = required($this->input->post('new_password'));
+            $confirm_password = required($this->input->post('confirm_password'));
+
+            if ($new_password == $confirm_password) {
+                $this->db->where('id', get_loggedin_id());
+                $this->db->update('login_credential', array('password' => $this->app_lib->password_encrypt($new_password)));
+                success('Password has been changed successfully!', site_url('settings/password'));
+            } else {
+                error('New password is not matched.', site_url('settings/password'));
+            }
+        } else {
+            error('Current password is invalid.', site_url('settings/password'));
+        }
+    }
+
+    // current password verification is done here
+    public function check_validate_password($password)
+    {
+        if ($password) {
+            $getPassword = $this->db->select('password')
+                ->where('id', get_loggedin_id())
+                ->get('login_credential')->row()->password;
+            $getVerify = $this->app_lib->verify_password($password, $getPassword);
+            if ($getVerify) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    // get role id from role type
+    function get_role_id_by_type($role_type)
+    {
+        return $this->db->select('id')->where('type', $role_type)->get('roles')->row()->id;
+    }
+
+    // get credential detail by id
+    function get_credential_detail_by_id($credential_id)
+    {
+        return $this->db->get_where('login_credential', ['id' => $credential_id])->row();
+    }
+
+    /* get role type by roleId */
+    function get_role_type_by_role_id($role_id)
+    {
+        return $this->db->select('type')->where('id', $role_id)->get('roles')->row()->type;
+    }
+
+    /* get user detail by user_id and user_role */
+    function get_user_detail($user_id, $user_role)
+    {   
+        $table = '';
+        if ($user_role == 'superadmin' || $user_role == 'admin') {
+            $table = 'staff';
+        } else if ($user_role == 'customer') {
+            $table = 'customers';
+        } else if ($user_role == 'owner') {
+            $table = 'owners';
+        }
+        return $this->db->get_where($table, ['id' => $user_id])->row();
+    }
+
+    /* unique valid email verification is done here */
+    function unique_email($email)
+    {
+        if (empty($email)) {
             return true;
         }
-        return false;
+        $this->db->where_not_in('id', get_loggedin_id());
+        $this->db->where('email', $email);
+        $query = $this->db->get('login_credential');
+
+        if ($query->num_rows() > 0) {
+            error('Email is duplicated.', site_url('settings/profile'));
+            return false;
+        } else {
+            return true;
+        }
     }
 }

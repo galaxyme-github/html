@@ -4,12 +4,7 @@
  *
  * An open source application development framework for PHP 7 or newer
  *
- * @package		CodeIgniter
- * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
- * @license		http://codeigniter.com/user_guide/license.html
- * @link		http://codeigniter.com
- * @since		Version 1.0
+ * @author	Zita Yevloyeva
  * @filesource
  */
 
@@ -17,7 +12,6 @@ if (!function_exists('get_system_settings')) {
     function get_system_settings($key = '')
     {
         $CI    = &get_instance();
-        $CI->load->database();
 
         $CI->db->where('key', $key);
         $result = $CI->db->get('system_settings')->row('value');
@@ -29,7 +23,6 @@ if (!function_exists('get_website_settings')) {
     function get_website_settings($key = '')
     {
         $CI    = &get_instance();
-        $CI->load->database();
 
         $CI->db->where('key', $key);
         $result = $CI->db->get('website_settings')->row()->value;
@@ -41,7 +34,6 @@ if (!function_exists('get_delivery_settings')) {
     function get_delivery_settings($key = '')
     {
         $CI    = &get_instance();
-        $CI->load->database();
 
         $CI->db->where('key', $key);
         $result = $CI->db->get('delivery_settings')->row('value');
@@ -53,7 +45,6 @@ if (!function_exists('get_smtp_settings')) {
     function get_smtp_settings($key = '')
     {
         $CI    = &get_instance();
-        $CI->load->database();
 
         $CI->db->where('key', $key);
         $result = $CI->db->get('smtp_settings')->row('value');
@@ -65,8 +56,6 @@ if (!function_exists('get_payment_settings')) {
     function get_payment_settings($key = '')
     {
         $CI    = &get_instance();
-        $CI->load->database();
-
         $CI->db->where('key', $key);
         $result = $CI->db->get('payment_settings')->row()->value;
         return $result;
@@ -77,7 +66,7 @@ if (!function_exists('currency')) {
     function currency($price = "")
     {
         $CI    = &get_instance();
-        $CI->load->database();
+
         $CI->db->where('key', 'system_currency');
         $currency_code = $CI->db->get('system_settings')->row()->value;
 
@@ -103,7 +92,7 @@ if (!function_exists('currency_code_and_symbol')) {
     function currency_code_and_symbol($type = "")
     {
         $CI    = &get_instance();
-        $CI->load->database();
+
         $CI->db->where('key', 'system_currency');
         $currency_code = $CI->db->get('system_settings')->row()->value;
 
@@ -164,84 +153,11 @@ if (!function_exists('frontend')) {
     function frontend($view)
     {
         if ($view) {
-            $theme = get_website_settings('theme');
-            $view_path = "frontend/$theme/$view";
+            $view_path = "frontend/$view";
             return $view_path;
         }
     }
 }
-
-// SLUGIFY A TEXT
-if (!function_exists('slugify')) {
-    function slugify($text)
-    {
-        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-        $text = trim($text, '-');
-        $text = strtolower($text);
-        //$text = preg_replace('~[^-\w]+~', '', $text);
-        if (empty($text))
-            return 'n-a';
-        return $text;
-    }
-}
-
-function get_nicetime($date)
-{
-    if (empty($date)) {
-        return "Unknown";
-    }
-    // Current time as MySQL DATETIME value
-    $csqltime = date('Y-m-d H:i:s');
-    // Current time as Unix timestamp
-    $ptime = strtotime($date);
-    $ctime = strtotime($csqltime);
-
-    //Now calc the difference between the two
-    $timeDiff = floor(abs($ctime - $ptime) / 60);
-
-    //Now we need find out whether or not the time difference needs to be in
-    //minutes, hours, or days
-    if ($timeDiff < 2) {
-        $timeDiff = "Just now";
-    } elseif ($timeDiff > 2 && $timeDiff < 60) {
-        $timeDiff = floor(abs($timeDiff)) . " minutes ago";
-    } elseif ($timeDiff > 60 && $timeDiff < 120) {
-        $timeDiff = floor(abs($timeDiff / 60)) . " hour ago";
-    } elseif ($timeDiff < 1440) {
-        $timeDiff = floor(abs($timeDiff / 60)) . " hours ago";
-    } elseif ($timeDiff > 1440 && $timeDiff < 2880) {
-        $timeDiff = floor(abs($timeDiff / 1440)) . " day ago";
-    } elseif ($timeDiff > 2880) {
-        $timeDiff = date('d.M.Y', $ptime);
-    }
-    return $timeDiff;
-}
-
-// get date format config
-function _d($date, $date_formats = "")
-{
-    if ($date == '' || is_null($date) || $date == '0000-00-00') {
-        return '';
-    }
-    $formats = 'Y-m-d';
-    if ($date_formats !== "" && isset($date_formats)) {
-        $formats = $date_formats;
-    }
-
-    return date($formats, strtotime($date));
-}
-
-// get full name of State from abbr.
-function get_state_full_name($country_abbr, $state_abbr)
-{
-    $CI    = &get_instance();
-    $CI->load->database();
-    $CI->db->where(array('country' => $country_abbr, 'abbr' => $state_abbr));
-    $state_full_name = $CI->db->get('state')->row()->state;
-
-    return $state_full_name;
-}
-
 // ------------------------------------------------------------------------
 /* End of file common_helper.php */
 /* Location: ./system/helpers/common.php */

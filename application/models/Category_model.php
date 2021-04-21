@@ -1,19 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * Product name : BookingFoodTrucks
- * Date : 10 - June - 2020
- * Author : TheDevs
- * Category model handles all the database queries of Menu Categories
- */
 
-class Category_model extends Base_model
+class Category_model extends MY_Model
 {
     function __construct()
     {
         parent::__construct();
-        $this->table = "food_categories";
+        $this->table = "menu_categories";
     }
 
     /**
@@ -66,7 +60,7 @@ class Category_model extends Base_model
     public function store()
     {
         $data['name']  = required(sanitize($this->input->post('category_name')));
-        $data['created_by'] = $this->logged_in_user_id;
+        $data['created_by'] = $this->loggedin_user_id;
         if (isset($_POST['is_featured'])) {
             if (count($this->get_featured_categories()) < 8) {
                 $data['is_featured'] = 1;
@@ -133,7 +127,7 @@ class Category_model extends Base_model
         $this->db->distinct();
         $this->db->select('category_id');
         $this->db->where('foodtruck_id', $foodtruck_id);
-        $categories_array = $this->db->get('food_menus')->result_array();
+        $categories_array = $this->db->get('catering_menu')->result_array();
         $categories = array();
         foreach ($categories_array as $category) {
             array_push($categories, $category['category_id']);
@@ -142,7 +136,7 @@ class Category_model extends Base_model
         // NOW GET THE ACTUAL CATEGORY DETAILS
         if (count($categories) > 0) {
             $this->db->where_in('id', $categories);
-            return $this->db->get('food_categories')->result_array();
+            return $this->db->get('menu_categories')->result_array();
         }
         return array();
     }

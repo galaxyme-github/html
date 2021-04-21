@@ -39,7 +39,7 @@
     initPreviewer(['foodtruck_thumbnail_preview']);
 
     // FOR LOADING THE RESTAURANT GALLERY IMAGE. I'VE DONE THIS FOR AVOIDING INLINE CSS
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 9; i++) {
         initPreviewer(['foodtruck_gallery_' + i + '_preview']);
     }
 </script>

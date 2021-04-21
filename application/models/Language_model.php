@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Language model handles all the database queries of language related data
  */
 
-class Language_model extends Base_model
+class Language_model extends MY_Model
 {
     function __construct()
     {

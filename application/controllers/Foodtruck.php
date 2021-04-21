@@ -1,30 +1,18 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * Product name : BookingFoodTrucks
- * Date : 12 - June - 2020
- * Author : TheDevs
- * Food Truck Controller Handles All The Functionalities Regarding to Foodtruck
- */
-
-include 'Authorization.php';
-
-class FoodTruck extends Authorization
+class FoodTruck extends Authorization_Controller
 {
-    /**
-     * CONSTRUCTOR CHECKS IF REQUIRED USER IS LOGGED IN
-     */
     public function __construct()
     {
         parent::__construct();
-        authorization(['admin', 'owner'], true);
+        authorization(['superadmin', 'owner'], true);
     }
 
     function index()
     {
         $page_data['page_name']   = 'foodtruck/index';
-        $page_data['page_title']  = get_phrase("foodtruck");
+        $page_data['foodtruck_type'] = 'approved';
         $page_data['foodtruck_status'] = 1;
         $page_data['foodtrucks'] = $this->foodtruck_model->get_all_approved();
         $this->load->view('backend/index', $page_data);
@@ -34,16 +22,23 @@ class FoodTruck extends Authorization
     {
         $page_data['page_name'] = 'foodtruck/index';
         $page_data['page_title'] = get_phrase("foodtruck");
+        $page_data['foodtruck_type'] = 'pending';
         $page_data['foodtruck_status'] = 0;
         $page_data['foodtrucks'] = $this->foodtruck_model->get_all_pending();
         $this->load->view('backend/index', $page_data);
     }
 
-    function create()
+    function all()
     {
-        $page_data['page_name'] = 'foodtruck/create';
-        $page_data['page_title'] = get_phrase("create_a_foodtruck");
-        $page_data['cuisines'] = $this->cuisine_model->get_all();
+        $page_data['page_name']   = 'foodtruck/index';
+        $page_data['foodtrucks'] = $this->foodtruck_model->get_all();
+        $this->load->view('backend/index', $page_data);
+    }
+
+    function add()
+    {
+        $page_data['page_name'] = 'foodtruck/add';
+        $page_data['page_title'] = 'Food Truck';
         $this->load->view('backend/index', $page_data);
     }
 
@@ -51,24 +46,18 @@ class FoodTruck extends Authorization
     {
         $return_id = $this->foodtruck_model->store();
         if ($return_id) {
-            success(get_phrase('foodtruck_added_successfully'), site_url('foodtruck/edit/' . $return_id . '/basic'));
+            success('Foodtruck has been added successfuly.', site_url('foodtruck/edit/' . $return_id . '/gallery'));
         }
     }
 
 
     function edit($id, $active_tab = 'basic')
     {
-        /** CHECK IF THE USER HAS ACCESS TO SEE THIS **/
-        if (!has_access('foodtrucks', $id)) {
-            error(get_phrase('you_are_not_authorized_for_this_action'), site_url('foodtruck'));
-        }
-        $page_data['id'] = $id;
         $page_data['foodtruck_data'] = $this->foodtruck_model->get_by_id($id);
-        $foodtruck_name = $page_data['foodtruck_data']['name'];
-        $page_data['cuisines'] = $this->cuisine_model->get_all();
+        $foodtruck_name = $page_data['foodtruck_data']->name;
         $page_data['active_tab'] = $active_tab;
         $page_data['page_name'] = 'foodtruck/edit';
-        $page_data['page_title'] = get_phrase("update") . ' ' . $foodtruck_name;
+        $page_data['page_title'] = 'Edit ' . $foodtruck_name;
         $this->load->view('backend/index', $page_data);
     }
 
@@ -115,6 +104,45 @@ class FoodTruck extends Authorization
             success(get_phrase("foodtruck_updated_successfully"), site_url("foodtruck/edit/$id/$section"));
         } else {
             error(get_phrase("an_error_occured"), site_url("foodtruck/edit/$id/$section"));
+        }
+    }
+
+    function page_editor($id)
+    {
+        $page_data['foodtruck_data'] = $this->foodtruck_model->get_by_id($id);
+        $page_data['page_styles'] = $this->foodtruck_model->get_foodtruck_page_styles($id);
+        $page_data['page_name'] = 'foodtruck/page_editor';
+        $page_data['page_title'] = 'Food Truck Page Editor';
+        $this->load->view('backend/index', $page_data);
+    }
+
+    function page_preview($foodtruck_id)
+    {
+        $page_data['foodtruck_details'] = $this->foodtruck_model->get_by_id($foodtruck_id);
+        $page_data['page_styles'] = $this->foodtruck_model->get_foodtruck_page_styles($foodtruck_id);
+        $page_data['page_name']          = 'foodtruck/index';
+        $page_data['page_title']         = 'Food Truck - ' . $page_data['foodtruck_details']->name;
+        $this->load->view(frontend('index'), $page_data);
+    }
+
+    function reset_page_styles($foodtruck_id)
+    {
+        $response = $this->foodtruck_model->reset_page_styles($foodtruck_id);
+        if ($response) {
+            success(get_phrase("Page Styles Setting has been reseted successfully"), site_url("foodtruck/page-builder/$foodtruck_id"));
+        } else {
+            error(get_phrase("an_error_occured"), site_url("foodtruck/page-builder/$foodtruck_id"));
+        }
+    }
+
+    function update_page_styles()
+    {
+        $foodtruck_id = $this->input->post('foodtruck_id');
+        $response = $this->foodtruck_model->update_page_styles($foodtruck_id);
+        if ($response) {
+            success(get_phrase("Page Styles Setting has been updated successfully"), site_url("foodtruck/page-builder/$foodtruck_id"));
+        } else {
+            error(get_phrase("an_error_occured"), site_url("foodtruck/page-builder/$foodtruck_id"));
         }
     }
 }

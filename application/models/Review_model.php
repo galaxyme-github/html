@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Review model handles all the database queries of Reviewing
  */
 
-class Review_model extends Base_model
+class Review_model extends MY_Model
 {
     function __construct()
     {
@@ -102,7 +102,7 @@ class Review_model extends Base_model
     {
         $data['foodtruck_id'] = required(sanitize($this->input->post('foodtruck_id')));
         $data['order_code'] = required(sanitize($this->input->post('order_code')));
-        $data['customer_id'] = $this->logged_in_user_id;
+        $data['customer_id'] = $this->loggedin_user_id;
         $rating = required(sanitize($this->input->post('rating_' . $data['foodtruck_id'])));
         $data['rating'] = ($rating > 0 && $rating < 6) ? $rating : 5;
         $data['review'] = required(sanitize($this->input->post('review_' . $data['foodtruck_id'])));
@@ -169,7 +169,7 @@ class Review_model extends Base_model
     {
         $number_of_pending_reviews = 0;
         $conditions = array(
-            'customer_id' => $this->logged_in_user_id,
+            'customer_id' => $this->loggedin_user_id,
             'order_status' => 'delivered'
         );
         $orders = $this->order_model->get_by_condition($conditions);
@@ -178,7 +178,7 @@ class Review_model extends Base_model
             $order_details = $this->order_model->details($order['code']);
             $condition_one = [];
             foreach ($order_details as $order_detail) {
-                $condition_two = ['customer_id' => $this->logged_in_user_id, 'order_code' => $order['code'], 'foodtruck_id' => $order_detail['foodtruck_id']];
+                $condition_two = ['customer_id' => $this->loggedin_user_id, 'order_code' => $order['code'], 'foodtruck_id' => $order_detail['foodtruck_id']];
                 if ($condition_one === $condition_two) continue;
                 $condition_one = $condition_two;
                 $reviews = $this->db->get_where($this->table, $condition_one)->row_array();
