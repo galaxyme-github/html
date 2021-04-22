@@ -117,7 +117,7 @@
     font-size: 15px;
 }
 #foodtruck-owner-information label {
-    color: #565a5c;
+    color: #1b1f23;
     font-size: 15px;    
 }
 #foodtruck-owner-information .with-errors {

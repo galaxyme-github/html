@@ -162,7 +162,7 @@
                                 <button type="submit" class="btn ft-btn w-75">Become a Member</button>
                             </div>
                             <div class="col-md-12">
-                                <p class="mt-3" style="color: #578625; font-weight: bold">Once you’ve submitted your application, we’ll take look at it and you can expect to hear from one of the BFT team within 3-5 days.</p>
+                                <p class="mt-3" style="color: #10A86C; font-weight: bold">Once you’ve submitted your application, we’ll take look at it and you can expect to hear from one of the BFT team within 3-5 days.</p>
                             </div>
                         </div>
                     </form>
@@ -215,14 +215,14 @@
                     </div>
                     <div class="col-md-12 foodtruck-apply-text pt-3">
                         <h6>What kind of events can I expect to book through BFT?</h6>
-                        <p>BFK is specialized in events from 40 to 300 people. The events available to you are mostly a mixture of private events and weddings as well as big corporate events.</p>
+                        <p>BFT is specialized in events from 40 to 300 people. The events available to you are mostly a mixture of private events and weddings as well as big corporate events.</p>
                     </div>
                     <div class="col-md-12 foodtruck-apply-text pt-3">
                         <h6>Are there events in my area?</h6>
                         <p>in short yes! We operate nation wide and we receive enquiries all over the USA</p>
                     </div>
                     <div class="col-md-12 foodtruck-apply-text pt-3">
-                        <h6>What kind of documentation do I need to be a BFK member?</h6>
+                        <h6>What kind of documentation do I need to be a BFT member?</h6>
                         <p>We require a few documents to make sure your compliant with the relevant food safety authorities. These include SafeServe certificate, public liability insurance and you Food Truck license number.</p>
                     </div>
                 </div>

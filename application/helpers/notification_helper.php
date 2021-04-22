@@ -28,6 +28,38 @@ if (!function_exists('error')) {
     }
 }
 
+/*==================== BFT Messaages =================*/
+
+// success message
+function success_message($message = '', $redirectTo = '')
+{
+    $CI = &get_instance();
+    $CI->session->set_flashdata('success_message', $message);
+    if ($redirectTo) {
+        redirect($redirectTo, 'refresh');
+    }
+}
+
+// error message
+function error_message($message = '', $redirectTo = '')
+{
+    $CI = &get_instance();
+    $CI->session->set_flashdata('error_message', $message);
+    if ($redirectTo) {
+        redirect($redirectTo, 'refresh');
+    }
+}
+
+// warning message
+function warning_message($message = '', $redirectTo = '')
+{
+    $CI = &get_instance();
+    $CI->session->set_flashdata('warning_message', $message);
+    if ($redirectTo) {
+        redirect($redirectTo, 'refresh');
+    }
+}
+
 /**
  * common notification and redirect
  * 

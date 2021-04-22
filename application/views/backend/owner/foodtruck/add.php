@@ -104,7 +104,7 @@
                                 <input type="text" class="form-control" id="ft_phone" name="ft_phone" data-error="Please enter foodtruck phone number." placeholder="+1 222-333-4444" value="<?php echo $loggedin_user->phone; ?>" required>
                                 <div class="help-block with-errors"></div>
                             </div>
-                            <button class="btn ft-hero-btn">Save</button>
+                            <button class="btn ft-hero-btn">Register</button>
                         </div>
                         <!-- /.card-body -->
                     </div>

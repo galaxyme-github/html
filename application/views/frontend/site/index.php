@@ -340,7 +340,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card card-secondary mt-3">
-                    <div class="card-header custom-bg-color">
+                    <div class="card-header bg-white">
                         <h6 class="card-title text-center mt-2"><i class="fa fa-handshake success-color"></i>&nbsp;&nbsp;The Booking Food Trucks Concept</h6>
                     </div>
                     <div class="card-body">

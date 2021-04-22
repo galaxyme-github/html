@@ -8,13 +8,14 @@
                     <li class="v-nav-item <?php if ($active_tab == 'location') echo 'active' ?>"><a href="<?php echo site_url('foodtruck/edit/' . $foodtruck_data->id . '/location'); ?>" class="v-nav-link">Food Truck Location Information</a></li>
                     <li class="v-nav-item <?php if ($active_tab == 'contact') echo 'active' ?>"><a href="<?php echo site_url('foodtruck/edit/' . $foodtruck_data->id . '/contact'); ?>" class="v-nav-link">Contact Details</a></li>
                     <li class="v-nav-item <?php if ($active_tab == 'gallery') echo 'active' ?>"><a href="<?php echo site_url('foodtruck/edit/' . $foodtruck_data->id . '/gallery'); ?>" class="v-nav-link">Gallery</a></li>
+                    <li class="v-nav-item <?php if ($active_tab == 'schedule') echo 'active' ?>"><a href="<?php echo site_url('foodtruck/edit/' . $foodtruck_data->id . '/schedule'); ?>" class="v-nav-link">Schedule</a></li>
                     <li class="v-nav-item <?php if ($active_tab == 'seo') echo 'active' ?>"><a href="<?php echo site_url('foodtruck/edit/' . $foodtruck_data->id . '/seo'); ?>" class="v-nav-link">Food Truck Page SEO</a></li>
                 </ul>
             </div>
             <div class="col-lg-9">
                 <div class="card mt-5">
                         <div class="card-header bft-card-header pt-3">
-                        <h4>Edit <?=$foodtruck_data->name;?></h4>
+                        <h4>Edit <span class="text-capitalize"><?=$active_tab;?></span> Data of <span class="text-info"><?=$foodtruck_data->name;?></span></h4>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
@@ -67,10 +68,10 @@
                                     <div class="form-group">
                                         <label for="service_time">Serving Meal Times<span class="text-success">*</span></label>
                                         <select class="form-control select2" name="service_time[]" id="service_time" multiple="multiple">
-                                                <option value="breakfast" <?php if (in_array('breakfast', json_decode($foodtruck_data->schedule, true))) echo "selected"; ?>>Breakfast</option>
-                                                <option value="brunch" <?php if (in_array('brunch', json_decode($foodtruck_data->schedule, true))) echo "selected"; ?>>Brunch</option>
-                                                <option value="lunch" <?php if (in_array('lunch', json_decode($foodtruck_data->schedule, true))) echo "selected"; ?>>Lunch</option>
-                                                <option value="dinner" <?php if (in_array('dinner', json_decode($foodtruck_data->schedule, true))) echo "selected"; ?>>Dinner</option>
+                                                <option value="breakfast" <?php if (strpos($foodtruck_data->mealtimes, 'breakfast')) echo "selected"; ?>>Breakfast</option>
+                                                <option value="brunch" <?php if (strpos($foodtruck_data->mealtimes, 'brunch')) echo "selected"; ?>>Brunch</option>
+                                                <option value="lunch" <?php if (strpos($foodtruck_data->mealtimes, 'lunch')) echo "selected"; ?>>Lunch</option>
+                                                <option value="dinner" <?php if (strpos($foodtruck_data->mealtimes, 'dinner')) echo "selected"; ?>>Dinner</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -106,6 +107,18 @@
                                     </div>
                                     <button class="btn ft-hero-btn">Update Location Information</button>
                                 </form>
+                            </div>
+                            <div class="tab-pane <?php if ($active_tab == 'schedule') echo 'active' ?>" id="schedule">
+                                <div id="event_schedule"></div>
+                                <div class="row">
+                                    <div class="col-lg-12 text-center">
+                                        <div class="mt-3">
+                                            <span class="square-available"></span>Available
+                                            <span class="square-unavailable ml-5"></span>Unavailable
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn ft-hero-btn mt-5" onclick="updateSchedule(<?php echo sanitize($foodtruck_data->id); ?>)">Save Schedule</button>
                             </div>
                             <div class="tab-pane <?php if ($active_tab == 'contact') echo 'active' ?>" id="contact">
                                 <form action="<?php echo site_url('foodtruck/update/contact'); ?>" method="post">
@@ -186,5 +199,6 @@
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </section>

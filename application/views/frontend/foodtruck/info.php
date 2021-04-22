@@ -35,7 +35,7 @@
         </dd>
         <dt>Meal times we serve:</dt>
         <dd>
-            <?php $meal_times = !empty($foodtruck_details->schedule) ? json_decode($foodtruck_details->schedule) : []; ?>
+            <?php $meal_times = !empty($foodtruck_details->mealtimes) ? json_decode($foodtruck_details->mealtimes) : []; ?>
             <?php $count_mealtimes = count($meal_times); ?>
             <?php if ($count_mealtimes > 0) : ?>
                 <?php foreach ($meal_times as $key => $meal_time) : ?>

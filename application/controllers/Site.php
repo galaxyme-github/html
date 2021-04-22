@@ -35,8 +35,8 @@ class Site extends MY_Controller
     // THIS FUNCTION IS FOODTRUCK FOR SHOWING POPULAR RESTAURANT LIST
     function foodtrucks($type = "")
     {
-        $page_data['cuisine']    = isset($_GET['cuisine']) ? sanitize($_GET['cuisine']) : "all";
-        $page_data['category']   = isset($_GET['category']) ? sanitize($_GET['category']) : "all";
+        // $page_data['cuisine']    = isset($_GET['cuisine']) ? sanitize($_GET['cuisine']) : "all";
+        // $page_data['category']   = isset($_GET['category']) ? sanitize($_GET['category']) : "all";
         $page_data['city_zip']    = isset($_GET['city_zip']) ? sanitize($_GET['city_zip']) : "all";
         $page_data['event_date']    = isset($_GET['event_date']) ? sanitize($_GET['event_date']) : "all";
         $page_data['number_people']   = isset($_GET['number_people']) ? sanitize($_GET['number_people']) : "all";
@@ -72,10 +72,10 @@ class Site extends MY_Controller
 
         $page_data['foodtrucks'] = $this->foodtruck_model->special_sort_paginate($page_size, $current_page, $condition, $order_by, $order);
         /**PAGINATION ENDS**/
-        // $event_date   = nuller(sanitize($this->input->get('event_date')));
-        // if ( $event_date ) {
-        //     $page_date['event_date'] = $event_date;
-        // }
+        $event_date   = nuller(sanitize($this->input->get('event_date')));
+        if ( $event_date ) {
+            $page_date['event_date'] = $event_date;
+        }
         $event_time   = nuller(sanitize($this->input->get('event_time')));
         if ( $event_time ) {
             $page_date['event_time'] = $event_time;

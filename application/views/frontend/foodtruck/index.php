@@ -149,7 +149,7 @@
         <h4 class="font-bold text-center">Reservation for <?php echo sanitize($foodtruck_details->name); ?></h4>
         <div class="row justify-content-center pt-5">
             <div class="col-md-12">
-                <div class="alert alert-info alert-dismissable">
+                <div class="alert alert-info fixed-alert-info alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <span class="text-success pr-2">Breakfast - Brunch - Lunch - Dinner</span>
                     Later you can discuss in detail about the exact time you will expect the Food Truck.
@@ -324,6 +324,24 @@
                     <p class="text-info">Note: Once you made the reservation, you can discuss with Food Truck about the details of your event.</p>
                     <button class="btn ft-btn">Make a Reservation</button>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid bft-foodtruck-page-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="insurance-banner-wrap bft-contect-block">
+                    <img src="<?php echo base_url('assets/images/brand.png'); ?>" />
+                    <div class="large-text d-inline-block pl-3">
+                        All stays booked on BFT receive <a href='#' class="ft-hyper-text">our BFT guarantee</a>, 24/7 support, and our reservation protection. <a href='#' class="ft-hyper-text">Learn More</a>
+                    </div>
+                </div>
+                <div class="bft-footer-breadcrum">
+                    <a href="<?php echo site_url('home'); ?>" class="ft-hyper-text">Home</a>&nbsp;&nbsp;/&nbsp;&nbsp; 
+                    <a class="ft-hyper-text" href="<?php echo site_url('site/foodtrucks/filter'); ?>?<?php echo $this->input->server('QUERY_STRING'); ?>">Filtered Food Trucks</a>
+                </div>
             </div>
         </div>
     </div>

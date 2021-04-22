@@ -43,5 +43,8 @@
         <!-- Load modal -->
         <?php include 'partials/modal.php'; ?>
         <!--// Load modal -->
+
+        <!-- Alert -->
+        <?php include 'partials/alert.php'; ?>
     </body>
 </html>

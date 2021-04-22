@@ -107,6 +107,17 @@ class FoodTruck extends Authorization_Controller
         }
     }
 
+    function update_schedule()
+    {
+        $response = $this->foodtruck_model->update_schedule();
+        if ($response) {
+            echo json_encode(array('status' => true));
+            success_message('Schedule has been updated successfully.');
+        } else {
+            error_message('Something went to wrong.');
+        }
+    }
+
     function page_editor($id)
     {
         $page_data['foodtruck_data'] = $this->foodtruck_model->get_by_id($id);

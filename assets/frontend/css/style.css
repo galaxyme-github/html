@@ -8,6 +8,7 @@ Author: Surjith S M
    ============================================================== */
 body {
   font-family: 'Roboto', sans-serif;
+  color: #1b1f23;
 }
 
 h1 {
@@ -571,7 +572,7 @@ p {
 }
 
 .featured-title-box p {
-  color: #9fa9b9;
+  color: #1b1f23;
   display: inline-block;
   margin: 0;
 }
@@ -588,7 +589,7 @@ p {
 }
 
 .featured-title-box span {
-  color: #9fa9b9;
+  color: #1b1f23;
   padding: 0 10px;
 }
 
@@ -1506,4 +1507,10 @@ footer {
 }
 .btn-gradient:hover {
   color: rgb(221, 214, 214);
+}
+.text-muted {
+  color: #66727c !important;
+}
+.bft-footer-breadcrum a {
+  font-weight: 400 !important
 }

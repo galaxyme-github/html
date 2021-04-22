@@ -104,7 +104,7 @@ class Foodtruck_model extends MY_Model
         $data['website_url']  = $this->input->post('ft_website_url');
         $data['minimum_price_per_person']  = required(sanitize($this->input->post('minimum_price_per_person')));
         $data['number_of_attendees']  = $this->input->post('number_of_attendees');
-        $data['schedule']  = required(json_encode($this->input->post('service_time')));
+        $data['mealtimes']  = required(json_encode($this->input->post('service_time')));
         $data['needed_things_on_event_location']  = $this->input->post('needed_things_on_event_location');
         $data['serviceable_areas']  = required($this->input->post('serving_areas'));
         $data['serve_radius'] = $this->input->post('service_radius');
@@ -156,7 +156,7 @@ class Foodtruck_model extends MY_Model
         $id = $this->input->post('id');
         $data['minimum_price_per_person']  = required(sanitize($this->input->post('minimum_price_per_person')));
         $data['number_of_attendees']  = $this->input->post('number_of_attendees');
-        $data['schedule']  = required(json_encode($this->input->post('service_time')));
+        $data['mealtimes']  = required(json_encode($this->input->post('service_time')));
         $data['needed_things_on_event_location']  = $this->input->post('needed_things_on_event_location');
         $data['serviceable_areas']  = required($this->input->post('serving_areas'));
         $data['serve_radius'] = $this->input->post('service_radius');
@@ -193,6 +193,15 @@ class Foodtruck_model extends MY_Model
         return true;
     }
 
+    // Update foodtruck available schedule
+    public function update_schedule()
+    {
+        $id = required(sanitize($this->input->post('id')));
+        $unavailable_dates = $this->input->post('dates');
+        $this->db->where('id', $id);
+        $this->db->update($this->table, ['schedule' => $unavailable_dates]);
+        return true;
+    }
     // UPDATE SCHEDULE DATA FOR A FOODTRUCK
     // public function update_schedule()
     // {
@@ -395,219 +404,63 @@ class Foodtruck_model extends MY_Model
 
     public function filter_foodtruck_frontend()
     {
-        // $cuisine    = nuller(sanitize($this->input->get('cuisine')));
-        // $category   = nuller(sanitize($this->input->get('category')));
-        $search_string   = nuller(sanitize($this->input->get('query')));
 
-        // $address    = nuller(sanitize($this->input->get('address')));
-        // $search_input_zipcode = nuller(sanitize($this->input->get('search_input_zipcode')));
         $search_latitude   = nuller(sanitize($this->input->get('search_latitude')));
         $search_longitude   = nuller(sanitize($this->input->get('search_longitude')));
         $event_date   = nuller(sanitize($this->input->get('event_date')));
         $event_time   = nuller(sanitize($this->input->get('event_time')));
-        $number_people   = nuller(sanitize($this->input->get('number_people')));
-        // $event_week_name = strtolower(date("l", strtotime($event_date))) . "_opening";
+        $number_of_attendees   = nuller(sanitize($this->input->get('number_people')));
+  
+        $foodtrucks_by_event_location = array();
+        $foodtrucks_by_event_location_and_event_date_and_event_time = array();
+        $unavailable_foodtrucks = array();
+        $available_foodtrucks = array();
+        $filtered_foodtrucks = array();
 
-        $filtered_foodtruck_ids_nearby_location = array();
-        $foodtruck_ids_have_amount_of_persons_and_event_week_name = array();
-        $not_available_foodtruck_ids = array();
-        $available_foodtruck_ids = array();
-        $filtered_foodtruck_ids = array();
-        $foodtruck_ids_have_cuisine = array();
-        $foodtruck_ids_have_category = array();
-        $foodtruck_ids_have_search_string = array();
-        
-        $foodtruck_ids_have_city_zip = array();
-        $foodtruck_ids_have_event_week_name = array();
-        $foodtruck_ids_have_amount_of_persons = array();
-
-
-        // if ($category) {
-        //     $this->db->distinct();
-        //     $this->db->select('foodtruck_id');
-        //     $query = $this->db->get_where('food_menus', ['category_id' => $category])->result_array();
-        //     foreach ($query as $row) {
-        //         if (!in_array($row['foodtruck_id'], $foodtruck_ids_have_category)) {
-        //             array_push($foodtruck_ids_have_category, $row['foodtruck_id']);
-        //         }
-        //     }
-        // }
-
-        // if ($cuisine) {
-        //     $query = $this->db->get_where($this->table, ['status' => 1])->result_array();
-        //     foreach ($query as $row) {
-        //         $cuisines = json_decode($row['cuisine']);
-        //         if (in_array($cuisine, $cuisines)) {
-        //             if (!in_array($row['id'], $foodtruck_ids_have_cuisine)) {
-        //                 array_push($foodtruck_ids_have_cuisine, $row['id']);
-        //             }
-        //         }
-        //     }
-        // }
-
-        // if ($category && $cuisine && !$search_string) {
-        //     if (count($foodtruck_ids_have_category) && count($foodtruck_ids_have_cuisine)) {
-        //         $filtered_foodtruck_ids = array_intersect($foodtruck_ids_have_cuisine, $foodtruck_ids_have_category);
-        //     }
-        // } elseif (!$category && !$cuisine && !$search_string) {
-        //     $query = $this->db->get_where($this->table, ['status' => 1])->result_array();
-        //     foreach ($query as $row) {
-        //         if (!in_array($row['id'], $filtered_foodtruck_ids)) {
-        //             array_push($filtered_foodtruck_ids, $row['id']);
-        //         }
-        //     }
-        // } elseif ($category && !$cuisine && !$search_string) {
-        //     $filtered_foodtruck_ids = $foodtruck_ids_have_category;
-        // } elseif (!$category && $cuisine && !$search_string) {
-        //     $filtered_foodtruck_ids = $foodtruck_ids_have_cuisine;
-        // } elseif ($search_string) {
-        //     $this->db->select('id');
-        //     $this->db->like('name', $search_string, 'both');
-        //     $query = $this->db->get($this->table)->result_array();
-        //     foreach ($query as $row) {
-        //         if (!in_array($row['id'], $filtered_foodtruck_ids)) {
-        //             array_push($filtered_foodtruck_ids, $row['id']);
-        //         }
-        //     }
-        // }
 
         $where =" where 1 ";
-        // $zip_code = "";
-        // if($address){
-        //     if (is_numeric(($address))) {
-        //         $zip_code = $address;
-        //     } else {
-        //         $where .= "and city='$address' or state='$address'";
-        //     }
-        // }
 
-
-        if($number_people) {
-            $where .= "and attendees_amt='$number_people'";
+        if($number_of_attendees) {
+            $where .= "and number_of_attendees='$number_of_attendees'";
         }
         
-        $sql = "select * from ".$this->table.$where;
+        $sql = "select * from " . $this->table . $where;
         $query = $this->db->query($sql);
-        $result = $query->result_array();
+        $result = $query->result_array(); // result by number of attendees
 
-        // $event_date_open_status = '"'.$event_week_name.'":"closed"';
 
-        // foreach ($result as $row) {
-        //     if($event_date) {
-        //         if (strpos($row['schedule'], $event_date_open_status) == false) {
-        //             array_push($available_foodtruck_ids, $row['id']);
-        //         } else {
-        //             array_push($not_available_foodtruck_ids, $row['id']);
-        //         }
-        //     } else {
-        //         array_push($foodtruck_ids_have_amount_of_persons_and_event_week_name, $row['id']);
-        //     }
-        // }
+        // filter by event date and event time
         foreach ($result as $row) {
-            if($event_time) {
-                if (strpos($row['schedule'], $event_time) == false) {
-                    array_push($available_foodtruck_ids, $row['id']);
+            if($event_date) {
+                if (strpos($row['schedule'], $event_date) == false) {
+                    if ($event_time) {
+                        if (strpos($row['mealtimes'], $event_time)) {
+                            array_push($available_foodtrucks, $row['id']);
+                        } else {
+                            array_push($unavailable_foodtrucks, $row['id']);
+                        }
+                    } else {
+                        array_push($available_foodtrucks, $row['id']);
+                    }
                 } else {
-                    array_push($not_available_foodtruck_ids, $row['id']);
+                    array_push($unavailable_foodtrucks, $row['id']);
+                }
+            } else if ($event_time) {
+                if (strpos($row['mealtimes'], $event_time)) {
+                    array_push($available_foodtrucks, $row['id']);
+                } else {
+                    array_push($unavailable_foodtrucks, $row['id']);
                 }
             } else {
-                array_push($foodtruck_ids_have_amount_of_persons_and_event_week_name, $row['id']);
+                array_push($foodtrucks_by_event_location_and_event_date_and_event_time, $row['id']);
             }
         }
-        // print_r($available_foodtruck_ids);exit;
-        if($event_date) {
-            $foodtruck_ids_have_amount_of_persons_and_event_week_name = array_merge($available_foodtruck_ids, $not_available_foodtruck_ids);
+        if($event_date || $event_time) {
+            $foodtrucks_by_event_location_and_event_date_and_event_time = array_merge($available_foodtrucks, $unavailable_foodtrucks);
         }
-        // if ($search_input_zipcode) {
-        //     // Get longitude and latitude from given zip code
-        //     $url = "https://maps.googleapis.com/maps/api/geocode/json?address='".$search_input_zipcode."'&sensor=false&key=AIzaSyCvRwR3-fGr8AsnMdzmQVkgCdlWhqUiCG0";
-            
-        //     $curl = curl_init($url);
+       
 
-        //     curl_setopt($curl, CURLOPT_POST, true);
-        //     curl_setopt($curl, CURLOPT_POSTFIELDS, '');
-        //     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        //     curl_setopt($curl, CURLOPT_HEADER, false);
-        //     curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        //     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-
-        //     $json = curl_exec($curl);
-
-        //     $decode = json_decode($json, true);
-
-        //     $result1[]=$decode['results'][0];
-        //     $result2[]=$result1[0]['geometry'];
-        //     $result3[]=$result2[0]['location'];
-
-        //     $lat1 = $result3[0]['lat'];
-        //     $lon1 = $result3[0]['lng'];
-            
-        //     // Get array of zip codes from database.
-        //     $sq_result = $this->db->get($this->table)->result_array();
-        //     $mh = curl_multi_init();
-        //     $handles = array();
-        //     foreach ($sq_result as $row) {
-        //         $zip_code = $row['zip_code'];
-
-        //         $ch = curl_init();
-        //         $handles[] = $ch;
-        //         // Get longitude and latitude from zip codes foodtrucks
-        //         $url = "https://maps.googleapis.com/maps/api/geocode/json?address='".$zip_code."'&sensor=false&key=AIzaSyCvRwR3-fGr8AsnMdzmQVkgCdlWhqUiCG0";
-        
-
-        //         curl_setopt($ch, CURLOPT_URL, $url);
-        //         curl_setopt($ch, CURLOPT_POST, true);
-        //         curl_setopt($ch, CURLOPT_POSTFIELDS, '');
-        //         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        //         curl_setopt($ch, CURLOPT_HEADER, false);
-        //         // curl_setopt($curl2, CURLOPT_TIMEOUT, 30);
-        //         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        //         curl_multi_add_handle($mh,$ch);
-        //     }
-
-        //     $running = null;
-        //     do {
-        //         curl_multi_exec($mh, $running);
-        //     } while ($running);
-
-        //     foreach($handles as $ch){
-        //         $result = curl_multi_getcontent($ch);
-
-        //         $decode = json_decode($result,true);
-
-        //         foreach($decode['results'] as $result){       
-        //             // array_push($final_data,$result3[0]);
-        //             $lat2 = $result['geometry']['location']['lat'];
-        //             $lon2 = $result['geometry']['location']['lng'];
-
-        //             //Calculate between given zip code and foodtruck zip code.
-        //             $unit = 'mile';
-
-        //             $theta = $lon1 - $lon2;
-        //             $dist = sin(deg2rad((double)$lat1)) * sin(deg2rad((double)$lat2))+cos(deg2rad((double)$lat1))*cos(deg2rad((double)$lat2))*cos(deg2rad((double)$theta));
-        //             $dist = acos($dist);
-        //             $dist = rad2deg($dist);
-        //             // $distance = round($dist*60*1.1515*1.609344); // unit: km
-        //             $distance = round($dist*60*1.1515); // unit: mile
-
-        //             foreach ($sq_result as $row) {
-        //                 if ($result['address_components'][0]['long_name'] == $row['zip_code']) {
-        //                     if ($distance < $row['serve_radius']) {
-        //                         array_push($filtered_foodtruck_ids_by_serve_radius, $row['id']);
-        //                     }
-        //                 }
-        //             }
-
-        //         }   
-
-        //         curl_multi_remove_handle($mh, $ch);
-        //         curl_close($ch);
-        //     }
-        //     $filtered_foodtruck_ids = array_intersect(array_unique($filtered_foodtruck_ids_by_serve_radius),$foodtruck_ids_have_amount_of_persons_and_event_week_name);
-        // } else {
-        //     $filtered_foodtruck_ids = $foodtruck_ids_have_amount_of_persons_and_event_week_name;
-        // }
-
+        // foodtrucks by event location
         if ($search_latitude && $search_longitude) {
             $lat1 = $search_latitude;
             $lng1 = $search_longitude;
@@ -626,15 +479,16 @@ class Foodtruck_model extends MY_Model
                 $distance = round($dist*60*1.1515); // unit: mile
 
                 if ($distance < $row['serve_radius']) {
-                    array_push($filtered_foodtruck_ids_nearby_location, $row['id']);
+                    array_push($foodtrucks_by_event_location, $row['id']);
                 }
             }
-            $filtered_foodtruck_ids = array_intersect(array_unique($filtered_foodtruck_ids_nearby_location),$foodtruck_ids_have_amount_of_persons_and_event_week_name);
+            // merge arrays
+            $filtered_foodtrucks = array_intersect(array_unique($foodtrucks_by_event_location), $foodtrucks_by_event_location_and_event_date_and_event_time);
         } else {
-            $filtered_foodtruck_ids = $foodtruck_ids_have_amount_of_persons_and_event_week_name;
+            $filtered_foodtrucks = $foodtrucks_by_event_location_and_event_date_and_event_time;
         }
 
-        return $filtered_foodtruck_ids;
+        return $filtered_foodtrucks;
     }
 
     public function get_foodtruck_page_styles($foodtruck_id)

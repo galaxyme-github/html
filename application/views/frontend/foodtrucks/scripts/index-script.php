@@ -1,6 +1,5 @@
 <!-- INIT JS -->
 <script src="<?php echo base_url('assets/frontend/js/init.js') ?>"></script>
-
 <script>
   "use strict";
   $(window).scroll(function() {
